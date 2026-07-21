@@ -18,6 +18,45 @@
     "Bombe artisanale": "●"
   };
 
+  function parsePowerValue(power) {
+    const explicit = power.querySelector(".power-value")?.textContent;
+    return (explicit || power.textContent).match(/\d+/)?.[0] || "0";
+  }
+
+  function installPowerBadge(power) {
+    let rendering = false;
+    let lastValue = parsePowerValue(power);
+
+    const render = () => {
+      if (rendering) return;
+      lastValue = parsePowerValue(power) || lastValue;
+      const valueNode = power.querySelector(".power-value");
+      const iconNode = power.querySelector(".power-icon");
+
+      if (valueNode && iconNode) {
+        if (valueNode.textContent !== lastValue) valueNode.textContent = lastValue;
+        return;
+      }
+
+      rendering = true;
+      power.replaceChildren();
+      const icon = document.createElement("span");
+      icon.className = "power-icon";
+      icon.setAttribute("aria-hidden", "true");
+      icon.textContent = "⚡";
+      const value = document.createElement("span");
+      value.className = "power-value";
+      value.textContent = lastValue;
+      power.append(icon, value);
+      power.setAttribute("aria-label", `Puissance ${lastValue}`);
+      rendering = false;
+    };
+
+    render();
+    new MutationObserver(() => requestAnimationFrame(render))
+      .observe(power, { childList: true, characterData: true, subtree: true });
+  }
+
   function applyApprovedLayout() {
     const screen = modalContent.querySelector(".inventory-screen");
     if (!screen || screen.dataset.referenceReady === "true") return;
@@ -42,14 +81,7 @@
     }
 
     const power = screen.querySelector(".inventory-power");
-    if (power) {
-      const syncPower = () => {
-        const value = power.textContent.match(/\d+/)?.[0] || "0";
-        power.dataset.score = value;
-      };
-      syncPower();
-      new MutationObserver(syncPower).observe(power, { childList: true, characterData: true, subtree: true });
-    }
+    if (power) installPowerBadge(power);
 
     const labelMap = {
       "equip-weapon": "ARME",
@@ -92,7 +124,8 @@
 
     const sheetName = screen.querySelector("#sheetName");
     if (sheetName) {
-      new MutationObserver(() => updateDetailIcon(screen)).observe(sheetName, { childList: true, characterData: true, subtree: true });
+      new MutationObserver(() => updateDetailIcon(screen))
+        .observe(sheetName, { childList: true, characterData: true, subtree: true });
     }
   }
 
