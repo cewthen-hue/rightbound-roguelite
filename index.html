@@ -19,7 +19,7 @@
   <link rel="stylesheet" href="styles/menu.css?v=0.3.0" />
   <link rel="stylesheet" href="styles/app.css?v=0.4.0" />
   <link rel="stylesheet" href="styles/fixes.css?v=0.4.3" />
-  <link rel="stylesheet" href="styles/inventory.css?v=0.5.1" />
+  <link rel="stylesheet" href="styles/inventory.css?v=0.6.0" />
 </head>
 <body>
   <div id="bootScreen" class="boot-screen" aria-live="polite">
@@ -40,30 +40,15 @@
       <canvas id="game"></canvas>
       <div class="game-vignette" aria-hidden="true"></div>
       <div class="game-corners" aria-hidden="true"></div>
-
       <div id="hud" class="combat-hud">
         <div class="hud-main">
-          <div class="panel">
-            <div class="label-line"><span>VIE</span><span id="hpText">100 / 100</span></div>
-            <div class="bar"><div class="fill" id="hpFill"></div></div>
-          </div>
-          <div class="panel">
-            <div class="label-line"><span>XP — NIV. <span id="levelText">1</span></span><span id="xpText">0 / 30</span></div>
-            <div class="bar"><div class="fill" id="xpFill"></div></div>
-          </div>
+          <div class="panel"><div class="label-line"><span>VIE</span><span id="hpText">100 / 100</span></div><div class="bar"><div class="fill" id="hpFill"></div></div></div>
+          <div class="panel"><div class="label-line"><span>XP — NIV. <span id="levelText">1</span></span><span id="xpText">0 / 30</span></div><div class="bar"><div class="fill" id="xpFill"></div></div></div>
         </div>
-
         <div class="hud-mini">
-          <div class="panel stat" id="damageText">⚔ 12</div>
-          <div class="panel stat" id="armorText">🛡 0</div>
-          <div class="panel stat" id="coinsText">◉ 0</div>
-          <div class="panel stat" id="distanceText">0 %</div>
+          <div class="panel stat" id="damageText">⚔ 12</div><div class="panel stat" id="armorText">🛡 0</div><div class="panel stat" id="coinsText">◉ 0</div><div class="panel stat" id="distanceText">0 %</div>
         </div>
-
-        <div class="panel" id="bossHud">
-          <div class="label-line"><span>GARDIEN DU SECTEUR</span><span id="bossText">0 / 0</span></div>
-          <div class="bar"><div class="fill" id="bossFill"></div></div>
-        </div>
+        <div class="panel" id="bossHud"><div class="label-line"><span>GARDIEN DU SECTEUR</span><span id="bossText">0 / 0</span></div><div class="bar"><div class="fill" id="bossFill"></div></div></div>
       </div>
     </section>
 
@@ -71,59 +56,30 @@
       <div>
         <div class="section-label">OBJETS</div>
         <div class="inventory-row">
-          <button class="slot" id="potionButton" aria-label="Utiliser une potion">
-            <span class="slot-count" id="potionCount">2</span>
-            <span class="slot-icon">✚</span>
-            <span class="slot-name">Potion</span>
-          </button>
+          <button class="slot" id="potionButton" aria-label="Utiliser une potion"><span class="slot-count" id="potionCount">2</span><span class="slot-icon">✚</span><span class="slot-name">Potion</span></button>
           <button class="slot empty" disabled><span class="slot-icon">＋</span><span class="slot-name">Libre</span></button>
           <button class="slot empty" disabled><span class="slot-icon">＋</span><span class="slot-name">Libre</span></button>
           <button class="slot empty" disabled><span class="slot-icon">◆</span><span class="slot-name">Verrou</span></button>
           <button class="slot empty" disabled><span class="slot-icon">◆</span><span class="slot-name">Verrou</span></button>
         </div>
       </div>
-
       <div class="actions">
-        <button class="action-button jump-button" id="jumpButton" aria-label="Sauter">
-          <span class="action-icon">↟</span>
-          <span class="action-name">SAUT</span>
-          <span class="action-subtitle">Esquive</span>
-          <span class="cooldown" id="jumpCooldown">0</span>
-        </button>
-
+        <button class="action-button jump-button" id="jumpButton" aria-label="Sauter"><span class="action-icon">↟</span><span class="action-name">SAUT</span><span class="action-subtitle">Esquive</span><span class="cooldown" id="jumpCooldown">0</span></button>
         <div class="spell-grid">
-          <button class="action-button spell-button" id="spell1Button" aria-label="Frappe lourde">
-            <span class="action-icon">✹</span>
-            <span class="action-name">Frappe</span>
-            <span class="action-subtitle">Dégâts</span>
-            <span class="cooldown" id="spell1Cooldown">0</span>
-          </button>
-          <button class="action-button spell-button" id="spell2Button" aria-label="Soin d'urgence">
-            <span class="action-icon">✚</span>
-            <span class="action-name">Soin</span>
-            <span class="action-subtitle">Récupère PV</span>
-            <span class="cooldown" id="spell2Cooldown">0</span>
-          </button>
-          <button class="action-button spell-button" id="spell3Button" aria-label="Onde paralysante">
-            <span class="action-icon">ϟ</span>
-            <span class="action-name">Onde</span>
-            <span class="action-subtitle">Étourdit</span>
-            <span class="cooldown" id="spell3Cooldown">0</span>
-          </button>
+          <button class="action-button spell-button" id="spell1Button" aria-label="Frappe lourde"><span class="action-icon">✹</span><span class="action-name">Frappe</span><span class="action-subtitle">Dégâts</span><span class="cooldown" id="spell1Cooldown">0</span></button>
+          <button class="action-button spell-button" id="spell2Button" aria-label="Soin d'urgence"><span class="action-icon">✚</span><span class="action-name">Soin</span><span class="action-subtitle">Récupère PV</span><span class="cooldown" id="spell2Cooldown">0</span></button>
+          <button class="action-button spell-button" id="spell3Button" aria-label="Onde paralysante"><span class="action-icon">ϟ</span><span class="action-name">Onde</span><span class="action-subtitle">Étourdit</span><span class="cooldown" id="spell3Cooldown">0</span></button>
         </div>
       </div>
     </section>
   </main>
 
-  <div id="overlay" class="game-overlay">
-    <div class="modal" id="modalContent"></div>
-  </div>
-
+  <div id="overlay" class="game-overlay"><div class="modal" id="modalContent"></div></div>
   <div id="gameToast" class="game-toast" role="status" aria-live="polite"></div>
 
   <script defer src="src/game.js?v=0.2.1"></script>
   <script defer src="src/meta-menu.js?v=0.4.0"></script>
-  <script defer src="src/inventory.js?v=0.5.1"></script>
+  <script defer src="src/inventory.js?v=0.6.0"></script>
   <script defer src="src/health-sync.js?v=0.4.3"></script>
   <script defer src="src/app-shell.js?v=0.4.0"></script>
 </body>
