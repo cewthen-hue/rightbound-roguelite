@@ -3,25 +3,48 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
-  <meta name="theme-color" content="#090d16" />
+  <meta name="theme-color" content="#09111f" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Rightbound" />
   <meta name="mobile-web-app-capable" content="yes" />
-  <title>Rightbound Roguelite — Portrait Prototype</title>
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="screen-orientation" content="portrait" />
+  <title>Rightbound</title>
+
+  <link rel="manifest" href="manifest.webmanifest?v=0.4.0" />
+  <link rel="icon" type="image/svg+xml" href="assets/icons/icon.svg?v=0.4.0" />
+  <link rel="apple-touch-icon" href="assets/icons/icon.svg?v=0.4.0" />
   <link rel="stylesheet" href="styles/game.css?v=0.2.1" />
   <link rel="stylesheet" href="styles/menu.css?v=0.3.0" />
+  <link rel="stylesheet" href="styles/app.css?v=0.4.0" />
 </head>
 <body>
-  <main id="app">
-    <section id="gameZone" aria-label="Zone de jeu">
-      <canvas id="game"></canvas>
+  <div id="bootScreen" class="boot-screen" aria-live="polite">
+    <div class="boot-mark" aria-hidden="true"><span class="boot-arrow"></span></div>
+    <div class="boot-title">RIGHTBOUND</div>
+    <div class="boot-subtitle">Préparation de l’expédition</div>
+    <div class="boot-loader"><span></span></div>
+  </div>
 
-      <div id="hud">
+  <div id="orientationNotice" class="orientation-notice" role="dialog" aria-modal="true">
+    <div class="orientation-phone" aria-hidden="true"></div>
+    <strong>Tourne ton téléphone</strong>
+    <span>Rightbound est conçu pour être joué en portrait.</span>
+  </div>
+
+  <main id="app" class="game-shell">
+    <section id="gameZone" class="game-viewport" aria-label="Zone de jeu">
+      <canvas id="game"></canvas>
+      <div class="game-vignette" aria-hidden="true"></div>
+      <div class="game-corners" aria-hidden="true"></div>
+
+      <div id="hud" class="combat-hud">
         <div class="hud-main">
           <div class="panel">
             <div class="label-line"><span>VIE</span><span id="hpText">100 / 100</span></div>
             <div class="bar"><div class="fill" id="hpFill"></div></div>
           </div>
-
           <div class="panel">
             <div class="label-line"><span>XP — NIV. <span id="levelText">1</span></span><span id="xpText">0 / 30</span></div>
             <div class="bar"><div class="fill" id="xpFill"></div></div>
@@ -42,47 +65,45 @@
       </div>
     </section>
 
-    <section id="controls" aria-label="Contrôles">
+    <section id="controls" class="control-deck" aria-label="Contrôles">
       <div>
-        <div class="section-label">Inventaire rapide</div>
+        <div class="section-label">OBJETS</div>
         <div class="inventory-row">
           <button class="slot" id="potionButton" aria-label="Utiliser une potion">
             <span class="slot-count" id="potionCount">2</span>
-            <span class="slot-icon">🧪</span>
+            <span class="slot-icon">✚</span>
             <span class="slot-name">Potion</span>
           </button>
           <button class="slot empty" disabled><span class="slot-icon">＋</span><span class="slot-name">Libre</span></button>
           <button class="slot empty" disabled><span class="slot-icon">＋</span><span class="slot-name">Libre</span></button>
-          <button class="slot empty" disabled><span class="slot-icon">🔒</span><span class="slot-name">Verrou</span></button>
-          <button class="slot empty" disabled><span class="slot-icon">🔒</span><span class="slot-name">Verrou</span></button>
+          <button class="slot empty" disabled><span class="slot-icon">◆</span><span class="slot-name">Verrou</span></button>
+          <button class="slot empty" disabled><span class="slot-icon">◆</span><span class="slot-name">Verrou</span></button>
         </div>
       </div>
 
       <div class="actions">
         <button class="action-button jump-button" id="jumpButton" aria-label="Sauter">
-          <span class="action-icon">⬆️</span>
+          <span class="action-icon">↟</span>
           <span class="action-name">SAUT</span>
-          <span class="action-subtitle">Esquive brève</span>
+          <span class="action-subtitle">Esquive</span>
           <span class="cooldown" id="jumpCooldown">0</span>
         </button>
 
         <div class="spell-grid">
           <button class="action-button spell-button" id="spell1Button" aria-label="Frappe lourde">
-            <span class="action-icon">🔥</span>
+            <span class="action-icon">✹</span>
             <span class="action-name">Frappe</span>
-            <span class="action-subtitle">Gros dégâts</span>
+            <span class="action-subtitle">Dégâts</span>
             <span class="cooldown" id="spell1Cooldown">0</span>
           </button>
-
           <button class="action-button spell-button" id="spell2Button" aria-label="Soin d'urgence">
-            <span class="action-icon">💚</span>
+            <span class="action-icon">✚</span>
             <span class="action-name">Soin</span>
             <span class="action-subtitle">Récupère PV</span>
             <span class="cooldown" id="spell2Cooldown">0</span>
           </button>
-
           <button class="action-button spell-button" id="spell3Button" aria-label="Onde paralysante">
-            <span class="action-icon">⚡</span>
+            <span class="action-icon">ϟ</span>
             <span class="action-name">Onde</span>
             <span class="action-subtitle">Étourdit</span>
             <span class="cooldown" id="spell3Cooldown">0</span>
@@ -92,10 +113,14 @@
     </section>
   </main>
 
-  <div id="overlay">
+  <div id="overlay" class="game-overlay">
     <div class="modal" id="modalContent"></div>
   </div>
+
+  <div id="gameToast" class="game-toast" role="status" aria-live="polite"></div>
+
   <script defer src="src/game.js?v=0.2.1"></script>
-  <script defer src="src/meta-menu.js?v=0.3.0"></script>
+  <script defer src="src/meta-menu.js?v=0.4.0"></script>
+  <script defer src="src/app-shell.js?v=0.4.0"></script>
 </body>
 </html>
