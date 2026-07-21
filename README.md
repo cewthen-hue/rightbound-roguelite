@@ -1,6 +1,14 @@
 # Rightbound Roguelite
 
-Prototype mobile en portrait d’un roguelite à défilement horizontal automatique.
+Roguelite mobile en portrait à défilement horizontal automatique, développé en HTML5 Canvas et JavaScript.
+
+## Jouer
+
+Version publiée avec GitHub Pages :
+
+`https://cewthen-hue.github.io/rightbound-roguelite/`
+
+Le jeu est conçu pour être lancé en portrait. Sur iPhone, utiliser **Safari → Partager → Sur l’écran d’accueil** afin de l’ouvrir comme une application, sans l’interface habituelle du navigateur.
 
 ## Boucle actuelle
 
@@ -11,31 +19,50 @@ Prototype mobile en portrait d’un roguelite à défilement horizontal automati
 - Les éliminations donnent de l’XP et des pièces.
 - Chaque niveau gagné propose trois améliorations roguelike.
 - Le secteur se termine par un boss.
+- Le menu principal affiche un plateau de progression avec le niveau 1 accessible.
 
-## Lancer le jeu
+## Expérience mobile
 
-Ouvrir `index.html` dans un visualiseur HTML compatible JavaScript ou servir le dossier avec un serveur statique.
-
-Le projet est pensé en priorité pour un téléphone en mode portrait.
+- Interface plein écran pensée comme une scène de jeu et non comme un site.
+- Écran de lancement.
+- Orientation portrait contrôlée.
+- HUD et commandes tactiles fixes.
+- Installation PWA.
+- Cache local pour un lancement plus rapide et une base de fonctionnement hors ligne.
+- Mode plein écran lorsque le navigateur le permet.
+- Maintien de l’écran actif pendant une partie sur les appareils compatibles.
 
 ## Structure
 
 ```text
 index.html
-styles/game.css
-src/game.js
-assets/images/
-assets/audio/
-docs/GAME_DESIGN.md
+manifest.webmanifest
+service-worker.js
+styles/
+  game.css
+  menu.css
+  app.css
+src/
+  game.js
+  meta-menu.js
+  app-shell.js
+assets/
+  icons/
+  images/
+  audio/
+docs/
+  GAME_DESIGN.md
+  ROADMAP.md
 CHANGELOG.md
 ```
 
-## Workflow du projet
+## Workflow
 
 1. Les décisions et demandes sont formulées dans ChatGPT.
-2. Le code officiel est modifié et versionné sur GitHub.
-3. Le jeu est testé sur téléphone avec un visualiseur HTML ou une URL statique.
-4. Les bugs sont remontés avec une capture et le message de console.
+2. La version officielle est modifiée et versionnée sur GitHub.
+3. GitHub Pages republie automatiquement la branche `main`.
+4. Les tests sont effectués sur téléphone depuis l’URL ou l’application installée.
+5. Les bugs sont remontés avec une capture et, si possible, le message de console.
 
 ## Règle de version
 
