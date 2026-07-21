@@ -21,6 +21,9 @@
 - [x] Écran de lancement.
 - [x] Orientation portrait contrôlée.
 - [x] PWA installable et cache local.
+- [x] Écran d’inventaire tactile.
+- [x] Emplacements d’équipement typés autour du personnage.
+- [x] Sac, potions rapides et glisser-déposer mobile.
 - [ ] Plusieurs types d’ennemis.
 - [ ] Obstacles nécessitant le saut.
 - [ ] Télégraphes d’attaque ennemis.
@@ -31,12 +34,15 @@
 ## Phase 3 — Identité graphique et progression permanente
 
 - [ ] Sprites animés du héros et des ennemis.
+- [ ] Avatar d’inventaire définitif et affichage visuel des équipements portés.
 - [ ] Arrière-plans illustrés par biome.
 - [ ] Icônes définitives et animations d’interface.
-- [ ] Équipements et raretés.
+- [x] Première structure d’équipements et de raretés.
+- [ ] Effets réels de l’équipement appliqués au niveau.
 - [ ] Amélioration des équipements.
 - [ ] Ressources permanentes.
 - [ ] Déblocage et amélioration des compétences.
+- [ ] Synchronisation des potions équipées avec le gameplay.
 - [ ] Sauvegarde locale complète.
 - [ ] Équilibrage de la durée et de la difficulté.
 
