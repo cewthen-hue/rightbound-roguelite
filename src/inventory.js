@@ -6,6 +6,8 @@
   const STORAGE_KEY = "rightbound-inventory-v3";
   const BAG_SLOTS = 24;
   const QUICK_SLOTS = 3;
+  const DESIGN_WIDTH = 390;
+  const DESIGN_HEIGHT = 844;
 
   const ITEMS = {
     "helmet-scout": { name: "Casque du pisteur", type: "helmet", rarity: "rare", glyph: "⌒", level: 1, armor: 3, description: "+3 armure" },
@@ -52,8 +54,8 @@
 
   const RARITY_LABELS = { common: "Commun", uncommon: "Inhabituel", rare: "Rare", epic: "Épique" };
   let placements = loadPlacements();
-  let selectedItemId = null;
-  let sheetStartY = 0;
+  let selectedItemId = "axe-iron";
+  let resizeHandler = null;
 
   const bagSlotIds = () => Array.from({ length: BAG_SLOTS }, (_, index) => `bag-${index}`);
 
@@ -100,92 +102,112 @@
   function renderInventory() {
     overlay.classList.add("menu-overlay");
     overlay.classList.remove("dialog-overlay", "hidden");
-    modalContent.className = "modal menu-modal";
-    selectedItemId = null;
+    modalContent.className = "modal menu-modal inventory-modal";
+    selectedItemId = ITEMS[selectedItemId] ? selectedItemId : "axe-iron";
 
     modalContent.innerHTML = `
-      <section class="inventory-screen" aria-label="Inventaire et équipement">
-        <header class="inventory-header">
-          <button class="inventory-back" id="inventoryBack" aria-label="Retour à la carte">‹</button>
-          <div class="inventory-title"><h1>INVENTAIRE</h1></div>
-          <div class="inventory-power" id="inventoryPower">0 PUI.</div>
-        </header>
-
-        <section class="character-loadout" aria-label="Équipement du personnage">
-          ${slotMarkup("equip-weapon", "weapon", "Arme", "equipment-slot weapon")}
-          ${slotMarkup("equip-helmet", "helmet", "Casque", "equipment-slot helmet")}
-          ${slotMarkup("equip-chest", "chest", "Armure", "equipment-slot chest")}
-          ${slotMarkup("equip-jewel", "jewel", "Bijou", "equipment-slot jewel")}
-          ${slotMarkup("equip-boots", "boots", "Bottes", "equipment-slot boots")}
-          ${slotMarkup("equip-relic", "relic", "Relique", "equipment-slot relic")}
-          <div class="inventory-avatar" aria-label="Avatar provisoire du personnage">
-            <span class="avatar-head"></span><span class="avatar-neck"></span><span class="avatar-torso"></span>
-            <span class="avatar-arm left"></span><span class="avatar-arm right"></span>
-            <span class="avatar-hand left"></span><span class="avatar-hand right"></span>
-            <span class="avatar-leg left"></span><span class="avatar-leg right"></span>
-            <span class="avatar-foot left"></span><span class="avatar-foot right"></span>
-          </div>
-        </section>
-
-        <section class="loadout-summary" aria-label="Statistiques">
-          <div class="loadout-stat"><span class="loadout-stat-icon">⚔</span><strong id="inventoryDamage">12</strong><span>Dég.</span></div>
-          <div class="loadout-stat"><span class="loadout-stat-icon">🛡</span><strong id="inventoryArmor">0</strong><span>Arm.</span></div>
-          <div class="loadout-stat"><span class="loadout-stat-icon">♥</span><strong id="inventoryHp">100</strong><span>PV</span></div>
-        </section>
-
-        <section class="inventory-storage" aria-label="Sac à dos">
-          <div class="storage-heading">
-            <strong>SAC À DOS</strong>
-            <div class="storage-heading-actions">
-              <button type="button" aria-label="Trier">↕</button>
-              <button type="button" aria-label="Filtrer">⌁</button>
-              <span id="bagCapacity">0 / ${BAG_SLOTS}</span>
+      <div class="inventory-viewport">
+        <section class="inventory-screen" aria-label="Inventaire et équipement">
+          <header class="inventory-header">
+            <button class="inventory-back" id="inventoryBack" aria-label="Retour à la carte">←</button>
+            <div class="inventory-title">
+              <span>PRÉPARATION DU HÉROS</span>
+              <h1>INVENTAIRE</h1>
             </div>
-          </div>
-          <div class="bag-grid">${bagSlotIds().map((slotId) => slotMarkup(slotId, "any", "")).join("")}</div>
+            <div class="inventory-power" aria-label="Puissance"><span>⚡</span><strong id="inventoryPower">0</strong></div>
+          </header>
+
+          <nav class="inventory-tabs" aria-label="Sections de préparation">
+            <button class="active" type="button">Inventaire</button>
+            <button type="button" disabled>Compétences</button>
+            <button type="button" id="inventoryTopMapButton">Niveaux</button>
+            <button type="button" id="inventoryTopHelpButton">Aide</button>
+          </nav>
+
+          <section class="character-loadout" aria-label="Équipement du personnage">
+            ${slotMarkup("equip-weapon", "weapon", "ARME", "equipment-slot weapon")}
+            ${slotMarkup("equip-helmet", "helmet", "CASQUE", "equipment-slot helmet")}
+            ${slotMarkup("equip-chest", "chest", "PLASTRON", "equipment-slot chest")}
+            ${slotMarkup("equip-jewel", "jewel", "ANNEAU", "equipment-slot jewel")}
+            ${slotMarkup("equip-boots", "boots", "BOUCLIER", "equipment-slot boots")}
+            ${slotMarkup("equip-relic", "relic", "AMULETTE", "equipment-slot relic")}
+            <div class="inventory-avatar" aria-label="Avatar provisoire du personnage">
+              <span class="avatar-head"></span><span class="avatar-neck"></span><span class="avatar-torso"></span>
+              <span class="avatar-arm left"></span><span class="avatar-arm right"></span>
+              <span class="avatar-hand left"></span><span class="avatar-hand right"></span>
+              <span class="avatar-leg left"></span><span class="avatar-leg right"></span>
+              <span class="avatar-foot left"></span><span class="avatar-foot right"></span>
+            </div>
+            <div class="inventory-rune" aria-hidden="true"><span>✦ ᚱ ᛟ ᚨ ᛉ ✦</span></div>
+          </section>
+
+          <section class="loadout-summary" aria-label="Statistiques">
+            <div class="loadout-stat damage"><span class="loadout-stat-icon">⚔</span><strong id="inventoryDamage">12</strong><span>DÉGÂTS</span></div>
+            <div class="loadout-stat armor"><span class="loadout-stat-icon">⬡</span><strong id="inventoryArmor">0</strong><span>ARMURE</span></div>
+            <div class="loadout-stat hp"><span class="loadout-stat-icon">♥</span><strong id="inventoryHp">100</strong><span>VIE</span></div>
+          </section>
+
+          <section class="inventory-storage" aria-label="Sac à dos">
+            <div class="storage-heading"><strong>SAC À DOS</strong><span id="bagCapacity">0 / ${BAG_SLOTS}</span></div>
+            <div class="bag-window"><div class="bag-grid">${bagSlotIds().map((slotId) => slotMarkup(slotId, "any", "")).join("")}</div></div>
+          </section>
+
+          <section class="quickbar" aria-label="Potions rapides">
+            <strong>POTIONS</strong>
+            <div class="quickbar-slots">${Array.from({ length: QUICK_SLOTS }, (_, index) => slotMarkup(`quick-${index}`, "consumable", "")).join("")}</div>
+          </section>
+
+          <section class="selected-item" aria-label="Objet sélectionné">
+            <div class="selected-item-icon" id="selectedItemIcon">⚒</div>
+            <div class="selected-item-copy"><strong id="selectedItemName">Hache lourde</strong><span id="selectedItemDescription">+10 dégâts</span></div>
+            <span class="selected-item-rarity" id="selectedItemRarity">Inhabituel</span>
+          </section>
+
+          <nav class="inventory-dock" aria-label="Navigation principale">
+            <button class="dock-button active"><span>▣</span><span>Inventaire</span></button>
+            <button class="dock-button" disabled><span>▤</span><span>Compétences</span></button>
+            <button class="dock-button" id="inventoryMapButton"><span>⌁</span><span>Niveaux</span></button>
+            <button class="dock-button" id="inventoryHelpButton"><span>?</span><span>Aide</span></button>
+          </nav>
         </section>
-
-        <section class="quickbar" aria-label="Raccourcis de consommables">
-          <span class="quickbar-label">Raccourcis</span>
-          <div class="quickbar-slots">
-            ${Array.from({ length: QUICK_SLOTS }, (_, index) => slotMarkup(`quick-${index}`, "consumable", "")).join("")}
-          </div>
-        </section>
-
-        <nav class="inventory-dock" aria-label="Navigation principale">
-          <button class="dock-button active"><span>▣</span><span>Inventaire</span></button>
-          <button class="dock-button" disabled><span>✦</span><span>Compétences</span></button>
-          <button class="dock-button" id="inventoryMapButton"><span>⌁</span><span>Niveaux</span></button>
-          <button class="dock-button" id="inventoryHelpButton"><span>?</span><span>Aide</span></button>
-        </nav>
-
-        <div class="inventory-sheet-backdrop" id="inventorySheetBackdrop"></div>
-        <aside class="inventory-sheet" id="inventorySheet" aria-hidden="true">
-          <div class="inventory-sheet-handle" id="inventorySheetHandle"></div>
-          <div class="inventory-sheet-head">
-            <div class="inventory-sheet-title"><strong id="sheetName"></strong><span id="sheetDescription"></span></div>
-            <span class="inventory-sheet-rarity" id="sheetRarity"></span>
-          </div>
-          <div class="inventory-sheet-meta"><span id="sheetLevel"></span><span id="sheetPosition"></span></div>
-          <div class="inventory-sheet-actions">
-            <button class="inventory-sheet-primary" id="sheetPrimaryAction"></button>
-            <button class="inventory-sheet-secondary" id="sheetSecondaryAction"></button>
-          </div>
-        </aside>
-      </section>`;
+      </div>`;
 
     document.getElementById("inventoryBack")?.addEventListener("click", returnToMap);
     document.getElementById("inventoryMapButton")?.addEventListener("click", returnToMap);
+    document.getElementById("inventoryTopMapButton")?.addEventListener("click", returnToMap);
     document.getElementById("inventoryHelpButton")?.addEventListener("click", showHelp);
-    document.getElementById("inventorySheetBackdrop")?.addEventListener("click", closeSheet);
-    wireSheetGestures();
+    document.getElementById("inventoryTopHelpButton")?.addEventListener("click", showHelp);
+
+    installInventoryFit();
     renderItems();
+    renderSelectedItem();
+  }
+
+  function installInventoryFit() {
+    if (resizeHandler) {
+      window.removeEventListener("resize", resizeHandler);
+      window.visualViewport?.removeEventListener("resize", resizeHandler);
+    }
+
+    resizeHandler = () => {
+      const screen = modalContent.querySelector(".inventory-screen");
+      if (!screen) return;
+      const viewport = window.visualViewport;
+      const width = viewport?.width || window.innerWidth;
+      const height = viewport?.height || window.innerHeight;
+      const scale = Math.min(width / DESIGN_WIDTH, height / DESIGN_HEIGHT);
+      screen.style.setProperty("--inventory-scale", String(Math.max(0.72, scale)));
+    };
+
+    resizeHandler();
+    window.addEventListener("resize", resizeHandler, { passive: true });
+    window.visualViewport?.addEventListener("resize", resizeHandler, { passive: true });
   }
 
   function returnToMap() { window.RightboundUI?.renderMainMenu?.(); }
 
   function showHelp() {
-    window.RightboundUI?.showToast?.("Glisse un objet vers une case compatible. Touche-le pour ouvrir sa fiche.", 3200);
+    window.RightboundUI?.showToast?.("Glisse un objet vers une case compatible. Touche un objet pour afficher sa fiche.", 3200);
   }
 
   function createItemElement(itemId) {
@@ -208,8 +230,10 @@
       if (slot && ITEMS[itemId]) slot.appendChild(createItemElement(itemId));
     });
     const bagCount = Object.values(placements).filter((slotId) => slotId.startsWith("bag-")).length;
-    document.getElementById("bagCapacity").textContent = `${bagCount} / ${BAG_SLOTS}`;
+    const capacity = document.getElementById("bagCapacity");
+    if (capacity) capacity.textContent = `${bagCount} / ${BAG_SLOTS}`;
     updateStats();
+    modalContent.querySelectorAll(".inventory-item").forEach((node) => node.classList.toggle("selected", node.dataset.itemId === selectedItemId));
   }
 
   function updateStats() {
@@ -229,73 +253,25 @@
     document.getElementById("inventoryDamage").textContent = totals.damage;
     document.getElementById("inventoryArmor").textContent = totals.armor;
     document.getElementById("inventoryHp").textContent = totals.hp;
-    document.getElementById("inventoryPower").textContent = `${score} PUI.`;
+    document.getElementById("inventoryPower").textContent = score;
   }
 
   function openSheet(itemId) {
     selectedItemId = itemId;
-    const item = ITEMS[itemId];
-    const slotId = placements[itemId];
-    const equipped = slotId.startsWith("equip-");
-    const quick = slotId.startsWith("quick-");
-
-    document.getElementById("sheetName").textContent = item.name;
-    document.getElementById("sheetDescription").textContent = item.description;
-    document.getElementById("sheetRarity").textContent = RARITY_LABELS[item.rarity];
-    document.getElementById("sheetLevel").textContent = `Niveau ${item.level}`;
-    document.getElementById("sheetPosition").textContent = equipped ? "Équipé" : quick ? "Raccourci" : "Dans le sac";
-
-    const primary = document.getElementById("sheetPrimaryAction");
-    const secondary = document.getElementById("sheetSecondaryAction");
-    primary.textContent = item.type === "consumable" ? "UTILISER" : equipped ? "RETIRER" : "ÉQUIPER";
-    secondary.textContent = item.type === "consumable" ? (quick ? "RETIRER" : "RACCOURCI") : "FERMER";
-
-    primary.onclick = () => item.type === "consumable" ? useConsumable(itemId) : toggleEquipment(itemId);
-    secondary.onclick = () => item.type === "consumable" ? toggleQuickSlot(itemId) : closeSheet();
-
-    document.getElementById("inventorySheetBackdrop").classList.add("visible");
-    const sheet = document.getElementById("inventorySheet");
-    sheet.classList.add("visible");
-    sheet.setAttribute("aria-hidden", "false");
+    renderSelectedItem();
+    modalContent.querySelectorAll(".inventory-item").forEach((node) => node.classList.toggle("selected", node.dataset.itemId === selectedItemId));
   }
 
-  function closeSheet() {
-    document.getElementById("inventorySheetBackdrop")?.classList.remove("visible");
-    const sheet = document.getElementById("inventorySheet");
-    sheet?.classList.remove("visible");
-    sheet?.setAttribute("aria-hidden", "true");
-    selectedItemId = null;
+  function renderSelectedItem() {
+    const item = ITEMS[selectedItemId] || ITEMS["axe-iron"];
+    if (!item) return;
+    document.getElementById("selectedItemIcon").textContent = item.glyph;
+    document.getElementById("selectedItemName").textContent = item.name;
+    document.getElementById("selectedItemDescription").textContent = item.description;
+    document.getElementById("selectedItemRarity").textContent = RARITY_LABELS[item.rarity];
+    document.querySelector(".selected-item")?.setAttribute("data-rarity", item.rarity);
   }
 
-  function toggleEquipment(itemId) {
-    const item = ITEMS[itemId];
-    const current = placements[itemId];
-    const equipSlotId = Object.keys(EQUIPMENT_TYPES).find((slotId) => EQUIPMENT_TYPES[slotId] === item.type);
-    if (!equipSlotId) return;
-    const target = modalContent.querySelector(`[data-slot="${current.startsWith("equip-") ? firstFreeBag() : equipSlotId}"]`);
-    if (target) moveItem(itemId, target);
-    closeSheet();
-  }
-
-  function toggleQuickSlot(itemId) {
-    const current = placements[itemId];
-    const targetId = current.startsWith("quick-") ? firstFreeBag() : firstFreeQuickSlot();
-    if (!targetId) {
-      window.RightboundUI?.showToast?.("Aucun emplacement libre.");
-      return;
-    }
-    const target = modalContent.querySelector(`[data-slot="${targetId}"]`);
-    if (target) moveItem(itemId, target);
-    closeSheet();
-  }
-
-  function useConsumable(itemId) {
-    window.RightboundUI?.showToast?.(`${ITEMS[itemId].name} utilisée.`);
-    closeSheet();
-  }
-
-  function firstFreeBag() { return bagSlotIds().find((slotId) => !itemAtSlot(slotId)); }
-  function firstFreeQuickSlot() { return Array.from({ length: QUICK_SLOTS }, (_, index) => `quick-${index}`).find((slotId) => !itemAtSlot(slotId)); }
   function itemAtSlot(slotId) { return Object.keys(placements).find((itemId) => placements[itemId] === slotId) || null; }
 
   function slotAccepts(slot, itemType) {
@@ -399,14 +375,6 @@
     window.addEventListener("pointermove", onMove, { passive: false });
     window.addEventListener("pointerup", finish, { once: true });
     window.addEventListener("pointercancel", cancel, { once: true });
-  }
-
-  function wireSheetGestures() {
-    const handle = document.getElementById("inventorySheetHandle");
-    handle?.addEventListener("pointerdown", (event) => { sheetStartY = event.clientY; });
-    handle?.addEventListener("pointerup", (event) => {
-      if (event.clientY - sheetStartY > 55) closeSheet();
-    });
   }
 
   function wireMenuInventoryButton() {
