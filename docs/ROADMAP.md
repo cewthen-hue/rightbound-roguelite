@@ -12,10 +12,15 @@
 - [x] Barre de vie flottante du personnage.
 - [x] Correction du gel après élimination.
 
-## Phase 2 — Vertical slice
+## Phase 2 — Squelette de jeu mobile
 
-- [x] Écran d’accueil avec menu principal.
+- [x] Menu principal plein écran.
 - [x] Première carte de niveaux avec niveaux verrouillés.
+- [x] Interface visuelle distincte d’un site web.
+- [x] HUD et commandes tactiles retravaillés.
+- [x] Écran de lancement.
+- [x] Orientation portrait contrôlée.
+- [x] PWA installable et cache local.
 - [ ] Plusieurs types d’ennemis.
 - [ ] Obstacles nécessitant le saut.
 - [ ] Télégraphes d’attaque ennemis.
@@ -23,8 +28,11 @@
 - [ ] Premier biome cohérent visuellement.
 - [ ] Sons et retours haptiques.
 
-## Phase 3 — Progression permanente
+## Phase 3 — Identité graphique et progression permanente
 
+- [ ] Sprites animés du héros et des ennemis.
+- [ ] Arrière-plans illustrés par biome.
+- [ ] Icônes définitives et animations d’interface.
 - [ ] Équipements et raretés.
 - [ ] Amélioration des équipements.
 - [ ] Ressources permanentes.
@@ -36,7 +44,7 @@
 
 - [ ] Plusieurs biomes et boss.
 - [ ] Tutoriel court.
-- [ ] Optimisation mobile.
-- [ ] Installation en PWA.
+- [ ] Optimisation mobile avancée.
 - [ ] Tests sur plusieurs téléphones.
+- [ ] Emballage iOS et Android avec Capacitor si nécessaire.
 - [ ] Préparation d’une version publiable.
