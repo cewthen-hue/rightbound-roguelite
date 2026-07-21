@@ -2,6 +2,23 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.4.0] — 2026-07-21
+
+### Refonte mobile
+
+- Remplacement de l’apparence « site web » par un squelette visuel de jeu plein écran.
+- Nouveau plateau des niveaux présenté comme une scène, avec reliefs, chemin et nœuds de progression.
+- Nouvelle bannière de niveau et navigation inférieure façon jeu mobile.
+- HUD de combat, inventaire et boutons tactiles retravaillés.
+- Écran de lancement Rightbound et transition de chargement.
+- Message dédié lorsque le téléphone est utilisé en paysage.
+- Boutons d’installation et de plein écran dans le menu.
+- Ajout du manifeste PWA et du service worker.
+- Ajout des icônes principale et adaptative.
+- Cache des ressources pour accélérer les lancements et préparer le fonctionnement hors ligne.
+- Maintien de l’écran actif pendant une partie sur les appareils compatibles.
+- Conservation du moteur de combat, de la progression, des améliorations et des sauvegardes existantes.
+
 ## [0.3.0] — 2026-07-21
 
 ### Ajouté
