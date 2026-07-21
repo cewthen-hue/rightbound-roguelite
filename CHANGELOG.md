@@ -2,6 +2,19 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.3.0] — 2026-07-21
+
+### Ajouté
+
+- Nouveau menu principal mobile avec une carte de progression.
+- Six emplacements de niveaux affichés sur le plateau.
+- Niveau 1 accessible et niveaux 2 à 6 verrouillés.
+- Fiche détaillée du niveau 1 avec ennemis, boss et durée estimée.
+- Bouton de retour à la carte après une victoire ou une défaite.
+- Sauvegarde locale de l’état « niveau 1 terminé ».
+- Barre de vie flottante au-dessus du personnage pendant le niveau.
+- Animation de la barre de vie pendant le saut.
+
 ## [0.2.1] — 2026-07-21
 
 ### Corrigé
