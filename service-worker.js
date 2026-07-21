@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "rightbound-shell-v0.6.0";
+const CACHE_NAME = "rightbound-shell-v0.8.0";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -10,9 +10,12 @@ const APP_SHELL = [
   "./styles/app.css?v=0.4.0",
   "./styles/fixes.css?v=0.4.3",
   "./styles/inventory.css?v=0.6.0",
+  "./styles/inventory-reference.css?v=0.7.0",
+  "./styles/inventory-tuning.css?v=0.8.0",
   "./src/game.js?v=0.2.1",
   "./src/meta-menu.js?v=0.4.0",
   "./src/inventory.js?v=0.6.0",
+  "./src/inventory-reference.js?v=0.8.0",
   "./src/health-sync.js?v=0.4.3",
   "./src/app-shell.js?v=0.4.0",
   "./assets/icons/icon.svg",
@@ -42,7 +45,7 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
-  event.respondWith(caches.match(request, { ignoreSearch: true }).then((cached) => {
+  event.respondWith(caches.match(request, { ignoreSearch: false }).then((cached) => {
     const network = fetch(request).then((response) => {
       if (response.ok) {
         const copy = response.clone();
