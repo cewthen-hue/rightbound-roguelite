@@ -1,0 +1,140 @@
+/* Mobile fit pass based on the on-device comparison capture */
+.inventory-screen.reference-inventory{
+  box-sizing:border-box;
+  min-height:0;
+  height:100dvh;
+  grid-template-rows:58px 38px 200px 44px 188px 48px 68px 60px;
+  gap:4px;
+  padding:max(6px,env(safe-area-inset-top)) 14px max(3px,env(safe-area-inset-bottom));
+}
+
+.reference-inventory .inventory-header{
+  height:58px;
+  grid-template-columns:34px minmax(0,1fr) 74px;
+  gap:7px;
+}
+.reference-inventory .inventory-back{width:34px;height:40px}
+.reference-inventory .inventory-back:before{font-size:36px}
+.reference-inventory .inventory-eyebrow{font-size:9px;margin-bottom:1px}
+.reference-inventory .inventory-title h1{font-size:29px;white-space:nowrap}
+.reference-inventory .inventory-power{
+  box-sizing:border-box;
+  width:72px;min-width:72px;height:38px;padding:0;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+  line-height:1;overflow:hidden;color:transparent;
+}
+.reference-inventory .inventory-power:before,
+.reference-inventory .inventory-power:after{color:var(--iv-gold);line-height:1}
+.reference-inventory .inventory-power:before{font-size:19px}
+.reference-inventory .inventory-power:after{font-size:18px}
+
+.reference-inventory .inventory-top-tabs{height:38px}
+.reference-inventory .inventory-top-tabs button{height:37px;font-size:13px;padding:0 2px}
+
+.reference-inventory .character-loadout{height:200px}
+.reference-inventory .character-loadout:before{bottom:6px;width:108px;height:31px}
+.reference-inventory .character-loadout:after{bottom:15px;width:98px;font-size:7px;letter-spacing:4px}
+.reference-inventory .equipment-slot{width:52px;height:52px}
+.reference-inventory .equipment-slot:before{top:56px;font-size:8px}
+.reference-inventory .equipment-slot.weapon{left:26px!important;top:42px!important}
+.reference-inventory .equipment-slot.helmet{top:3px!important}
+.reference-inventory .equipment-slot.chest{top:70px!important;transform:translateX(16px)!important}
+.reference-inventory .equipment-slot.jewel{left:26px!important;top:128px!important}
+.reference-inventory .equipment-slot.boots{right:26px!important;top:42px!important}
+.reference-inventory .equipment-slot.relic{right:26px!important;top:128px!important}
+.reference-inventory .equipment-slot .inventory-item{width:48px;height:48px}
+.reference-inventory .inventory-avatar{top:59%;width:53px;height:104px}
+.reference-inventory .avatar-head{left:18px;transform:scale(.92);transform-origin:top left}
+.reference-inventory .avatar-neck,.reference-inventory .avatar-torso,.reference-inventory .avatar-arm,.reference-inventory .avatar-hand,.reference-inventory .avatar-leg,.reference-inventory .avatar-foot{transform:scale(.9);transform-origin:top center}
+
+.reference-inventory .loadout-summary{height:44px;gap:4px}
+.reference-inventory .loadout-stat{column-gap:6px;border-radius:10px}
+.reference-inventory .loadout-stat-icon{font-size:18px}
+.reference-inventory .loadout-stat strong{font-size:21px}
+.reference-inventory .loadout-stat span:last-child{font-size:8px}
+
+.reference-inventory .inventory-storage{
+  height:188px;
+  grid-template-rows:29px 1fr;
+  padding:4px 9px 8px;
+}
+.reference-inventory .storage-heading strong{font-size:13px}
+.reference-inventory .storage-heading span{font-size:11px}
+.reference-inventory .bag-grid{
+  overflow:hidden;
+  grid-template-columns:repeat(6,minmax(0,1fr));
+  grid-template-rows:repeat(3,minmax(0,1fr));
+  gap:6px;
+  min-height:0;
+  height:100%;
+}
+.reference-inventory .bag-grid .inventory-slot{
+  box-sizing:border-box;
+  width:100%;height:100%;min-width:0;min-height:0;
+  aspect-ratio:auto;
+  overflow:visible;
+}
+.reference-inventory .bag-grid .inventory-item{
+  box-sizing:border-box;
+  width:calc(100% - 4px);height:calc(100% - 4px);
+  min-width:0;min-height:0;
+}
+.reference-inventory .bag-grid .item-glyph{font-size:23px}
+.reference-inventory .bag-grid .item-level{font-size:8px}
+
+.reference-inventory .quickbar{
+  box-sizing:border-box;
+  height:48px;
+  grid-template-columns:84px 1fr;
+  padding:3px 10px;
+}
+.reference-inventory .quickbar-label:after{font-size:12px}
+.reference-inventory .quickbar-slots{grid-template-columns:repeat(3,48px);gap:6px}
+.reference-inventory .quickbar .inventory-slot{box-sizing:border-box;width:48px;height:40px}
+.reference-inventory .quickbar .inventory-item{box-sizing:border-box;width:44px;height:36px}
+
+.reference-inventory .inventory-sheet{
+  box-sizing:border-box;
+  height:68px;
+  grid-template-columns:58px minmax(0,1fr) auto;
+  gap:8px;
+  padding:5px 10px;
+}
+.reference-inventory .reference-detail-icon{box-sizing:border-box;width:56px;height:56px;font-size:27px}
+.reference-inventory .inventory-sheet-title strong{font-size:21px}
+.reference-inventory .inventory-sheet-title span{font-size:13px;margin-top:4px}
+.reference-inventory .inventory-sheet-rarity{padding:6px 9px;font-size:9px}
+
+.reference-inventory .inventory-dock{height:60px;gap:4px}
+.reference-inventory .inventory-dock .dock-button{height:60px;border-radius:12px;font-size:10px;gap:2px}
+.reference-inventory .inventory-dock .dock-button span:first-child{font-size:20px}
+
+@media (max-height:790px){
+  .inventory-screen.reference-inventory{
+    grid-template-rows:54px 35px 184px 42px 174px 44px 62px 56px;
+    gap:3px;
+  }
+  .reference-inventory .inventory-header{height:54px}
+  .reference-inventory .inventory-title h1{font-size:27px}
+  .reference-inventory .inventory-top-tabs{height:35px}
+  .reference-inventory .inventory-top-tabs button{height:34px;font-size:12px}
+  .reference-inventory .character-loadout{height:184px}
+  .reference-inventory .equipment-slot.weapon,.reference-inventory .equipment-slot.boots{top:36px!important}
+  .reference-inventory .equipment-slot.jewel,.reference-inventory .equipment-slot.relic{top:113px!important}
+  .reference-inventory .equipment-slot.chest{top:61px!important}
+  .reference-inventory .inventory-storage{height:174px}
+  .reference-inventory .quickbar{height:44px}
+  .reference-inventory .inventory-sheet{height:62px}
+  .reference-inventory .reference-detail-icon{width:50px;height:50px}
+  .reference-inventory .inventory-dock,.reference-inventory .inventory-dock .dock-button{height:56px}
+}
+
+@media (max-width:370px){
+  .inventory-screen.reference-inventory{padding-left:10px;padding-right:10px}
+  .reference-inventory .inventory-title h1{font-size:26px}
+  .reference-inventory .inventory-header{grid-template-columns:31px minmax(0,1fr) 68px}
+  .reference-inventory .inventory-power{width:68px;min-width:68px}
+  .reference-inventory .equipment-slot.weapon,.reference-inventory .equipment-slot.jewel{left:18px!important}
+  .reference-inventory .equipment-slot.boots,.reference-inventory .equipment-slot.relic{right:18px!important}
+  .reference-inventory .bag-grid{gap:5px}
+}
