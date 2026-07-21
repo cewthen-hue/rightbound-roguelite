@@ -2,6 +2,20 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.8.0] — 2026-07-21
+
+### Géométrie de l’inventaire
+
+- Reconstruction de la mise en page de l’inventaire sur une grille portrait stable.
+- Uniformisation stricte des six emplacements d’équipement.
+- Repositionnement symétrique de l’arme, du casque, du plastron, du bouclier, de l’anneau et de l’amulette autour du héros.
+- Correction du badge de puissance afin que l’éclair et la valeur restent sur une seule ligne.
+- Correction du sac à dos : dix-huit cases carrées visibles et six cases supplémentaires accessibles par défilement interne.
+- Suppression de l’écrasement et du chevauchement des premières rangées du sac.
+- Uniformisation des cases de potions, des statistiques et de la fiche de l’objet sélectionné.
+- Autorisation du défilement vertical de l’écran complet lorsque les barres de Safari réduisent la hauteur disponible.
+- Mise à jour du cache PWA pour forcer le chargement des nouveaux fichiers d’interface.
+
 ## [0.5.0] — 2026-07-21
 
 ### Inventaire et équipement
