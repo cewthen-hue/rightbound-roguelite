@@ -9,12 +9,13 @@
 - [x] Potions et emplacements d’inventaire.
 - [x] XP et choix d’améliorations.
 - [x] Ennemi élite et boss.
+- [x] Barre de vie flottante du personnage.
 - [x] Correction du gel après élimination.
 
 ## Phase 2 — Vertical slice
 
-- [ ] Écran d’accueil complet.
-- [ ] Carte de niveaux.
+- [x] Écran d’accueil avec menu principal.
+- [x] Première carte de niveaux avec niveaux verrouillés.
 - [ ] Plusieurs types d’ennemis.
 - [ ] Obstacles nécessitant le saut.
 - [ ] Télégraphes d’attaque ennemis.
@@ -28,7 +29,7 @@
 - [ ] Amélioration des équipements.
 - [ ] Ressources permanentes.
 - [ ] Déblocage et amélioration des compétences.
-- [ ] Sauvegarde locale.
+- [ ] Sauvegarde locale complète.
 - [ ] Équilibrage de la durée et de la difficulté.
 
 ## Phase 4 — Production
