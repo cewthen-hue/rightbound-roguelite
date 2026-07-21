@@ -3,7 +3,8 @@
 
   const overlay = document.getElementById("overlay");
   const modalContent = document.getElementById("modalContent");
-  const STORAGE_KEY = "rightbound-inventory-v1";
+  const STORAGE_KEY = "rightbound-inventory-v2";
+  const BAG_SLOTS = 24;
 
   const ITEMS = {
     "helmet-scout": { name: "Casque du pisteur", type: "helmet", rarity: "rare", glyph: "⌒", level: 1, armor: 3, description: "+3 armure" },
@@ -42,7 +43,7 @@
 
   const VALID_SLOTS = new Set([
     ...Object.keys(EQUIPMENT_TYPES),
-    ...Array.from({ length: 12 }, (_, index) => `bag-${index}`),
+    ...Array.from({ length: BAG_SLOTS }, (_, index) => `bag-${index}`),
     "potion-0",
     "potion-1"
   ]);
@@ -56,7 +57,10 @@
 
   let placements = loadPlacements();
   let selectedItemId = null;
-  let dragState = null;
+
+  function bagSlotIds() {
+    return Array.from({ length: BAG_SLOTS }, (_, index) => `bag-${index}`);
+  }
 
   function loadPlacements() {
     try {
@@ -81,8 +85,7 @@
           usedSlots.add(fallback);
           return;
         }
-        const freeBag = Array.from({ length: 12 }, (_, index) => `bag-${index}`)
-          .find((slotId) => !usedSlots.has(slotId));
+        const freeBag = bagSlotIds().find((slotId) => !usedSlots.has(slotId));
         if (freeBag) {
           clean[itemId] = freeBag;
           usedSlots.add(freeBag);
@@ -98,7 +101,7 @@
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(placements));
     } catch {
-      // L’inventaire reste actif pendant la session si le stockage est bloqué.
+      // conservation en mémoire si localStorage indisponible
     }
   }
 
@@ -107,9 +110,7 @@
   }
 
   function returnToMap() {
-    if (window.RightboundUI?.renderMainMenu) {
-      window.RightboundUI.renderMainMenu();
-    }
+    if (window.RightboundUI?.renderMainMenu) window.RightboundUI.renderMainMenu();
   }
 
   function showHelp() {
@@ -121,10 +122,10 @@
         <h2>Gérer l’équipement</h2>
         <p>Maintiens un objet puis fais-le glisser vers une case compatible.</p>
         <ul>
-          <li>Les équipements ne peuvent aller que dans leur emplacement correspondant.</li>
-          <li>Les potions peuvent être placées dans les deux cases rapides.</li>
-          <li>Déposer un objet sur un autre échange leurs positions lorsque c’est possible.</li>
-          <li>La disposition est sauvegardée automatiquement sur ce téléphone.</li>
+          <li>Les équipements vont uniquement dans leur emplacement dédié.</li>
+          <li>Les potions peuvent être placées dans les deux cases rapides ou dans le sac.</li>
+          <li>Déposer un objet sur un autre échange leurs positions si les deux emplacements sont compatibles.</li>
+          <li>La disposition de l’inventaire est sauvegardée automatiquement sur ce téléphone.</li>
         </ul>
         <button class="primary" id="closeInventoryHelp">Retour à l’inventaire</button>
       </div>`;
@@ -168,9 +169,9 @@
         </section>
 
         <section class="inventory-storage" aria-label="Sac à dos">
-          <div class="storage-heading"><strong>SAC À DOS</strong><span id="bagCapacity">0 / 12</span></div>
+          <div class="storage-heading"><strong>SAC À DOS</strong><span id="bagCapacity">0 / ${BAG_SLOTS}</span></div>
           <div class="bag-grid">
-            ${Array.from({ length: 12 }, (_, index) => slotMarkup(`bag-${index}`, "any", "")).join("")}
+            ${bagSlotIds().map((slotId) => slotMarkup(slotId, "any", "")).join("")}
           </div>
           <div class="potion-row">
             <span class="potion-row-label">Potions rapides</span>
@@ -178,6 +179,10 @@
               ${slotMarkup("potion-0", "potion", "")}${slotMarkup("potion-1", "potion", "")}
             </div>
           </div>
+          <aside class="inventory-inspector" id="inventoryInspector">
+            <div class="inspector-copy"><strong id="inspectorName"></strong><span id="inspectorDescription"></span></div>
+            <span class="inspector-rarity" id="inspectorRarity"></span>
+          </aside>
         </section>
 
         <nav class="inventory-dock" aria-label="Navigation principale">
@@ -186,17 +191,11 @@
           <button class="dock-button" id="inventoryMapButton"><span>⌁</span><span>Niveaux</span></button>
           <button class="dock-button" id="inventoryHelpButton"><span>?</span><span>Aide</span></button>
         </nav>
-
-        <aside class="inventory-inspector" id="inventoryInspector">
-          <div class="inspector-copy"><strong id="inspectorName"></strong><span id="inspectorDescription"></span></div>
-          <span class="inspector-rarity" id="inspectorRarity"></span>
-        </aside>
       </section>`;
 
     document.getElementById("inventoryBack")?.addEventListener("click", returnToMap);
     document.getElementById("inventoryMapButton")?.addEventListener("click", returnToMap);
     document.getElementById("inventoryHelpButton")?.addEventListener("click", showHelp);
-
     renderItems();
   }
 
@@ -236,7 +235,7 @@
 
     const bagCount = Object.values(placements).filter((slotId) => slotId.startsWith("bag-")).length;
     const capacity = document.getElementById("bagCapacity");
-    if (capacity) capacity.textContent = `${bagCount} / 12`;
+    if (capacity) capacity.textContent = `${bagCount} / ${BAG_SLOTS}`;
     updateStats();
     updateInspector();
   }
@@ -354,7 +353,6 @@
 
     const startDrag = () => {
       active = true;
-      dragState = itemId;
       sourceElement.classList.add("dragging");
       ghost = sourceElement.cloneNode(true);
       ghost.classList.remove("selected", "dragging");
@@ -390,7 +388,6 @@
 
       sourceElement.classList.remove("dragging");
       ghost?.remove();
-      dragState = null;
       clearSlotHighlights();
     };
 
@@ -400,7 +397,6 @@
       window.removeEventListener("pointercancel", cancel);
       sourceElement.classList.remove("dragging");
       ghost?.remove();
-      dragState = null;
       clearSlotHighlights();
     };
 
