@@ -2,6 +2,22 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.5.0] — 2026-07-21
+
+### Inventaire et équipement
+
+- Ajout d’un écran d’inventaire accessible depuis le menu principal.
+- Ajout d’un avatar provisoire du personnage avec six emplacements : casque, plastron, arme, jambières, bottes et bijou.
+- Ajout d’un sac à dos de douze emplacements.
+- Ajout de deux emplacements rapides réservés aux potions.
+- Glisser-déposer tactile des objets et des potions avec Pointer Events.
+- Vérification automatique du type d’objet accepté par chaque emplacement.
+- Échange de position entre deux objets lorsque les deux emplacements sont compatibles.
+- Mise en évidence des emplacements valides et refus visuel des emplacements incompatibles.
+- Affichage de la rareté, du niveau et des statistiques de chaque objet.
+- Mise à jour instantanée des dégâts, de l’armure, de la vie et de la puissance totale.
+- Sauvegarde locale automatique de la disposition de l’inventaire.
+
 ## [0.4.0] — 2026-07-21
 
 ### Refonte mobile
