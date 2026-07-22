@@ -2,6 +2,21 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.12.0] — 2026-07-22
+
+### Catalogue d’équipements
+
+- Ajout d’un catalogue central de 48 équipements chargé au démarrage du jeu.
+- Ajout de huit objets pour chacun des six emplacements : arme, casque, armure, relique/cape, bottes et bijou.
+- Répartition uniforme entre les raretés commune, rare, épique et légendaire.
+- Ajout de l’Épée de Mamah31 en rareté épique et de l’Arc de Tiror en rareté rare.
+- Ajout d’une description visuelle prête à servir pour la future génération des icônes.
+- Déclaration d’une capacité spéciale planifiée pour chacun des douze objets légendaires.
+- Préparation des champs `image` et `drop` sans attribuer encore d’illustration ni de chance d’apparition.
+- Ajout d’une API globale `RightboundItemCatalog` permettant aux futurs coffres et écrans d’interroger le catalogue.
+- Validation automatique du nombre d’objets par emplacement et par rareté.
+- Mise à jour du cache PWA pour charger le catalogue sur mobile.
+
 ## [0.8.0] — 2026-07-21
 
 ### Géométrie de l’inventaire
