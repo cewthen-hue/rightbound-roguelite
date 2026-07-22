@@ -13,9 +13,10 @@
   }
 
   const STORAGE_KEY = "rightbound-chests-v1";
-  const SCHEMA_VERSION = 2;
+  const SCHEMA_VERSION = 3;
   const CHEST_ORDER = [...loot.order];
   const CHESTS = loot.chests;
+  const MAX_GRANT_IDS = 250;
 
   const CHEST_ICON = `
     <svg viewBox="0 0 24 24" aria-hidden="true">
@@ -34,7 +35,8 @@
       legacyLevelOneRewardGranted: false,
       firstBronzeItemClaimed: false,
       opened: 0,
-      pendingOpening: null
+      pendingOpening: null,
+      grantedRewardIds: []
     };
   }
 
@@ -43,17 +45,27 @@
     return Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : fallback;
   }
 
+  function normalizeIdList(value) {
+    if (!Array.isArray(value)) return [];
+    return [...new Set(value.filter((entry) => typeof entry === "string" && entry).slice(-MAX_GRANT_IDS))];
+  }
+
   function sanitizePending(raw) {
-    if (!raw || typeof raw !== "object") return null;
-    if (!CHESTS[raw.type] || !window.RightboundItemCatalog?.getItem?.(raw.itemId)) return null;
+    if (!raw || typeof raw !== "object" || !CHESTS[raw.type]) return null;
+    const itemId = typeof raw.itemId === "string" && window.RightboundItemCatalog?.getItem?.(raw.itemId)
+      ? raw.itemId
+      : null;
     const validPhases = new Set(["prepared", "item-granted", "gold-granting", "gold-granted"]);
     return {
       id: typeof raw.id === "string" && raw.id ? raw.id : `chest-${Date.now()}`,
       type: raw.type,
-      itemId: raw.itemId,
+      itemId,
+      rarity: typeof raw.rarity === "string" ? raw.rarity : null,
+      rarityLabel: typeof raw.rarityLabel === "string" ? raw.rarityLabel : null,
       gold: normalizeCount(raw.gold),
       guaranteed: raw.guaranteed === true,
       duplicate: raw.duplicate === true,
+      itemDropped: raw.itemDropped === true && Boolean(itemId),
       phase: validPhases.has(raw.phase) ? raw.phase : "prepared",
       instanceUid: typeof raw.instanceUid === "string" ? raw.instanceUid : null,
       goldBefore: normalizeCount(raw.goldBefore),
@@ -73,7 +85,8 @@
         legacyLevelOneRewardGranted: parsed.legacyLevelOneRewardGranted === true,
         firstBronzeItemClaimed: parsed.firstBronzeItemClaimed === true,
         opened: normalizeCount(parsed.opened),
-        pendingOpening: sanitizePending(parsed.pendingOpening)
+        pendingOpening: sanitizePending(parsed.pendingOpening),
+        grantedRewardIds: normalizeIdList(parsed.grantedRewardIds)
       };
     } catch {
       return fallback;
@@ -93,7 +106,8 @@
       total: totalChests(),
       opened: state.opened,
       firstBronzeItemClaimed: state.firstBronzeItemClaimed,
-      pendingOpening: state.pendingOpening ? { ...state.pendingOpening } : null
+      pendingOpening: state.pendingOpening ? { ...state.pendingOpening } : null,
+      grantedRewardIds: [...state.grantedRewardIds]
     };
   }
 
@@ -101,9 +115,14 @@
     return CHEST_ORDER.reduce((sum, type) => sum + state.chests[type], 0);
   }
 
-  function grantChest(type, amount = 1) {
+  function grantChest(type, amount = 1, grantId = null) {
     if (!CHESTS[type]) return false;
+    if (grantId && state.grantedRewardIds.includes(grantId)) return true;
     state.chests[type] += Math.max(1, normalizeCount(amount));
+    if (grantId) {
+      state.grantedRewardIds.push(grantId);
+      state.grantedRewardIds = state.grantedRewardIds.slice(-MAX_GRANT_IDS);
+    }
     saveState();
     return true;
   }
@@ -137,7 +156,7 @@
     return profile.getOwnedInstances().find((instance) => instance.source === source) || null;
   }
 
-  function clearFailedPending(reason) {
+  function clearInvalidPending(reason) {
     state.pendingOpening = null;
     saveState();
     return { ok: false, reason };
@@ -146,22 +165,27 @@
   function processPendingOpening() {
     const pending = state.pendingOpening;
     if (!pending) return { ok: false, reason: "no-pending-opening" };
-    if (state.chests[pending.type] <= 0) return clearFailedPending("missing-chest");
+    if (state.chests[pending.type] <= 0) return clearInvalidPending("missing-chest");
 
     let instance = pending.instanceUid ? profile.getInstance(pending.instanceUid) : null;
 
     if (pending.phase === "prepared") {
-      instance = instance || findTransactionInstance(pending.id);
-      if (!instance) {
-        if (profile.getBagSpace().free <= 0) return clearFailedPending("bag-full");
-        const granted = profile.grantItem(pending.itemId, {
-          level: 1,
-          source: `chest:${pending.id}`
-        });
-        if (!granted.ok) return clearFailedPending(granted.reason || "grant-failed");
-        instance = granted.instance;
+      if (pending.itemId) {
+        instance = instance || findTransactionInstance(pending.id);
+        if (!instance) {
+          if (profile.getBagSpace().free <= 0) return { ok: false, reason: "bag-full", pending: true };
+          const granted = profile.grantItem(pending.itemId, {
+            level: 1,
+            source: `chest:${pending.id}`
+          });
+          if (!granted.ok) {
+            if (granted.reason === "bag-full") return { ok: false, reason: "bag-full", pending: true };
+            return clearInvalidPending(granted.reason || "grant-failed");
+          }
+          instance = granted.instance;
+        }
+        pending.instanceUid = instance.uid;
       }
-      pending.instanceUid = instance.uid;
       pending.phase = "item-granted";
       saveState();
     }
@@ -180,11 +204,15 @@
     }
 
     if (pending.phase === "gold-granted") {
+      const item = pending.itemId ? window.RightboundItemCatalog.getItem(pending.itemId) : null;
       const result = {
         ok: true,
         type: pending.type,
         itemId: pending.itemId,
-        item: window.RightboundItemCatalog.getItem(pending.itemId),
+        item,
+        rarity: pending.rarity || item?.rarity || null,
+        rarityLabel: pending.rarityLabel || (item ? loot.rarityLabels[item.rarity] : null),
+        itemDropped: Boolean(item),
         instanceUid: pending.instanceUid,
         gold: pending.gold,
         guaranteed: pending.guaranteed,
@@ -240,13 +268,12 @@
   }
 
   function renderChestCards() {
-    const bagFull = profile.getBagSpace().free <= 0;
     return CHEST_ORDER.map((type) => {
       const chest = CHESTS[type];
       const count = state.chests[type];
       const empty = count <= 0;
-      const disabled = empty || bagFull;
-      const buttonLabel = empty ? "AUCUN COFFRE" : bagFull ? "SAC PLEIN" : "OUVRIR";
+      const pendingThisType = state.pendingOpening?.type === type;
+      const buttonLabel = empty ? "AUCUN COFFRE" : pendingThisType ? "REPRENDRE" : "OUVRIR";
       return `
         <article class="chest-card ${type} ${empty ? "empty" : "available"}" data-chest-card="${type}">
           <div class="chest-card-top">
@@ -257,9 +284,9 @@
             <span class="chest-lid"></span><span class="chest-body"></span><strong>${chest.symbol}</strong>
           </div>
           <strong class="chest-name">Coffre ${chest.label}</strong>
-          <span class="chest-reward-preview">${chest.rarityLabel} garanti</span>
+          <span class="chest-reward-preview">${chest.preview}</span>
           <small>${chest.description}</small>
-          <button type="button" class="open-chest-button" data-open-chest="${type}" ${disabled ? "disabled" : ""}>
+          <button type="button" class="open-chest-button" data-open-chest="${type}" ${empty ? "disabled" : ""}>
             ${buttonLabel}
           </button>
         </article>`;
@@ -269,12 +296,16 @@
   function renderChestMenu() {
     renderingChests = true;
     state = loadState();
-    recoverPendingOpening();
+    const recovery = recoverPendingOpening();
     overlay.classList.add("menu-overlay");
     overlay.classList.remove("dialog-overlay", "hidden");
     modalContent.className = "modal menu-modal chest-modal";
 
     const bagSpace = profile.getBagSpace();
+    const pendingText = state.pendingOpening && recovery?.reason === "bag-full"
+      ? "Une récompense attend une place libre dans le sac."
+      : "Les golds sont garantis. Les objets dépendent du coffre.";
+
     modalContent.innerHTML = `
       <section class="chest-screen" aria-label="Coffres et récompenses">
         <header class="chest-header">
@@ -285,13 +316,13 @@
 
         <section class="chest-intro">
           <div><small>STOCK DISPONIBLE</small><strong>${totalChests()} coffre${totalChests() > 1 ? "s" : ""}</strong></div>
-          <p>Chaque coffre donne un équipement permanent. Sac : ${bagSpace.used}/${bagSpace.capacity}.</p>
+          <p>${pendingText} Sac : ${bagSpace.used}/${bagSpace.capacity}.</p>
         </section>
 
         <section class="chest-grid" aria-label="Types de coffres">${renderChestCards()}</section>
 
         <section class="chest-info-bar">
-          <span>Priorité aux objets jamais obtenus.</span>
+          <span>Les objets inconnus restent prioritaires.</span>
           <strong>${state.opened} ouvert${state.opened > 1 ? "s" : ""}</strong>
         </section>
 
@@ -314,6 +345,10 @@
                 <strong id="revealItemName"></strong>
                 <span id="revealItemStats"></span>
               </div>
+            </article>
+            <article class="reveal-no-item" id="revealNoItem" hidden>
+              <strong>GOLDS UNIQUEMENT</strong>
+              <span>Aucun équipement dans ce coffre.</span>
             </article>
             <div class="reveal-reward"><i aria-hidden="true"></i><strong id="revealGoldAmount"></strong><span>golds</span></div>
             <div class="reveal-actions">
@@ -342,15 +377,18 @@
       window.RightboundUI?.showToast?.("Aucun coffre de ce type disponible.");
       return;
     }
+
     if (state.pendingOpening) {
       const recovered = recoverPendingOpening();
       if (!recovered?.ok) {
-        window.RightboundUI?.showToast?.("Une ouverture précédente doit être finalisée.");
+        const message = recovered?.reason === "bag-full"
+          ? "Cette récompense contient un objet. Libère une place dans le sac pour la récupérer."
+          : "Une ouverture précédente doit être finalisée.";
+        window.RightboundUI?.showToast?.(message, 3600);
         return;
       }
-    }
-    if (profile.getBagSpace().free <= 0) {
-      window.RightboundUI?.showToast?.("Sac à dos plein. Libère une place avant d’ouvrir ce coffre.", 3400);
+      lastReveal = recovered;
+      showReveal(recovered);
       return;
     }
 
@@ -358,7 +396,7 @@
       ownedItemIds: profile.getOwnedItemIds(),
       firstBronzeClaimed: state.firstBronzeItemClaimed
     });
-    if (!reward?.item) {
+    if (!reward) {
       window.RightboundUI?.showToast?.("Impossible de générer la récompense.");
       return;
     }
@@ -367,9 +405,12 @@
       id: `opening-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       type,
       itemId: reward.itemId,
+      rarity: reward.rarity,
+      rarityLabel: reward.rarityLabel,
       gold: reward.gold,
       guaranteed: reward.guaranteed,
       duplicate: reward.duplicate,
+      itemDropped: reward.itemDropped,
       phase: "prepared",
       instanceUid: null,
       goldBefore: 0,
@@ -381,9 +422,9 @@
     const result = processPendingOpening();
     if (!result.ok) {
       const message = result.reason === "bag-full"
-        ? "Sac à dos plein. Le coffre n’a pas été consommé."
-        : "L’ouverture du coffre a échoué. Le coffre a été conservé.";
-      window.RightboundUI?.showToast?.(message, 3400);
+        ? "Ce coffre contient un objet. Libère une place dans le sac : le coffre est conservé."
+        : "L’ouverture a échoué. Le coffre a été conservé.";
+      window.RightboundUI?.showToast?.(message, 3800);
       renderChestMenu();
       return;
     }
@@ -398,22 +439,36 @@
     const reveal = document.getElementById("chestReveal");
     const art = document.getElementById("revealChestArt");
     const lootCard = document.getElementById("revealLootItem");
-    if (!reveal || !art || !lootCard || !item) return;
+    const noItemCard = document.getElementById("revealNoItem");
+    const equipButton = document.getElementById("equipChestReward");
+    if (!reveal || !art || !lootCard || !noItemCard || !equipButton) return;
 
     art.className = `reveal-chest ${result.type}`;
     art.querySelector("strong").textContent = chest.symbol;
-    document.getElementById("revealKicker").textContent = result.guaranteed
-      ? "PREMIER COFFRE — RÉCOMPENSE GARANTIE"
-      : result.duplicate ? "DOUBLON OBTENU" : "NOUVEL ÉQUIPEMENT";
     document.getElementById("revealChestTitle").textContent = `Coffre ${chest.label}`;
-    document.getElementById("revealItemImage").src = item.image;
-    document.getElementById("revealItemImage").alt = item.name;
-    document.getElementById("revealItemRarity").textContent = chest.rarityLabel;
-    document.getElementById("revealItemName").textContent = item.name;
-    document.getElementById("revealItemStats").textContent = item.description;
     document.getElementById("revealGoldAmount").textContent = `+${formatNumber(result.gold)}`;
     document.getElementById("chestGoldValue").textContent = formatNumber(currentGold());
-    lootCard.dataset.rarity = item.rarity;
+
+    if (item) {
+      document.getElementById("revealKicker").textContent = result.guaranteed
+        ? "PREMIER COFFRE — RÉCOMPENSE GARANTIE"
+        : result.duplicate ? "DOUBLON OBTENU" : "NOUVEL ÉQUIPEMENT";
+      document.getElementById("revealItemImage").src = item.image;
+      document.getElementById("revealItemImage").alt = item.name;
+      document.getElementById("revealItemRarity").textContent = result.rarityLabel || loot.rarityLabels[item.rarity] || item.rarity;
+      document.getElementById("revealItemName").textContent = item.name;
+      document.getElementById("revealItemStats").textContent = item.description;
+      lootCard.dataset.rarity = item.rarity;
+      lootCard.hidden = false;
+      noItemCard.hidden = true;
+      equipButton.hidden = false;
+    } else {
+      document.getElementById("revealKicker").textContent = "GOLDS GARANTIS";
+      lootCard.hidden = true;
+      noItemCard.hidden = false;
+      equipButton.hidden = true;
+    }
+
     reveal.classList.add("visible");
     reveal.setAttribute("aria-hidden", "false");
     navigator.vibrate?.([25, 45, 35]);
@@ -440,33 +495,8 @@
     renderChestMenu();
   }
 
-  function inspectVictoryScreen() {
-    if (renderingChests) return;
-    const restartButton = document.getElementById("restartButton");
-    if (!restartButton || restartButton.dataset.chestRewarded === "true") return;
-    const title = modalContent.querySelector("h2")?.textContent || "";
-    if (!title.includes("Secteur nettoyé")) return;
-
-    restartButton.dataset.chestRewarded = "true";
-    state.legacyLevelOneRewardGranted = true;
-    state.chests.bronze += 1;
-    saveState();
-
-    const rewardNotice = document.createElement("section");
-    rewardNotice.className = "victory-chest-reward";
-    rewardNotice.innerHTML = `
-      <span class="victory-chest-icon" aria-hidden="true">▰</span>
-      <div><small>RÉCOMPENSE DU NIVEAU</small><strong>Coffre Bronze obtenu</strong></div>
-      <span class="victory-chest-added">+1</span>`;
-
-    const actions = modalContent.querySelector(".end-menu-actions");
-    if (actions) actions.before(rewardNotice);
-    else restartButton.before(rewardNotice);
-  }
-
   const observer = new MutationObserver(() => {
     requestAnimationFrame(() => {
-      inspectVictoryScreen();
       migrateCompletedLevelReward();
       injectChestDockButton();
     });
@@ -489,9 +519,11 @@
     if (modalContent.querySelector(".chest-screen") && !modalContent.querySelector(".chest-reveal.visible")) {
       const bagSpace = profile.getBagSpace();
       const intro = modalContent.querySelector(".chest-intro p");
-      if (intro) intro.textContent = `Chaque coffre donne un équipement permanent. Sac : ${bagSpace.used}/${bagSpace.capacity}.`;
+      if (intro) intro.textContent = `Les golds sont garantis. Les objets dépendent du coffre. Sac : ${bagSpace.used}/${bagSpace.capacity}.`;
     }
   });
+
+  document.addEventListener("rightbound:run-rewarded", updateMenuBadge);
 
   window.RightboundChests = Object.freeze({
     render: renderChestMenu,
@@ -500,7 +532,6 @@
     recoverPendingOpening
   });
 
-  inspectVictoryScreen();
   migrateCompletedLevelReward();
   recoverPendingOpening();
   injectChestDockButton();
