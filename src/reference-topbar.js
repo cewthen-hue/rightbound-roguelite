@@ -2,15 +2,21 @@
   "use strict";
 
   const modalContent = document.getElementById("modalContent");
-  if (!modalContent) return;
+  const assetSystem = window.RightboundMenuAssets;
+  if (!modalContent || !assetSystem) return;
 
   const PLACEHOLDER_STATE = Object.freeze({
     heroLevel: 1,
     heroXp: 0,
     heroXpNext: 100,
     gems: 0,
-    energy: 0,
-    energyMax: 30
+    energy: 0
+  });
+
+  const RESOURCE_ASSETS = Object.freeze({
+    gold: "iconGold",
+    gems: "iconGem",
+    energy: "iconEnergy"
   });
 
   let scheduled = false;
@@ -38,13 +44,33 @@
   }
 
   function resourceMarkup(type, value, label) {
-    const icon = type === "energy" ? '<span class="reference-energy-bolt">ϟ</span>' : "";
     return `
-      <div class="reference-resource reference-resource-${type}" aria-label="${label}">
-        <span class="reference-resource-icon reference-resource-icon-${type}" aria-hidden="true">${icon}</span>
+      <div class="reference-resource reference-resource-${type}" data-resource-surface="${type}" aria-label="${label}">
+        <span class="reference-resource-icon reference-resource-icon-${type}" data-resource-icon="${type}" aria-hidden="true">
+          ${type === "energy" ? '<span class="reference-energy-bolt">ϟ</span>' : ""}
+        </span>
         <strong id="menu${type[0].toUpperCase()}${type.slice(1)}Value">${value}</strong>
-        <button type="button" class="reference-resource-add" data-resource-add="${type}" aria-label="Ajouter ${label.toLowerCase()}">+</button>
+        <button type="button" class="reference-resource-add" data-resource-add="${type}" aria-label="Ajouter ${label.toLowerCase()}"><span>+</span></button>
       </div>`;
+  }
+
+  function bindTopbarAssets(topbar) {
+    if (!topbar) return;
+    assetSystem.bindBackground(topbar, "topbarShell", { size: "100% 100%", position: "center" });
+    assetSystem.bindBackground(topbar.querySelector("#premiumHeroPortrait"), "heroPortrait", { size: "cover", position: "center top" });
+    assetSystem.bindBackground(topbar.querySelector("#referencePortraitFrame"), "portraitFrame", { size: "100% 100%" });
+    assetSystem.bindBackground(topbar.querySelector("#referenceXpFrame"), "xpFrame", { size: "100% 100%" });
+    assetSystem.bindBackground(topbar.querySelector("#referenceXpFill"), "xpFill", { size: "100% 100%", position: "left center" });
+
+    topbar.querySelectorAll("[data-resource-surface]").forEach((surface) => {
+      assetSystem.bindBackground(surface, "resourcePanel", { size: "100% 100%" });
+    });
+    topbar.querySelectorAll("[data-resource-icon]").forEach((icon) => {
+      assetSystem.bindBackground(icon, RESOURCE_ASSETS[icon.dataset.resourceIcon], { size: "contain" });
+    });
+    topbar.querySelectorAll("[data-resource-add]").forEach((button) => {
+      assetSystem.bindBackground(button, "plusButton", { size: "100% 100%" });
+    });
   }
 
   function buildTopbar(topbar) {
@@ -59,13 +85,15 @@
       <div class="level-profile reference-player-block" data-enhanced="true">
         <div class="premium-profile-portrait reference-player-portrait" id="premiumHeroPortrait" aria-hidden="true">
           <span class="portrait-fallback"><i></i><b>J</b></span>
+          <span class="reference-player-portrait-frame" id="referencePortraitFrame"></span>
         </div>
         <div class="reference-player-data">
           <strong class="reference-player-name">JACK</strong>
           <div class="reference-player-level-row">
             <span class="reference-player-level">NIV. ${PLACEHOLDER_STATE.heroLevel}</span>
             <div class="reference-player-xp" role="progressbar" aria-label="Expérience du héros" aria-valuemin="0" aria-valuemax="${PLACEHOLDER_STATE.heroXpNext}" aria-valuenow="${PLACEHOLDER_STATE.heroXp}">
-              <i style="width:${xpRatio}%"></i>
+              <span class="reference-player-xp-fill" id="referenceXpFill" style="--xp-ratio:${xpRatio}%"></span>
+              <span class="reference-player-xp-frame" id="referenceXpFrame"></span>
             </div>
           </div>
         </div>
@@ -73,7 +101,7 @@
       <div class="level-currencies reference-resources">
         ${resourceMarkup("gold", formatNumber(gold), "Golds")}
         ${resourceMarkup("gems", String(PLACEHOLDER_STATE.gems), "Gemmes")}
-        ${resourceMarkup("energy", `${PLACEHOLDER_STATE.energy}/${PLACEHOLDER_STATE.energyMax}`, "Énergie")}
+        ${resourceMarkup("energy", String(PLACEHOLDER_STATE.energy), "Énergie")}
       </div>`;
 
     topbar.querySelectorAll("[data-resource-add]").forEach((button) => {
@@ -88,11 +116,7 @@
       });
     });
 
-    window.RightboundMenuAssets?.bindBackground?.(
-      topbar.querySelector("#premiumHeroPortrait"),
-      "heroPortrait",
-      { size: "cover", position: "center top" }
-    );
+    bindTopbarAssets(topbar);
   }
 
   function updateGold(value = readStoredGold()) {
@@ -107,7 +131,10 @@
       const topbar = modalContent.querySelector(".game-menu.level-menu .level-topbar");
       if (!topbar) return;
       if (topbar.dataset.referenceTopbar !== "true") buildTopbar(topbar);
-      else updateGold();
+      else {
+        updateGold();
+        bindTopbarAssets(topbar);
+      }
     } finally {
       updating = false;
     }
@@ -132,7 +159,7 @@
   });
 
   window.RightboundTopbar = Object.freeze({
-    version: "1.0.0",
+    version: "2.0.0",
     getPlaceholderState: () => ({ ...PLACEHOLDER_STATE }),
     refresh: scheduleSync
   });
