@@ -29,6 +29,7 @@
 
   let lastSnapshot = null;
   let feedbackTimer = 0;
+  let enemyPushArmed = false;
 
   function clamp(value, minimum, maximum) {
     return Math.max(minimum, Math.min(maximum, value));
@@ -161,55 +162,6 @@
     });
   }
 
-  function applyBuildToReset(target, source) {
-    removeHpRuntime(target);
-    const combatStats = buildSystem.getCombatStats();
-    const patched = {
-      ...source,
-      maxHp: combatStats.maxHp,
-      hp: combatStats.maxHp,
-      damage: combatStats.damage,
-      armor: combatStats.armor,
-      critChance: combatStats.critChance,
-      attackDelay: combatStats.attackDelay,
-      moveSpeed: combatStats.moveSpeed,
-      skillPower: combatStats.skillPower,
-      skillCooldownMultiplier: combatStats.skillCooldownMultiplier,
-      potions: combatStats.potions
-    };
-
-    nativeAssign(target, patched);
-    installHpRuntime(target, combatStats);
-    updateProvisionalConsumableUi(combatStats);
-
-    const level = getLevelDefinition();
-    lastSnapshot = Object.freeze({
-      appliedAt: Date.now(),
-      levelId: level.id,
-      levelType: level.type,
-      recommendedPower: level.power,
-      build: combatStats,
-      readiness: buildSystem.getReadiness(level.power)
-    });
-
-    document.dispatchEvent(new CustomEvent("rightbound:combat-loadout-applied", {
-      detail: lastSnapshot
-    }));
-    return target;
-  }
-
-  Object.assign = function rightboundAssign(target, ...sources) {
-    const resetIndex = sources.findIndex(isPlayerResetSource);
-    if (resetIndex < 0) return nativeAssign(target, ...sources);
-
-    const before = sources.slice(0, resetIndex);
-    const after = sources.slice(resetIndex + 1);
-    if (before.length) nativeAssign(target, ...before);
-    applyBuildToReset(target, sources[resetIndex]);
-    if (after.length) nativeAssign(target, ...after);
-    return target;
-  };
-
   function isEnemyCandidate(value) {
     return Boolean(
       value && typeof value === "object" &&
@@ -244,13 +196,72 @@
     return enemy;
   }
 
-  Array.prototype.push = function rightboundPush(...items) {
-    items.forEach(scaleEnemy);
-    return nativePush.apply(this, items);
+  function armEnemyScaling() {
+    if (enemyPushArmed) return;
+    enemyPushArmed = true;
+    const temporaryPush = function rightboundEnemyPush(...items) {
+      items.forEach(scaleEnemy);
+      return nativePush.apply(this, items);
+    };
+    Array.prototype.push = temporaryPush;
+    queueMicrotask(() => {
+      if (Array.prototype.push === temporaryPush) Array.prototype.push = nativePush;
+      enemyPushArmed = false;
+    });
+  }
+
+  function applyBuildToReset(target, source) {
+    removeHpRuntime(target);
+    const combatStats = buildSystem.getCombatStats();
+    const patched = {
+      ...source,
+      maxHp: combatStats.maxHp,
+      hp: combatStats.maxHp,
+      damage: combatStats.damage,
+      armor: combatStats.armor,
+      critChance: combatStats.critChance,
+      attackDelay: combatStats.attackDelay,
+      moveSpeed: combatStats.moveSpeed,
+      skillPower: combatStats.skillPower,
+      skillCooldownMultiplier: combatStats.skillCooldownMultiplier,
+      potions: combatStats.potions
+    };
+
+    nativeAssign(target, patched);
+    installHpRuntime(target, combatStats);
+    armEnemyScaling();
+    updateProvisionalConsumableUi(combatStats);
+
+    const level = getLevelDefinition();
+    lastSnapshot = Object.freeze({
+      appliedAt: Date.now(),
+      levelId: level.id,
+      levelType: level.type,
+      recommendedPower: level.power,
+      build: combatStats,
+      readiness: buildSystem.getReadiness(level.power)
+    });
+
+    document.dispatchEvent(new CustomEvent("rightbound:combat-loadout-applied", {
+      detail: lastSnapshot
+    }));
+    return target;
+  }
+
+  Object.assign = function rightboundAssign(target, ...sources) {
+    const resetIndex = sources.findIndex(isPlayerResetSource);
+    if (resetIndex < 0) return nativeAssign(target, ...sources);
+
+    const before = sources.slice(0, resetIndex);
+    const after = sources.slice(resetIndex + 1);
+    if (before.length) nativeAssign(target, ...before);
+    applyBuildToReset(target, sources[resetIndex]);
+    if (after.length) nativeAssign(target, ...after);
+    return target;
   };
 
   window.RightboundCombatRuntime = Object.freeze({
-    version: "1.0.0",
+    version: "1.0.1",
     getActiveLevelId,
     getLevelDefinition,
     getLevelScaling,
