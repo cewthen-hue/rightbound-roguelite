@@ -2,6 +2,24 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.20.0] — 2026-07-22
+
+### Stabilisation complète du menu premium
+
+- Suppression physique des anciens immeubles, silhouettes et éléments procéduraux responsables des grands triangles noirs.
+- Reconstruction des fallbacks de décor et de personnage dans des couches strictement contenues dans la scène.
+- Réorganisation complète des z-index afin que le décor, l’atmosphère, Jack, le cadre, la plaque et les textes ne puissent plus se recouvrir incorrectement.
+- Suppression de la dépendance à `:has()` pour masquer les anciens éléments visuels.
+- Correction du titre du monde avec retour à la ligne contrôlé et dimensions adaptatives.
+- Simplification de la barre supérieure : suppression des libellés trop longs dans les blocs Golds et Puissance.
+- Agrandissement des textes secondaires, des informations de puissance, de la légende et des libellés de navigation.
+- Remplacement des libellés latéraux trop étroits par `Options` et `Journal`.
+- Suppression des informations répétées autour du bouton Jouer ; le bouton affiche maintenant une instruction contextuelle intégrée.
+- Amélioration de l’affichage des dix niveaux, y compris lorsqu’un niveau verrouillé, Élite ou Boss est sélectionné.
+- Renforcement des comportements responsive pour petits écrans et faibles hauteurs Safari.
+- Connexion automatique des futures images de panneaux, ressources et utilitaires prévues dans le manifeste.
+- Mise à jour du cache PWA en version `0.20.0`.
+
 ## [0.19.0] — 2026-07-22
 
 ### Layout premium du menu des niveaux
