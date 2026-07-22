@@ -1,0 +1,331 @@
+/* Reference-matched player/resources bar.
+   Loaded after the premium menu styles so the geometry remains deterministic. */
+
+#overlay.menu-overlay .game-menu.level-menu.premium-level-menu{
+  grid-template-rows:72px 72px minmax(250px,1fr) 64px 48px 23px 78px 66px!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-topbar{
+  position:relative!important;
+  z-index:45!important;
+  min-height:72px!important;
+  height:72px!important;
+  padding:7px 4px 8px 8px!important;
+  display:grid!important;
+  grid-template-columns:minmax(166px,1fr) auto!important;
+  align-items:center!important;
+  gap:7px!important;
+  overflow:visible!important;
+  border:0!important;
+  border-radius:0!important;
+  background:linear-gradient(180deg,#11191d 0%,#080e11 74%,#030608 100%)!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-topbar:before{
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:0 -8px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.02),transparent 35%),
+    linear-gradient(180deg,#11191d,#05090b);
+  pointer-events:none;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-topbar:after{
+  content:""!important;
+  position:absolute!important;
+  left:-8px!important;
+  right:-8px!important;
+  bottom:0!important;
+  width:auto!important;
+  height:5px!important;
+  border:0!important;
+  background:
+    linear-gradient(180deg,#222d30 0 1px,#070b0c 1px 3px,#303b3c 3px 4px,#030506 4px 5px)!important;
+  box-shadow:0 3px 7px rgba(0,0,0,.55)!important;
+  pointer-events:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-block{
+  min-width:0!important;
+  height:57px!important;
+  display:grid!important;
+  grid-template-columns:57px minmax(0,1fr)!important;
+  align-items:center!important;
+  gap:9px!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait{
+  position:relative!important;
+  width:57px!important;
+  height:57px!important;
+  overflow:hidden!important;
+  border:2px solid #4b5557!important;
+  border-radius:8px!important;
+  background:radial-gradient(circle at 50% 34%,rgba(93,123,104,.24),transparent 45%),linear-gradient(145deg,#253034,#0b1113)!important;
+  box-shadow:
+    inset 0 0 0 3px #121719,
+    inset 0 0 0 4px rgba(148,139,108,.16),
+    0 3px 7px rgba(0,0,0,.68)!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait:before,
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait:after{
+  width:10px!important;
+  height:10px!important;
+  border-color:#8f876d!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-data{
+  min-width:0;
+  align-self:center;
+  display:grid;
+  gap:7px;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-name{
+  color:#fff7e8;
+  font-size:18px;
+  font-weight:900;
+  line-height:.9;
+  letter-spacing:.025em;
+  text-shadow:0 2px 2px #000;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-level-row{
+  min-width:0;
+  display:grid;
+  grid-template-columns:auto minmax(48px,1fr);
+  align-items:center;
+  gap:5px;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-level{
+  min-width:47px;
+  height:24px;
+  padding:0 5px;
+  display:grid;
+  place-items:center;
+  border:1px solid #263427;
+  border-radius:4px;
+  color:#77ef57;
+  background:linear-gradient(180deg,#152715,#081009);
+  box-shadow:inset 0 0 0 2px #0b140c,0 1px 2px #000;
+  font-size:14px;
+  font-weight:900;
+  line-height:1;
+  white-space:nowrap;
+  text-shadow:0 1px 2px #000;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp{
+  position:relative;
+  min-width:0;
+  height:24px;
+  padding:4px;
+  overflow:hidden;
+  border:2px solid #303b3d;
+  border-radius:4px;
+  background:#020506;
+  box-shadow:inset 0 2px 4px #000,0 1px rgba(255,255,255,.04);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp:before{
+  content:"";
+  position:absolute;
+  inset:4px;
+  border-radius:1px;
+  background:#08100a;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp i{
+  position:relative;
+  z-index:1;
+  display:block;
+  width:0;
+  height:100%;
+  border-radius:1px;
+  background:linear-gradient(180deg,#58dc68 0%,#20a43c 58%,#157129 100%);
+  box-shadow:inset 0 1px rgba(255,255,255,.22),0 0 7px rgba(53,202,74,.34);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resources{
+  min-width:0!important;
+  display:grid!important;
+  grid-template-columns:72px 66px 75px!important;
+  align-items:center!important;
+  gap:5px!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource{
+  position:relative;
+  min-width:0;
+  height:38px;
+  display:grid;
+  grid-template-columns:18px minmax(0,1fr) 24px;
+  align-items:center;
+  gap:2px;
+  padding:0 3px 0 5px;
+  overflow:visible;
+  border:1px solid #374145;
+  border-radius:5px;
+  color:#f4ead5;
+  background:linear-gradient(180deg,#151d20,#060a0c);
+  box-shadow:inset 0 1px rgba(255,255,255,.055),0 2px 5px rgba(0,0,0,.55);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource strong{
+  min-width:0;
+  overflow:hidden;
+  color:#f6eddc;
+  font-size:13px;
+  font-weight:900;
+  line-height:1;
+  text-align:center;
+  white-space:nowrap;
+  text-overflow:clip;
+  text-shadow:0 1px 2px #000;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon{
+  position:relative;
+  width:18px;
+  height:18px;
+  display:grid;
+  place-items:center;
+  filter:drop-shadow(0 2px 1px rgba(0,0,0,.65));
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon-gold{
+  border:2px solid #edc347;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#fff4a4 0 10%,#efbd32 30%,#a2640b 70%,#553006 100%);
+  box-shadow:inset 0 0 0 2px rgba(255,240,137,.24);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon-gold:after{
+  content:"¤";
+  color:#704306;
+  font-size:11px;
+  font-weight:900;
+  line-height:1;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon-gems{
+  width:17px;
+  height:17px;
+  transform:rotate(45deg) scale(.82);
+  border:1px solid #9cff57;
+  border-radius:3px 6px 3px 6px;
+  background:linear-gradient(135deg,#d8ff74 0 25%,#67da34 26% 55%,#238d2d 56% 100%);
+  box-shadow:inset 2px 2px rgba(255,255,255,.22),0 0 6px rgba(90,220,56,.28);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon-gems:after{
+  content:"";
+  position:absolute;
+  right:-4px;
+  bottom:-4px;
+  width:7px;
+  height:7px;
+  border:1px solid #9cff57;
+  border-radius:50%;
+  background:#6ee343;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon-energy{
+  width:18px;
+  height:23px;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-energy-bolt{
+  color:#ffc747;
+  font-family:Arial,sans-serif!important;
+  font-size:25px;
+  font-weight:1000;
+  line-height:1;
+  transform:skew(-8deg);
+  text-shadow:0 0 5px rgba(255,183,43,.38),0 2px 1px #5f3200;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-add{
+  width:24px;
+  height:30px;
+  padding:0;
+  display:grid;
+  place-items:center;
+  border:1px solid #424d50;
+  border-radius:4px;
+  color:#d6a954;
+  background:linear-gradient(180deg,#242c2e,#0b1012);
+  box-shadow:inset 0 1px rgba(255,255,255,.07),0 1px 2px #000;
+  font-size:23px;
+  font-weight:800;
+  line-height:1;
+  text-shadow:0 1px #000;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-add:active{
+  transform:translateY(1px);
+  color:#f0c96d;
+  background:linear-gradient(180deg,#151b1d,#070a0b);
+}
+
+@media(max-width:400px){
+  #overlay.menu-overlay .game-menu.level-menu.premium-level-menu{
+    grid-template-rows:68px 68px minmax(235px,1fr) 60px 45px 21px 73px 62px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-topbar{
+    min-height:68px!important;
+    height:68px!important;
+    padding-left:5px!important;
+    grid-template-columns:minmax(148px,1fr) auto!important;
+    gap:5px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-player-block{
+    height:53px!important;
+    grid-template-columns:52px minmax(0,1fr)!important;
+    gap:7px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-player-portrait{
+    width:52px!important;
+    height:52px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-player-name{font-size:16px}
+  #overlay.menu-overlay .premium-level-menu .reference-player-level{min-width:43px;height:22px;font-size:12px}
+  #overlay.menu-overlay .premium-level-menu .reference-player-xp{height:22px;padding:4px 3px}
+  #overlay.menu-overlay .premium-level-menu .reference-resources{grid-template-columns:64px 58px 67px!important;gap:4px!important}
+  #overlay.menu-overlay .premium-level-menu .reference-resource{height:35px;grid-template-columns:16px minmax(0,1fr) 21px;padding-left:4px;padding-right:2px;gap:1px}
+  #overlay.menu-overlay .premium-level-menu .reference-resource-icon{width:16px;height:16px}
+  #overlay.menu-overlay .premium-level-menu .reference-resource strong{font-size:11px}
+  #overlay.menu-overlay .premium-level-menu .reference-resource-add{width:21px;height:27px;font-size:20px}
+  #overlay.menu-overlay .premium-level-menu .reference-energy-bolt{font-size:22px}
+}
+
+@media(max-height:740px) and (orientation:portrait){
+  #overlay.menu-overlay .game-menu.level-menu.premium-level-menu{
+    grid-template-rows:60px 53px minmax(195px,1fr) 51px 38px 17px 62px 52px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-topbar{
+    min-height:60px!important;
+    height:60px!important;
+    padding-top:4px!important;
+    padding-bottom:6px!important;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-player-block{height:49px!important;grid-template-columns:48px minmax(0,1fr)!important}
+  #overlay.menu-overlay .premium-level-menu .reference-player-portrait{width:48px!important;height:48px!important}
+  #overlay.menu-overlay .premium-level-menu .reference-player-data{gap:5px}
+  #overlay.menu-overlay .premium-level-menu .reference-player-name{font-size:15px}
+  #overlay.menu-overlay .premium-level-menu .reference-player-level{height:20px;font-size:11px}
+  #overlay.menu-overlay .premium-level-menu .reference-player-xp{height:20px}
+  #overlay.menu-overlay .premium-level-menu .reference-resource{height:32px}
+  #overlay.menu-overlay .premium-level-menu .reference-resource-add{height:25px}
+}
