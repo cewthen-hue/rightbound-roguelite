@@ -54,9 +54,7 @@
     power?.querySelectorAll(".resource-label").forEach((node) => node.remove());
 
     const goldIcon = gold?.querySelector("i");
-    const powerIcon = power?.querySelector("span");
     if (goldIcon) goldIcon.dataset.resourceAsset = "gold";
-    if (powerIcon) powerIcon.dataset.resourceAsset = "power";
   }
 
   function enhanceWorldHeading(root) {
@@ -102,13 +100,21 @@
   }
 
   function enhanceFacts(root) {
+    const factsPanel = root.querySelector(".level-facts");
     const facts = root.querySelectorAll(".level-fact");
-    if (!facts.length) return;
+    if (!factsPanel || !facts.length) return;
+    factsPanel.classList.add("menu-full-info-panel");
+
     const powerFact = facts[0];
     const rewardFact = facts[1];
     if (powerFact && powerFact.dataset.enhanced !== "true") {
       powerFact.dataset.enhanced = "true";
-      powerFact.querySelector(".level-fact-icon")?.classList.add("power-visual");
+      const icon = powerFact.querySelector(".level-fact-icon");
+      if (icon) {
+        icon.textContent = "";
+        icon.id = "premiumPowerInfo";
+        icon.classList.add("power-visual");
+      }
     }
     if (rewardFact && rewardFact.dataset.enhanced !== "true") {
       rewardFact.dataset.enhanced = "true";
@@ -123,15 +129,19 @@
 
   function enhanceSelector(root) {
     const selector = root.querySelector(".level-selector");
-    if (!selector || selector.dataset.enhanced === "true") return;
+    if (!selector) return;
+    selector.querySelector("#previousLevelButton")?.setAttribute("data-arrow-asset", "left");
+    selector.querySelector("#nextLevelButton")?.setAttribute("data-arrow-asset", "right");
+    if (selector.dataset.enhanced === "true") return;
     selector.dataset.enhanced = "true";
+
     const legend = document.createElement("div");
     legend.className = "premium-level-legend";
     legend.innerHTML = `
-      <span><i class="legend-check">✓</i>Terminé</span>
-      <span><i class="legend-elite">◆</i>Élite</span>
-      <span><i class="legend-boss">☠</i>Boss</span>
-      <span><i class="legend-lock">▣</i>Verrouillé</span>`;
+      <span><i data-legend-asset="check"></i>Terminé</span>
+      <span><i data-legend-asset="elite"></i>Élite</span>
+      <span><i data-legend-asset="boss"></i>Boss</span>
+      <span><i data-legend-asset="lock"></i>Verrouillé</span>`;
     selector.after(legend);
   }
 
@@ -176,34 +186,46 @@
 
   function enhanceDock(root) {
     const dock = root.querySelector(".game-dock");
-    if (!dock || dock.dataset.enhanced === "true") return;
-    dock.dataset.enhanced = "true";
+    if (!dock) return;
     const buttons = [...dock.querySelectorAll(".dock-button")];
-    const inventory = buttons[0];
-    const skills = buttons[1];
-    const levels = buttons[2];
-    const chests = buttons[3];
 
-    if (inventory) {
-      inventory.disabled = false;
-      inventory.id = "dockInventoryButton";
-      prepareDockButton(inventory, "inventory", "Inventaire");
-      inventory.addEventListener("click", () => window.RightboundInventory?.renderInventory?.());
+    if (dock.dataset.enhanced !== "true") {
+      dock.dataset.enhanced = "true";
+      const inventory = buttons[0];
+      const skills = buttons[1];
+      const levels = buttons[2];
+      const chests = buttons[3];
+
+      if (inventory) {
+        inventory.disabled = false;
+        inventory.id = "dockInventoryButton";
+        prepareDockButton(inventory, "inventory", "Inventaire");
+        inventory.addEventListener("click", () => window.RightboundInventory?.renderInventory?.());
+      }
+      if (skills) {
+        skills.disabled = true;
+        prepareDockButton(skills, "skills", "Compétences");
+      }
+      if (levels) prepareDockButton(levels, "levels", "Niveaux", true);
+      if (chests) {
+        chests.id = "dockSettingsButton";
+        prepareDockButton(chests, "chests", "Coffres");
+      }
     }
-    if (skills) {
-      skills.disabled = true;
-      prepareDockButton(skills, "skills", "Compétences");
-    }
-    if (levels) prepareDockButton(levels, "levels", "Niveaux", true);
-    if (chests) {
-      chests.id = "dockSettingsButton";
-      prepareDockButton(chests, "chests", "Coffres");
+
+    const chestButton = dock.querySelector("#dockChestsButton");
+    if (chestButton && !chestButton.querySelector('[data-nav-asset="chests"]')) {
+      const badge = chestButton.querySelector(".chest-dock-badge");
+      const badgeText = badge?.textContent || "0";
+      const badgeVisible = badge?.classList.contains("visible");
+      chestButton.dataset.dockKind = "chests";
+      chestButton.innerHTML = `<span class="premium-dock-icon" data-nav-asset="chests">${iconMarkup("chests")}</span><span>Coffres</span><b class="chest-dock-badge${badgeVisible ? " visible" : ""}" aria-label="Coffres disponibles">${badgeText}</b>`;
     }
   }
 
   function enhance(root) {
     if (!root) return;
-    root.classList.add("premium-level-menu");
+    root.classList.add("premium-level-menu", "menu-full-assets");
     enhanceProfile(root);
     enhanceCurrencies(root);
     enhanceWorldHeading(root);
@@ -222,11 +244,23 @@
     assetSystem.bindBackground(root.querySelector("#premiumStageHeroAsset"), "heroStage", { size: "contain", position: "center bottom" });
     assetSystem.bindBackground(root.querySelector("#premiumStageFrameAsset"), "stageFrame", { size: "100% 100%", position: "center" });
     assetSystem.bindBackground(root.querySelector(".level-card-header"), "levelPlaque", { size: "100% 100%", position: "center" });
-    root.querySelectorAll(".level-fact").forEach((fact) => assetSystem.bindBackground(fact, "infoPanel", { size: "100% 100%" }));
+    assetSystem.bindBackground(root.querySelector(".level-facts"), "infoPanel", { size: "100% 100%" });
+    assetSystem.bindBackground(root.querySelector("#premiumPowerInfo"), "iconInfo", { size: "contain" });
+
+    root.querySelectorAll(".premium-utility-button").forEach((button) => {
+      assetSystem.bindBackground(button, "utilityButton", { size: "100% 100%" });
+    });
     assetSystem.bindBackground(root.querySelector('[data-utility-asset="settings"]'), "iconSettings");
     assetSystem.bindBackground(root.querySelector('[data-utility-asset="journal"]'), "iconJournal");
-    assetSystem.bindBackground(root.querySelector('[data-resource-asset="gold"]'), "iconGold");
-    assetSystem.bindBackground(root.querySelector('[data-resource-asset="power"]'), "iconPower");
+
+    assetSystem.bindBackground(root.querySelector('[data-arrow-asset="left"]'), "arrowLeft", { size: "100% 100%" });
+    assetSystem.bindBackground(root.querySelector('[data-arrow-asset="right"]'), "arrowRight", { size: "100% 100%" });
+
+    assetSystem.bindBackground(root.querySelector('[data-legend-asset="check"]'), "iconCheck");
+    assetSystem.bindBackground(root.querySelector('[data-legend-asset="elite"]'), "iconElite");
+    assetSystem.bindBackground(root.querySelector('[data-legend-asset="boss"]'), "iconBoss");
+    assetSystem.bindBackground(root.querySelector('[data-legend-asset="lock"]'), "iconLock");
+
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="inventory"]'), "navInventory");
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="skills"]'), "navSkills");
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="levels"]'), "navLevels");
@@ -248,13 +282,41 @@
     root.querySelectorAll(".level-dot").forEach((node) => {
       const id = Number(node.dataset.levelId);
       const level = levels.find((entry) => entry.id === id);
-      const key = assetSystem.nodeKey(level, {
+      const state = {
         locked: node.classList.contains("locked"),
         selected: node.classList.contains("selected"),
         completed: node.classList.contains("completed")
-      });
-      assetSystem.bindBackground(node, key, { size: "100% 100%" });
+      };
+      assetSystem.bindBackground(node, assetSystem.nodeKey(level, state), { size: "100% 100%" });
+
+      let status = node.querySelector(".node-status-icon");
+      if (!status) {
+        status = document.createElement("span");
+        status.className = "node-status-icon";
+        status.setAttribute("aria-hidden", "true");
+        node.appendChild(status);
+      }
+
+      let statusKey = null;
+      if (state.completed) statusKey = "iconCheck";
+      else if (state.locked) statusKey = "iconLock";
+      else if (level?.type === "boss") statusKey = "iconBoss";
+      else if (level?.type === "elite") statusKey = "iconElite";
+
+      status.hidden = !statusKey;
+      if (statusKey) assetSystem.bindBackground(status, statusKey, { size: "contain" });
+      else assetSystem.clearBackground(status);
     });
+  }
+
+  function syncDockAssets(root) {
+    const dock = root.querySelector(".game-dock");
+    if (!dock) return;
+    assetSystem.bindBackground(dock, "bottomDockFrame", { size: "100% 100%" });
+    dock.querySelectorAll(".dock-button, .chest-dock-button").forEach((button) => {
+      assetSystem.bindBackground(button, button.classList.contains("active") ? "dockButtonActive" : "dockButton", { size: "100% 100%" });
+    });
+    assetSystem.bindBackground(root.querySelector('[data-nav-asset="chests"]'), "navChests");
   }
 
   function syncSelectedLevel(root) {
@@ -277,17 +339,43 @@
     }
   }
 
+  function syncChestScreen(screen) {
+    if (!screen) return;
+    screen.classList.add("menu-full-chest-assets");
+    assetSystem.bindBackground(screen.querySelector(".chest-gold-balance i"), "iconGold", { size: "contain" });
+
+    screen.querySelectorAll("[data-chest-card]").forEach((card) => {
+      const type = card.dataset.chestCard;
+      const art = card.querySelector(".chest-art");
+      if (art) assetSystem.bindBackground(art, assetSystem.chestKey(type), { size: "contain" });
+    });
+
+    const dock = screen.querySelector(".chest-dock");
+    if (dock) {
+      assetSystem.bindBackground(dock, "bottomDockFrame", { size: "100% 100%" });
+      const iconKeys = ["navInventory", "navSkills", "navLevels", "navChests"];
+      [...dock.querySelectorAll("button")].forEach((button, index) => {
+        assetSystem.bindBackground(button, button.classList.contains("active") ? "dockButtonActive" : "dockButton", { size: "100% 100%" });
+        const icon = button.querySelector("span");
+        if (icon && iconKeys[index]) assetSystem.bindBackground(icon, iconKeys[index], { size: "contain" });
+      });
+    }
+  }
+
   function sync() {
     if (syncing) return;
     syncing = true;
     try {
       const root = modalContent.querySelector(".game-menu.level-menu");
-      if (!root) return;
-      enhance(root);
-      bindStaticAssets(root);
-      syncProfile(root);
-      syncSelectedLevel(root);
-      syncLevelNodes(root);
+      if (root) {
+        enhance(root);
+        bindStaticAssets(root);
+        syncProfile(root);
+        syncSelectedLevel(root);
+        syncLevelNodes(root);
+        syncDockAssets(root);
+      }
+      syncChestScreen(modalContent.querySelector(".chest-screen"));
     } finally {
       syncing = false;
     }
