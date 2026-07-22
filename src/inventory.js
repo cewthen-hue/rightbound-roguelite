@@ -3,132 +3,65 @@
 
   const overlay = document.getElementById("overlay");
   const modalContent = document.getElementById("modalContent");
-  const STORAGE_KEY = "rightbound-inventory-v3";
+  const profile = window.RightboundPlayerProfile;
+  const catalog = window.RightboundItemCatalog;
   const BAG_SLOTS = 24;
   const QUICK_SLOTS = 3;
   const DESIGN_WIDTH = 390;
   const DESIGN_HEIGHT = 844;
+  const BASE_STATS = Object.freeze({ damage: 12, armor: 0, hp: 100, power: 0, speed: 0 });
 
-  const LEGACY_ITEMS = {
-    "helmet-scout": { name: "Casque du pisteur", type: "helmet", rarity: "rare", glyph: "⌒", level: 1, armor: 3, description: "+3 armure" },
-    "helmet-iron": { name: "Heaume de fer", type: "helmet", rarity: "common", glyph: "⌂", level: 1, armor: 4, description: "+4 armure" },
-    "chest-guard": { name: "Plastron du garde", type: "chest", rarity: "uncommon", glyph: "▣", level: 1, armor: 8, hp: 20, description: "+8 armure · +20 PV" },
-    "blade-rusted": { name: "Lame ébréchée", type: "weapon", rarity: "rare", glyph: "†", level: 1, damage: 7, description: "+7 dégâts" },
-    "axe-iron": { name: "Hache lourde", type: "weapon", rarity: "uncommon", glyph: "⚒", level: 1, damage: 10, description: "+10 dégâts" },
-    "relic-traveler": { name: "Relique du voyageur", type: "relic", rarity: "common", glyph: "Ⅱ", level: 1, armor: 4, description: "+4 armure" },
-    "boots-ranger": { name: "Bottes du rôdeur", type: "boots", rarity: "uncommon", glyph: "⌄", level: 1, armor: 2, speed: 5, description: "+2 armure · +5 vitesse" },
-    "jewel-spark": { name: "Éclat azur", type: "jewel", rarity: "epic", glyph: "◇", level: 1, power: 4, description: "+4 puissance" },
-    "potion-red": { name: "Potion de soin", type: "consumable", rarity: "common", glyph: "✚", level: 1, count: 3, description: "Restaure immédiatement 40 PV" },
-    "potion-blue": { name: "Potion d’énergie", type: "consumable", rarity: "rare", glyph: "◒", level: 1, count: 2, description: "Réduit les temps de recharge" },
-    "bomb-small": { name: "Bombe artisanale", type: "consumable", rarity: "uncommon", glyph: "●", level: 1, count: 2, description: "Inflige des dégâts de zone" }
-  };
+  if (!overlay || !modalContent || !profile || !catalog) {
+    console.error("[Rightbound] Inventaire indisponible : profil joueur ou catalogue manquant.");
+    return;
+  }
 
-  const CATALOG_ITEMS = Object.fromEntries(
-    (window.RightboundItemCatalog?.items || []).map((entry) => [
-      entry.id,
-      { ...entry, ...entry.stats, level: entry.level || 1 }
-    ])
-  );
+  const EQUIPMENT_SLOT_IDS = Object.freeze({
+    weapon: "equip-weapon",
+    helmet: "equip-helmet",
+    chest: "equip-chest",
+    jewel: "equip-jewel",
+    boots: "equip-boots",
+    relic: "equip-relic"
+  });
 
-  const ITEMS = Object.freeze({ ...LEGACY_ITEMS, ...CATALOG_ITEMS });
-
-  const DEFAULT_PLACEMENTS = {
-    "helmet-scout": "bag-0",
-    "helmet-iron": "bag-1",
-    "chest-guard": "equip-chest",
-    "blade-rusted": "equip-weapon",
-    "axe-iron": "bag-2",
-    "relic-traveler": "bag-3",
-    "boots-ranger": "equip-boots",
-    "jewel-spark": "bag-4",
-    "potion-red": "quick-0",
-    "potion-blue": "bag-5",
-    "bomb-small": "bag-6"
-  };
-
-  const EQUIPMENT_TYPES = {
-    "equip-weapon": "weapon",
-    "equip-helmet": "helmet",
-    "equip-chest": "chest",
-    "equip-jewel": "jewel",
-    "equip-boots": "boots",
-    "equip-relic": "relic"
-  };
-
-  const VALID_SLOTS = new Set([
-    ...Object.keys(EQUIPMENT_TYPES),
-    ...Array.from({ length: BAG_SLOTS }, (_, index) => `bag-${index}`),
-    ...Array.from({ length: QUICK_SLOTS }, (_, index) => `quick-${index}`)
-  ]);
-
-  const RARITY_LABELS = {
+  const RARITY_LABELS = Object.freeze({
     common: "Commun",
-    uncommon: "Inhabituel",
     rare: "Rare",
     epic: "Épique",
     legendary: "Légendaire"
-  };
+  });
 
-  let placements = loadPlacements();
-  let selectedItemId = "axe-iron";
+  let selectedInstanceUid = null;
   let resizeHandler = null;
 
   const bagSlotIds = () => Array.from({ length: BAG_SLOTS }, (_, index) => `bag-${index}`);
 
-  function loadPlacements() {
-    try {
-      const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY));
-      if (!parsed || typeof parsed !== "object") return { ...DEFAULT_PLACEMENTS };
-      const used = new Set();
-      const clean = {};
-
-      Object.keys(parsed).forEach((itemId) => {
-        if (!ITEMS[itemId]) return;
-        const slotId = parsed[itemId];
-        if (VALID_SLOTS.has(slotId) && !used.has(slotId)) {
-          clean[itemId] = slotId;
-          used.add(slotId);
-        }
-      });
-
-      Object.keys(DEFAULT_PLACEMENTS).forEach((itemId) => {
-        if (clean[itemId]) return;
-        const fallback = DEFAULT_PLACEMENTS[itemId];
-        const target = VALID_SLOTS.has(fallback) && !used.has(fallback)
-          ? fallback
-          : bagSlotIds().find((slotId) => !used.has(slotId));
-        if (target) {
-          clean[itemId] = target;
-          used.add(target);
-        }
-      });
-      return clean;
-    } catch {
-      return { ...DEFAULT_PLACEMENTS };
-    }
-  }
-
-  function savePlacements() {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(placements)); } catch {}
-  }
-
   function slotMarkup(id, accept, label, extraClass = "") {
     return `<div class="inventory-slot ${extraClass}" data-slot="${id}" data-accept="${accept}" data-label="${label}"></div>`;
+  }
+
+  function getFirstOwnedUid() {
+    const state = profile.getState();
+    return Object.values(state.equipment).find(Boolean) || state.bag.find(Boolean) || state.quickSlots.find(Boolean) || null;
+  }
+
+  function ensureSelectedInstance() {
+    if (selectedInstanceUid && profile.getInstance(selectedInstanceUid)) return;
+    selectedInstanceUid = getFirstOwnedUid();
   }
 
   function renderInventory() {
     overlay.classList.add("menu-overlay");
     overlay.classList.remove("dialog-overlay", "hidden");
     modalContent.className = "modal menu-modal inventory-modal";
-    selectedItemId = ITEMS[selectedItemId] && placements[selectedItemId]
-      ? selectedItemId
-      : Object.keys(placements).find((itemId) => ITEMS[itemId]) || "axe-iron";
+    ensureSelectedInstance();
 
     modalContent.innerHTML = `
       <div class="inventory-viewport">
         <section class="inventory-screen" aria-label="Inventaire et équipement">
           <header class="inventory-header">
-            <button class="inventory-back" id="inventoryBack" aria-label="Retour à la carte">←</button>
+            <button class="inventory-back" id="inventoryBack" aria-label="Retour aux niveaux">←</button>
             <div class="inventory-title">
               <span>PRÉPARATION DU HÉROS</span>
               <h1>INVENTAIRE</h1>
@@ -177,9 +110,9 @@
           </section>
 
           <section class="selected-item" aria-label="Objet sélectionné">
-            <div class="selected-item-icon" id="selectedItemIcon">⚒</div>
-            <div class="selected-item-copy"><strong id="selectedItemName">Hache lourde</strong><span id="selectedItemDescription">+10 dégâts</span></div>
-            <span class="selected-item-rarity" id="selectedItemRarity">Inhabituel</span>
+            <div class="selected-item-icon" id="selectedItemIcon"></div>
+            <div class="selected-item-copy"><strong id="selectedItemName">Aucun objet</strong><span id="selectedItemDescription">Les équipements gagnés apparaîtront ici.</span></div>
+            <span class="selected-item-rarity" id="selectedItemRarity">—</span>
           </section>
 
           <nav class="inventory-dock" aria-label="Navigation principale">
@@ -223,164 +156,181 @@
     window.visualViewport?.addEventListener("resize", resizeHandler, { passive: true });
   }
 
-  function returnToMap() { window.RightboundUI?.renderMainMenu?.(); }
+  function returnToMap() {
+    window.RightboundUI?.renderMainMenu?.();
+  }
 
   function showHelp() {
-    window.RightboundUI?.showToast?.("Glisse un objet vers une case compatible. Touche un objet pour afficher sa fiche.", 3200);
+    window.RightboundUI?.showToast?.("Glisse un équipement vers une case compatible. Touche-le pour afficher sa fiche.", 3200);
   }
 
   function itemVisualMarkup(item) {
-    if (item.image) {
+    if (item?.image) {
       return `<img class="item-image" src="${item.image}" alt="" draggable="false" decoding="async" style="width:100%;height:100%;padding:3px;object-fit:contain;pointer-events:none;user-select:none">`;
     }
-    return `<span class="item-glyph">${item.glyph}</span>`;
+    return `<span class="item-glyph">${item?.glyph || "?"}</span>`;
   }
 
-  function createItemElement(itemId) {
-    const item = ITEMS[itemId];
+  function createItemElement(instanceUid) {
+    const instance = profile.getInstance(instanceUid);
+    const item = profile.getItemForInstance(instanceUid);
+    if (!instance || !item) return null;
+
     const element = document.createElement("div");
     element.className = "inventory-item";
-    element.dataset.itemId = itemId;
+    element.dataset.instanceUid = instanceUid;
+    element.dataset.itemId = item.id;
     element.dataset.rarity = item.rarity;
     element.setAttribute("role", "button");
     element.setAttribute("tabindex", "0");
-    element.setAttribute("aria-label", item.name);
-    element.innerHTML = `<span class="item-level">N${item.level}</span>${itemVisualMarkup(item)}${item.count ? `<span class="item-count">${item.count}</span>` : ""}`;
-    element.addEventListener("pointerdown", (event) => beginPointerInteraction(event, itemId, element));
+    element.setAttribute("aria-label", `${item.name}, niveau ${instance.level}`);
+    element.innerHTML = `<span class="item-level">N${instance.level}</span>${itemVisualMarkup(item)}`;
+    element.addEventListener("pointerdown", (event) => beginPointerInteraction(event, instanceUid, element));
     return element;
+  }
+
+  function appendInstanceToSlot(instanceUid, slotId) {
+    if (!instanceUid) return;
+    const slot = modalContent.querySelector(`[data-slot="${slotId}"]`);
+    const element = createItemElement(instanceUid);
+    if (slot && element) slot.appendChild(element);
   }
 
   function renderItems() {
     modalContent.querySelectorAll(".inventory-slot").forEach((slot) => slot.replaceChildren());
-    Object.entries(placements).forEach(([itemId, slotId]) => {
-      const slot = modalContent.querySelector(`[data-slot="${slotId}"]`);
-      if (slot && ITEMS[itemId]) slot.appendChild(createItemElement(itemId));
+    const state = profile.getState();
+
+    Object.entries(EQUIPMENT_SLOT_IDS).forEach(([type, slotId]) => {
+      appendInstanceToSlot(state.equipment[type], slotId);
     });
-    const bagCount = Object.values(placements).filter((slotId) => slotId.startsWith("bag-")).length;
+    state.bag.forEach((instanceUid, index) => appendInstanceToSlot(instanceUid, `bag-${index}`));
+    state.quickSlots.forEach((instanceUid, index) => appendInstanceToSlot(instanceUid, `quick-${index}`));
+
     const capacity = document.getElementById("bagCapacity");
-    if (capacity) capacity.textContent = `${bagCount} / ${BAG_SLOTS}`;
+    const bagSpace = profile.getBagSpace();
+    if (capacity) capacity.textContent = `${bagSpace.used} / ${bagSpace.capacity}`;
+
     updateStats();
-    modalContent.querySelectorAll(".inventory-item").forEach((node) => node.classList.toggle("selected", node.dataset.itemId === selectedItemId));
+    modalContent.querySelectorAll(".inventory-item").forEach((node) => {
+      node.classList.toggle("selected", node.dataset.instanceUid === selectedInstanceUid);
+    });
   }
 
   function updateStats() {
-    const totals = Object.entries(placements)
-      .filter(([, slotId]) => slotId.startsWith("equip-"))
-      .reduce((result, [itemId]) => {
-        const item = ITEMS[itemId];
-        result.damage += item.damage || 0;
-        result.armor += item.armor || 0;
-        result.hp += item.hp || 0;
-        result.power += item.power || 0;
-        result.speed += item.speed || 0;
-        return result;
-      }, { damage: 12, armor: 0, hp: 100, power: 0, speed: 0 });
-
-    const score = totals.damage * 2 + totals.armor * 3 + Math.round((totals.hp - 100) / 2) + totals.power * 5 + totals.speed;
-    document.getElementById("inventoryDamage").textContent = totals.damage;
-    document.getElementById("inventoryArmor").textContent = totals.armor;
-    document.getElementById("inventoryHp").textContent = totals.hp;
-    document.getElementById("inventoryPower").textContent = score;
+    const totals = profile.getLoadoutStats(BASE_STATS);
+    document.getElementById("inventoryDamage").textContent = Math.round(totals.damage);
+    document.getElementById("inventoryArmor").textContent = Math.round(totals.armor);
+    document.getElementById("inventoryHp").textContent = Math.round(totals.hp);
+    document.getElementById("inventoryPower").textContent = profile.getPowerScore(BASE_STATS);
   }
 
-  function openSheet(itemId) {
-    selectedItemId = itemId;
+  function openSheet(instanceUid) {
+    if (!profile.getInstance(instanceUid)) return;
+    selectedInstanceUid = instanceUid;
     renderSelectedItem();
-    modalContent.querySelectorAll(".inventory-item").forEach((node) => node.classList.toggle("selected", node.dataset.itemId === selectedItemId));
+    modalContent.querySelectorAll(".inventory-item").forEach((node) => {
+      node.classList.toggle("selected", node.dataset.instanceUid === selectedInstanceUid);
+    });
   }
 
   function renderSelectedItem() {
-    const item = ITEMS[selectedItemId] || ITEMS["axe-iron"];
-    if (!item) return;
+    ensureSelectedInstance();
+    const item = selectedInstanceUid ? profile.getItemForInstance(selectedInstanceUid) : null;
+    const instance = selectedInstanceUid ? profile.getInstance(selectedInstanceUid) : null;
     const icon = document.getElementById("selectedItemIcon");
-    if (icon) icon.innerHTML = itemVisualMarkup(item);
-    document.getElementById("selectedItemName").textContent = item.name;
-    document.getElementById("selectedItemDescription").textContent = item.description;
-    document.getElementById("selectedItemRarity").textContent = RARITY_LABELS[item.rarity] || item.rarity;
-    document.querySelector(".selected-item")?.setAttribute("data-rarity", item.rarity);
-  }
+    const name = document.getElementById("selectedItemName");
+    const description = document.getElementById("selectedItemDescription");
+    const rarity = document.getElementById("selectedItemRarity");
+    const sheet = document.querySelector(".selected-item");
 
-  function itemAtSlot(slotId) { return Object.keys(placements).find((itemId) => placements[itemId] === slotId) || null; }
+    if (!item || !instance) {
+      if (icon) icon.innerHTML = "";
+      if (name) name.textContent = "Aucun objet";
+      if (description) description.textContent = "Les équipements gagnés apparaîtront ici.";
+      if (rarity) rarity.textContent = "—";
+      sheet?.removeAttribute("data-rarity");
+      return;
+    }
+
+    if (icon) icon.innerHTML = itemVisualMarkup(item);
+    if (name) name.textContent = item.name;
+    if (description) description.textContent = item.description;
+    if (rarity) rarity.textContent = RARITY_LABELS[item.rarity] || item.rarity;
+    sheet?.setAttribute("data-rarity", item.rarity);
+  }
 
   function slotAccepts(slot, itemType) {
     if (!slot) return false;
-    const accept = slot.dataset.accept;
-    return accept === "any" || accept === itemType;
+    return profile.slotAccepts(slot.dataset.slot, itemType);
   }
 
-  function moveItem(itemId, targetSlot) {
-    const sourceSlotId = placements[itemId];
+  function moveItem(instanceUid, targetSlot) {
+    const item = profile.getItemForInstance(instanceUid);
     const targetSlotId = targetSlot?.dataset.slot;
-    const item = ITEMS[itemId];
-    if (!sourceSlotId || !targetSlotId || sourceSlotId === targetSlotId || !item) return;
-    if (!slotAccepts(targetSlot, item.type)) {
-      window.RightboundUI?.showToast?.("Cet objet ne peut pas être placé ici.");
+    if (!item || !targetSlotId) return;
+
+    const result = profile.moveInstance(instanceUid, targetSlotId);
+    if (!result.ok) {
+      const message = result.reason === "incompatible-swap"
+        ? "Impossible d’échanger ces équipements."
+        : "Cet équipement ne peut pas être placé ici.";
+      window.RightboundUI?.showToast?.(message);
       return;
     }
 
-    const sourceSlot = modalContent.querySelector(`[data-slot="${sourceSlotId}"]`);
-    const targetItemId = itemAtSlot(targetSlotId);
-    if (targetItemId && !slotAccepts(sourceSlot, ITEMS[targetItemId].type)) {
-      window.RightboundUI?.showToast?.("Impossible d’échanger ces objets.");
-      return;
-    }
-    if (targetItemId) placements[targetItemId] = sourceSlotId;
-    placements[itemId] = targetSlotId;
-    savePlacements();
     navigator.vibrate?.(10);
     renderItems();
+    renderSelectedItem();
   }
 
-  function grantItem(itemId) {
-    const item = ITEMS[itemId];
-    if (!item || item.type === "consumable") return { ok: false, reason: "unknown-item" };
-    if (placements[itemId]) return { ok: true, reason: "already-owned", slotId: placements[itemId] };
-
-    const occupied = new Set(Object.values(placements));
-    const slotId = bagSlotIds().find((candidate) => !occupied.has(candidate));
-    if (!slotId) {
-      window.RightboundUI?.showToast?.("Sac à dos plein.");
-      return { ok: false, reason: "bag-full" };
+  function grantItem(itemId, options = {}) {
+    const result = profile.grantItem(itemId, options);
+    if (!result.ok) {
+      if (result.reason === "bag-full") window.RightboundUI?.showToast?.("Sac à dos plein.");
+      return result;
     }
 
-    placements[itemId] = slotId;
-    selectedItemId = itemId;
-    savePlacements();
-    document.dispatchEvent(new CustomEvent("rightbound:item-granted", {
-      detail: { itemId, slotId, item }
-    }));
-
+    selectedInstanceUid = result.instance.uid;
     if (modalContent.querySelector(".inventory-screen")) {
       renderItems();
       renderSelectedItem();
     }
-    return { ok: true, reason: "granted", slotId };
+    document.dispatchEvent(new CustomEvent("rightbound:item-granted", {
+      detail: { ...result, itemId }
+    }));
+    return result;
   }
 
   function hasItem(itemId) {
-    return Boolean(placements[itemId]);
+    return profile.hasItem(itemId);
   }
 
   function getOwnedItemIds() {
-    return Object.keys(placements).filter((itemId) => Boolean(ITEMS[itemId]));
+    return profile.getOwnedItemIds();
   }
 
   function highlightSlots(itemType) {
     modalContent.querySelectorAll(".inventory-slot").forEach((slot) => {
-      slot.classList.toggle("drop-valid", slotAccepts(slot, itemType));
-      slot.classList.toggle("drop-invalid", !slotAccepts(slot, itemType));
+      const valid = slotAccepts(slot, itemType);
+      slot.classList.toggle("drop-valid", valid);
+      slot.classList.toggle("drop-invalid", !valid);
     });
   }
 
   function clearSlotHighlights() {
-    modalContent.querySelectorAll(".inventory-slot").forEach((slot) => slot.classList.remove("drop-valid", "drop-invalid", "drop-target"));
+    modalContent.querySelectorAll(".inventory-slot").forEach((slot) => {
+      slot.classList.remove("drop-valid", "drop-invalid", "drop-target");
+    });
   }
 
-  function beginPointerInteraction(event, itemId, sourceElement) {
+  function beginPointerInteraction(event, instanceUid, sourceElement) {
     if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
     event.preventDefault();
     const startX = event.clientX;
     const startY = event.clientY;
+    const item = profile.getItemForInstance(instanceUid);
+    if (!item) return;
+
     let active = false;
     let ghost = null;
     let currentTarget = null;
@@ -391,7 +341,7 @@
       ghost = sourceElement.cloneNode(true);
       ghost.classList.add("drag-ghost");
       document.body.appendChild(ghost);
-      highlightSlots(ITEMS[itemId].type);
+      highlightSlots(item.type);
     };
 
     const moveGhost = (x, y) => {
@@ -407,7 +357,7 @@
       moveGhost(moveEvent.clientX, moveEvent.clientY);
       currentTarget?.classList.remove("drop-target");
       currentTarget = document.elementFromPoint(moveEvent.clientX, moveEvent.clientY)?.closest(".inventory-slot") || null;
-      if (currentTarget && slotAccepts(currentTarget, ITEMS[itemId].type)) currentTarget.classList.add("drop-target");
+      if (currentTarget && slotAccepts(currentTarget, item.type)) currentTarget.classList.add("drop-target");
     };
 
     const finish = (upEvent) => {
@@ -416,9 +366,9 @@
       window.removeEventListener("pointercancel", cancel);
       if (active) {
         const target = document.elementFromPoint(upEvent.clientX, upEvent.clientY)?.closest(".inventory-slot") || null;
-        if (target) moveItem(itemId, target);
+        if (target) moveItem(instanceUid, target);
       } else {
-        openSheet(itemId);
+        openSheet(instanceUid);
       }
       sourceElement.classList.remove("dragging");
       ghost?.remove();
@@ -449,13 +399,25 @@
     button.addEventListener("click", renderInventory);
   }
 
-  new MutationObserver(() => requestAnimationFrame(wireMenuInventoryButton)).observe(modalContent, { childList: true, subtree: true });
+  new MutationObserver(() => requestAnimationFrame(wireMenuInventoryButton))
+    .observe(modalContent, { childList: true, subtree: true });
+
+  document.addEventListener("rightbound:profile-changed", () => {
+    if (!modalContent.querySelector(".inventory-screen")) return;
+    ensureSelectedInstance();
+    renderItems();
+    renderSelectedItem();
+  });
+
   window.RightboundInventory = Object.freeze({
     renderInventory,
     grantItem,
     hasItem,
     getOwnedItemIds,
-    getItem: (itemId) => ITEMS[itemId] || null
+    getOwnedInstances: profile.getOwnedInstances,
+    getItem: (itemId) => catalog.getItem(itemId),
+    getProfile: profile.getState
   });
+
   wireMenuInventoryButton();
 })();
