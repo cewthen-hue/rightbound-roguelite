@@ -1,0 +1,29 @@
+/* Global game typography. Loaded last so every HTML interface uses one family. */
+
+:root{
+  --rightbound-font:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+}
+
+html,
+body,
+button,
+input,
+select,
+textarea,
+optgroup,
+option,
+body *{
+  font-family:var(--rightbound-font)!important;
+}
+
+button,
+input,
+select,
+textarea{
+  font-synthesis:none;
+}
+
+body{
+  font-kerning:normal;
+  text-rendering:optimizeLegibility;
+}
