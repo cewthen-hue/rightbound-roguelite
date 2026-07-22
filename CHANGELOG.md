@@ -2,6 +2,24 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.16.0] — 2026-07-22
+
+### Coffres et équipements réels
+
+- Ajout de `src/loot.js`, source centrale des tables de récompenses des quatre coffres.
+- Association stricte des raretés : Bronze vers Commun, Argent vers Rare, Or vers Épique et Diamant vers Légendaire.
+- Chaque coffre donne désormais un véritable équipement permanent du catalogue ainsi que des golds.
+- Nouveau barème : Bronze 40–80 golds, Argent 90–160, Or 180–300 et Diamant 350–550.
+- Premier coffre Bronze garanti : `Casque du veilleur` accompagné de 50 golds.
+- Protection contre les doublons tant qu’un objet encore inconnu existe dans la rareté du coffre.
+- Ajout de l’objet obtenu comme instance unique dans la première case libre du sac.
+- Blocage de l’ouverture lorsque les 24 cases du sac sont pleines, sans consommer le coffre.
+- Nouvelle révélation affichant l’icône réelle, le nom, la rareté, les statistiques et les golds obtenus.
+- Ajout des actions `Équiper` et `Garder` après l’ouverture.
+- Mise en place d’une transaction persistante permettant de reprendre proprement une ouverture interrompue sans dupliquer la récompense.
+- Conservation et migration des anciens stocks de coffres déjà sauvegardés.
+- Mise à jour du cache PWA en version `0.16.0`.
+
 ## [0.15.0] — 2026-07-22
 
 ### Profil joueur et inventaire initial
