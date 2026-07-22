@@ -25,7 +25,7 @@
     button.type = "button";
     button.id = id;
     button.className = `premium-utility-button ${kind}`;
-    button.innerHTML = `<span class="premium-utility-icon">${iconMarkup(kind)}</span><small>${label}</small>`;
+    button.innerHTML = `<span class="premium-utility-icon" data-utility-asset="${kind}">${iconMarkup(kind)}</span><small>${label}</small>`;
     return button;
   }
 
@@ -40,7 +40,7 @@
       <div class="premium-profile-copy">
         <strong>JACK</strong>
         <div class="premium-profile-progress-row">
-          <span>PROGRESSION</span>
+          <span>MONDE 1</span>
           <div class="premium-profile-progress"><i id="premiumProfileProgressFill"></i></div>
           <b id="premiumProfileProgressText">0/10</b>
         </div>
@@ -50,12 +50,13 @@
   function enhanceCurrencies(root) {
     const gold = root.querySelector(".level-gold");
     const power = root.querySelector(".level-power");
-    if (gold && !gold.querySelector(".resource-label")) {
-      gold.insertAdjacentHTML("afterbegin", '<span class="resource-label">GOLDS</span>');
-    }
-    if (power && !power.querySelector(".resource-label")) {
-      power.insertAdjacentHTML("afterbegin", '<span class="resource-label">PUISSANCE</span>');
-    }
+    gold?.querySelectorAll(".resource-label").forEach((node) => node.remove());
+    power?.querySelectorAll(".resource-label").forEach((node) => node.remove());
+
+    const goldIcon = gold?.querySelector("i");
+    const powerIcon = power?.querySelector("span");
+    if (goldIcon) goldIcon.dataset.resourceAsset = "gold";
+    if (powerIcon) powerIcon.dataset.resourceAsset = "power";
   }
 
   function enhanceWorldHeading(root) {
@@ -64,7 +65,7 @@
     heading.dataset.enhanced = "true";
     const copy = heading.querySelector(".world-heading-copy");
     const progress = heading.querySelector(".world-progress");
-    const settings = createUtilityButton("premiumSettingsButton", "settings", "PARAMÈTRES");
+    const settings = createUtilityButton("premiumSettingsButton", "settings", "OPTIONS");
     const journal = createUtilityButton("premiumJournalButton", "journal", "JOURNAL");
 
     if (copy && progress) copy.appendChild(progress);
@@ -80,6 +81,10 @@
     if (!showcase || showcase.dataset.enhanced === "true") return;
     showcase.dataset.enhanced = "true";
 
+    showcase.querySelector(".level-scene-skyline")?.remove();
+    showcase.querySelector(".level-hero")?.remove();
+    showcase.querySelector(".level-hero-platform")?.remove();
+
     const assets = document.createElement("div");
     assets.className = "premium-stage-assets";
     assets.setAttribute("aria-hidden", "true");
@@ -91,7 +96,7 @@
     showcase.prepend(assets);
 
     const footer = showcase.querySelector(".level-scene-footer");
-    if (footer) {
+    if (footer && !footer.querySelector(".stage-location-kicker")) {
       footer.insertAdjacentHTML("afterbegin", '<span class="stage-location-kicker">ZONE ACTIVE</span>');
     }
   }
@@ -130,12 +135,36 @@
     selector.after(legend);
   }
 
+  function ensurePlaySubtitle(button) {
+    if (!button) return null;
+    let subtitle = button.querySelector(".premium-play-subtitle");
+    if (!subtitle) {
+      subtitle = document.createElement("small");
+      subtitle.className = "premium-play-subtitle";
+      button.appendChild(subtitle);
+    }
+    subtitle.textContent = button.disabled ? "TERMINE LE NIVEAU PRÉCÉDENT" : "LANCER L’EXPÉDITION";
+    return subtitle;
+  }
+
   function enhancePlayRow(root) {
     const row = root.querySelector(".level-play-row");
     const button = root.querySelector("#playSelectedLevel");
-    if (!row || !button || row.dataset.enhanced === "true") return;
+    if (!row || !button) return;
+    ensurePlaySubtitle(button);
+    if (row.dataset.enhanced === "true") return;
     row.dataset.enhanced = "true";
-    button.insertAdjacentHTML("beforeend", '<small class="premium-play-subtitle">LANCER L’EXPÉDITION</small>');
+
+    button.addEventListener("pointerdown", () => {
+      if (!button.disabled) assetSystem.bindBackground(button, "playButtonPressed", { size: "100% 100%" });
+    });
+    const restore = () => {
+      const key = button.disabled ? "playButtonLocked" : "playButton";
+      assetSystem.bindBackground(button, key, { size: "100% 100%" });
+    };
+    button.addEventListener("pointerup", restore);
+    button.addEventListener("pointercancel", restore);
+    button.addEventListener("pointerleave", restore);
   }
 
   function prepareDockButton(button, kind, label, active = false) {
@@ -173,8 +202,7 @@
   }
 
   function enhance(root) {
-    if (!root || root.dataset.premiumLayout === "true") return;
-    root.dataset.premiumLayout = "true";
+    if (!root) return;
     root.classList.add("premium-level-menu");
     enhanceProfile(root);
     enhanceCurrencies(root);
@@ -184,6 +212,7 @@
     enhanceSelector(root);
     enhancePlayRow(root);
     enhanceDock(root);
+    root.dataset.premiumLayout = "true";
   }
 
   function bindStaticAssets(root) {
@@ -193,7 +222,11 @@
     assetSystem.bindBackground(root.querySelector("#premiumStageHeroAsset"), "heroStage", { size: "contain", position: "center bottom" });
     assetSystem.bindBackground(root.querySelector("#premiumStageFrameAsset"), "stageFrame", { size: "100% 100%", position: "center" });
     assetSystem.bindBackground(root.querySelector(".level-card-header"), "levelPlaque", { size: "100% 100%", position: "center" });
-    assetSystem.bindBackground(root.querySelector("#playSelectedLevel"), "playButton", { size: "100% 100%", position: "center" });
+    root.querySelectorAll(".level-fact").forEach((fact) => assetSystem.bindBackground(fact, "infoPanel", { size: "100% 100%" }));
+    assetSystem.bindBackground(root.querySelector('[data-utility-asset="settings"]'), "iconSettings");
+    assetSystem.bindBackground(root.querySelector('[data-utility-asset="journal"]'), "iconJournal");
+    assetSystem.bindBackground(root.querySelector('[data-resource-asset="gold"]'), "iconGold");
+    assetSystem.bindBackground(root.querySelector('[data-resource-asset="power"]'), "iconPower");
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="inventory"]'), "navInventory");
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="skills"]'), "navSkills");
     assetSystem.bindBackground(root.querySelector('[data-nav-asset="levels"]'), "navLevels");
@@ -238,6 +271,7 @@
     }
     const button = root.querySelector("#playSelectedLevel");
     if (button) {
+      ensurePlaySubtitle(button);
       const key = button.disabled ? "playButtonLocked" : "playButton";
       assetSystem.bindBackground(button, key, { size: "100% 100%" });
     }
