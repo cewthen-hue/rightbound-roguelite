@@ -8,6 +8,9 @@
   const jumpButton = document.getElementById("jumpButton");
   const toast = document.getElementById("gameToast");
 
+  const ECONOMY_STORAGE_KEY = "rightbound-economy-v1";
+  const DEFAULT_ECONOMY = Object.freeze({ gold: 0 });
+
   const STAGES = [
     { id: 1, name: "Faubourgs oubliés", accessible: true },
     { id: 2, name: "Voie industrielle", accessible: false },
@@ -29,11 +32,69 @@
   let renderingMenu = false;
   let levelOneCompleted = false;
   let toastTimer = 0;
+  let economy = loadEconomy();
 
   try {
     levelOneCompleted = localStorage.getItem("rightbound-level-1-completed") === "true";
   } catch {
     levelOneCompleted = false;
+  }
+
+  function normalizeGold(value) {
+    const parsed = Number(value);
+    if (!Number.isFinite(parsed)) return 0;
+    return Math.max(0, Math.floor(parsed));
+  }
+
+  function loadEconomy() {
+    try {
+      const parsed = JSON.parse(localStorage.getItem(ECONOMY_STORAGE_KEY));
+      return { gold: normalizeGold(parsed?.gold ?? DEFAULT_ECONOMY.gold) };
+    } catch {
+      return { ...DEFAULT_ECONOMY };
+    }
+  }
+
+  function saveEconomy() {
+    try { localStorage.setItem(ECONOMY_STORAGE_KEY, JSON.stringify(economy)); } catch {}
+  }
+
+  function formatGold(value) {
+    return normalizeGold(value).toLocaleString("fr-FR");
+  }
+
+  function updateGoldDisplay() {
+    const balance = document.getElementById("menuGoldValue");
+    if (balance) balance.textContent = formatGold(economy.gold);
+  }
+
+  function emitEconomyChange() {
+    document.dispatchEvent(new CustomEvent("rightbound:economy-changed", {
+      detail: { gold: economy.gold }
+    }));
+  }
+
+  function setGold(value) {
+    economy.gold = normalizeGold(value);
+    saveEconomy();
+    updateGoldDisplay();
+    emitEconomyChange();
+    return economy.gold;
+  }
+
+  function addGold(amount) {
+    return setGold(economy.gold + normalizeGold(amount));
+  }
+
+  function spendGold(amount) {
+    const cost = normalizeGold(amount);
+    if (cost > economy.gold) return false;
+    setGold(economy.gold - cost);
+    return true;
+  }
+
+  function getGold() {
+    return economy.gold;
   }
 
   function showToast(message, duration = 2600) {
@@ -92,19 +153,26 @@
 
   function renderMainMenu() {
     renderingMenu = true;
+    economy = loadEconomy();
     setMenuOverlayMode();
     overlay.classList.remove("hidden");
 
     modalContent.innerHTML = `
       <section class="game-menu menu-entering" aria-label="Menu principal">
         <header class="menu-topbar">
-          <div>
+          <div class="menu-brand">
             <span class="menu-kicker">Expédition mobile</span>
             <h1 class="menu-title">RIGHT<span>BOUND</span></h1>
           </div>
-          <div class="menu-tools">
-            <button class="menu-tool-button" id="installGameButton" aria-label="Installer le jeu">⇩</button>
-            <button class="menu-tool-button" id="fullscreenGameButton" aria-label="Plein écran">⛶</button>
+          <div class="menu-actions">
+            <div class="menu-gold-balance" aria-label="Solde d'or">
+              <span class="menu-gold-coin" aria-hidden="true">●</span>
+              <strong id="menuGoldValue">${formatGold(economy.gold)}</strong>
+            </div>
+            <div class="menu-tools">
+              <button class="menu-tool-button" id="installGameButton" aria-label="Installer le jeu">⇩</button>
+              <button class="menu-tool-button" id="fullscreenGameButton" aria-label="Plein écran">⛶</button>
+            </div>
           </div>
         </header>
 
@@ -258,6 +326,12 @@
     .observe(hpFill, { attributes: true, attributeFilter: ["style"] });
 
   window.addEventListener("resize", positionFloatingHealth, { passive: true });
+  window.addEventListener("storage", (event) => {
+    if (event.key !== ECONOMY_STORAGE_KEY) return;
+    economy = loadEconomy();
+    updateGoldDisplay();
+  });
+
   jumpButton.addEventListener("click", () => {
     if (jumpButton.disabled) return;
     floatingHealth.classList.remove("jumping");
@@ -271,6 +345,9 @@
     document.getElementById("installGameButton")?.classList.add("install-ready");
   });
 
+  document.addEventListener("rightbound:economy-changed", updateGoldDisplay);
+
+  window.RightboundEconomy = { getGold, setGold, addGold, spendGold };
   window.RightboundUI = { renderMainMenu, showInstallHelp, showToast };
   positionFloatingHealth();
   updateFloatingHealth();
