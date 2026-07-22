@@ -80,8 +80,8 @@
   }
 
   function nodeKey(level, state = {}) {
-    if (state.locked) return "nodeLocked";
     if (state.selected) return "nodeSelected";
+    if (state.locked) return "nodeLocked";
     if (state.completed) return "nodeCompleted";
     if (level?.type === "boss") return "nodeBoss";
     if (level?.type === "elite") return "nodeElite";
@@ -89,7 +89,7 @@
   }
 
   window.RightboundMenuAssets = Object.freeze({
-    version: "1.0.0",
+    version: "1.1.0",
     paths: assets,
     resolve,
     bindBackground,
