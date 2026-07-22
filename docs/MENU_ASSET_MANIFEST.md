@@ -1,6 +1,6 @@
 # Menu premium — manifeste des assets
 
-Version du layout : `0.19.0`
+Version du layout : `0.20.0`
 
 Le menu fonctionne sans aucune image grâce aux fallbacks CSS. Dès qu’un fichier est ajouté au chemin indiqué, il est chargé automatiquement sans modifier le code.
 
@@ -71,7 +71,7 @@ Tous les nœuds sont carrés, strictement centrés, sans numéro et avec fond tr
 
 | Icône | Chemin exact | Taille |
 |---|---|---:|
-| Paramètres | `assets/menu/icons/settings.png` | 192 × 192 |
+| Options | `assets/menu/icons/settings.png` | 192 × 192 |
 | Journal | `assets/menu/icons/journal.png` | 192 × 192 |
 | Gold | `assets/menu/icons/gold.png` | 128 × 128 |
 | Puissance | `assets/menu/icons/power.png` | 128 × 128 |
