@@ -1,7 +1,7 @@
 /* Global game typography. Loaded last so every HTML interface uses one family. */
 
 :root{
-  --rightbound-font:"Barlow Condensed","Arial Narrow",Arial,sans-serif;
+  --rightbound-font:"Roboto Condensed","Arial Narrow",Arial,sans-serif;
 }
 
 html,
