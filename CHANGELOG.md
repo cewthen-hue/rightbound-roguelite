@@ -2,6 +2,23 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.18.0] — 2026-07-22
+
+### Équipements appliqués au véritable combat
+
+- Ajout de `src/build.js`, source centrale du build équipé et des statistiques dérivées utilisées par l’inventaire, le menu des niveaux et le combat.
+- Application réelle des dégâts, de l’armure et des PV fournis par les équipements au début de chaque expédition.
+- Conversion des bonus secondaires en effets de combat : critique, vitesse d’attaque, vitesse de déplacement, puissance des compétences, réduction des recharges, soins et esquive passive.
+- Verrouillage du build au lancement de l’expédition : changer d’équipement ne modifie pas une partie déjà commencée, mais s’applique à la suivante.
+- Suppression des deux potions gratuites du prototype ; le combat démarre désormais avec le contenu réel des emplacements rapides, actuellement vides.
+- Affichage dynamique de la puissance réelle du héros dans le menu, en remplacement de la valeur provisoire `83`.
+- Ajout d’un indicateur comparant la puissance du build à la puissance conseillée du niveau.
+- Conservation d’une formule de puissance unique entre l’inventaire et le menu afin d’éviter des valeurs contradictoires.
+- Ajout d’une mise à l’échelle des PV, dégâts et vitesse d’attaque des ennemis selon le niveau sélectionné et sa puissance recommandée.
+- Renforcement supplémentaire des rencontres Élite et Boss, notamment du boss du niveau 10.
+- Ajout d’un retour visuel lors d’une esquive passive déclenchée par un équipement.
+- Mise à jour du cache PWA en version `0.18.0`.
+
 ## [0.17.0] — 2026-07-22
 
 ### Progression des niveaux et nouvelles probabilités de coffres
