@@ -93,10 +93,17 @@
     }
   }
 
+  function emitChestChange() {
+    const detail = getState();
+    queueMicrotask(() => {
+      document.dispatchEvent(new CustomEvent("rightbound:chests-changed", { detail }));
+    });
+  }
+
   function saveState() {
     try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch {}
     updateMenuBadge();
-    document.dispatchEvent(new CustomEvent("rightbound:chests-changed", { detail: getState() }));
+    emitChestChange();
   }
 
   function getState() {
@@ -535,4 +542,8 @@
   migrateCompletedLevelReward();
   recoverPendingOpening();
   injectChestDockButton();
+  queueMicrotask(() => {
+    window.RightboundProgression?.resumePendingRunReward?.();
+    document.dispatchEvent(new CustomEvent("rightbound:chests-ready", { detail: getState() }));
+  });
 })();
