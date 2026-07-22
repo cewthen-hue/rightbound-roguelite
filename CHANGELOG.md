@@ -2,6 +2,28 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.17.0] — 2026-07-22
+
+### Progression des niveaux et nouvelles probabilités de coffres
+
+- Ajout d’une progression persistante sur les dix niveaux du Monde 1.
+- Un niveau terminé accorde exactement un seul coffre correspondant au niveau joué, y compris lors d’une nouvelle victoire sur un niveau déjà terminé.
+- Déblocage automatique du niveau suivant après une victoire et affichage d’une coche sur les niveaux terminés.
+- Les niveaux débloqués sont rejouables et les niveaux encore inaccessibles restent consultables mais verrouillés.
+- Transfert de tous les golds ramassés pendant le combat vers le solde permanent en cas de victoire.
+- Conservation de 25 % des golds de combat en cas de défaite, sans coffre ni déblocage.
+- Ajout d’un écran de résultat détaillant les golds permanents et le coffre gagné.
+- Sauvegarde transactionnelle et identifiants de récompense empêchant qu’un même combat ajoute deux fois ses golds ou son coffre.
+- Mise à jour du fonctionnement des coffres : les golds sont toujours garantis, mais un équipement n’est plus systématique.
+- Coffre Bronze : 80 % d’objet commun et 20 % de golds seuls, à l’exception du tout premier Bronze qui conserve le Casque du veilleur garanti.
+- Coffre Argent : 70 % d’objet rare et 30 % d’objet commun.
+- Coffre Or : 50 % d’objet rare, 35 % d’objet épique et 15 % d’objet commun.
+- Coffre Diamant : 40 % d’objet légendaire, 30 % d’objet épique, 20 % d’objet rare et 10 % d’objet commun.
+- Maintien de la protection contre les doublons à l’intérieur de la rareté effectivement tirée.
+- Possibilité d’obtenir un résultat « golds uniquement » avec une révélation dédiée.
+- Si un objet est tiré alors que le sac est plein, la récompense reste enregistrée en attente et le coffre n’est pas consommé.
+- Mise à jour du cache PWA en version `0.17.0`.
+
 ## [0.16.0] — 2026-07-22
 
 ### Coffres et équipements réels
