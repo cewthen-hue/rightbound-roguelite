@@ -1,1 +1,46 @@
 .game-menu{grid-template-rows:auto minmax(0,1fr) auto auto}.game-menu .stage-node{min-width:0!important;min-height:0!important;padding:0!important;gap:0!important;flex:none!important}.game-menu .stage-lock{position:relative}.game-menu .stage-lock:before{left:50%;top:-10px;margin:0;transform:translateX(-50%)}.jump-button.cooling{pointer-events:none}.jump-button.cooling:active{transform:none}#playerFloatingHp{will-change:transform}
+
+html,
+body,
+#app,
+.game-shell,
+.game-menu,
+.game-overlay,
+.game-toast,
+.orientation-notice,
+.boot-screen {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+button,
+[role="button"],
+.slot,
+.action-button,
+.stage-node,
+.inventory-slot,
+.nav-item {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+img,
+svg,
+canvas {
+  -webkit-user-drag: none;
+  user-drag: none;
+}
+
+input,
+textarea,
+select,
+[contenteditable="true"] {
+  -webkit-user-select: text;
+  user-select: text;
+  -webkit-touch-callout: default;
+}
