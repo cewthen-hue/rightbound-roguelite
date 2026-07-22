@@ -276,6 +276,10 @@
   function prepareRun(levelId) {
     const level = levelById(levelId);
     if (!level || !isLevelUnlocked(levelId)) return null;
+    const recentActiveRun = progression.activeRun;
+    if (recentActiveRun?.phase === "playing" && Date.now() - recentActiveRun.startedAt < 1500) {
+      return recentActiveRun;
+    }
     const run = {
       id: `run-${String(progression.nextRunSerial).padStart(6, "0")}-${Date.now()}`,
       levelId,
@@ -398,7 +402,8 @@
         level,
         combatGold: run.combatGold,
         permanentGold: run.permanentGold,
-        chestGranted: victory
+        chestGranted: victory,
+        chestLabel: level.chest
       };
     }
 
@@ -418,7 +423,11 @@
     }
 
     if (run.phase === "gold-granted" && run.victory) {
-      const chestGranted = window.RightboundChests?.grant?.(run.chestType, 1, `run-chest:${run.id}`);
+      const chestGranted = window.RightboundChests?.grant?.(
+        run.chestType,
+        1,
+        `run-level-${level.id}-chest:${run.id}`
+      );
       if (!chestGranted) {
         saveProgression("chest-grant-pending");
         return {
@@ -428,7 +437,8 @@
           level,
           combatGold: run.combatGold,
           permanentGold: run.permanentGold,
-          chestGranted: false
+          chestGranted: false,
+          chestLabel: level.chest
         };
       }
       run.phase = "chest-granted";
@@ -445,9 +455,6 @@
           progression.unlockedLevel,
           Math.min(LEVELS.length, level.id + 1)
         );
-        if (level.id === 1) {
-          try { localStorage.setItem("rightbound-level-1-completed", "true"); } catch {}
-        }
         selectedLevelId = Math.min(LEVELS.length, level.id + 1);
         saveSelectedLevel();
       }
@@ -479,7 +486,8 @@
       level,
       combatGold: run.combatGold,
       permanentGold: run.permanentGold,
-      chestGranted: false
+      chestGranted: false,
+      chestLabel: level.chest
     };
   }
 
