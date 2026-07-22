@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "rightbound-shell-v0.16.0";
+const CACHE_NAME = "rightbound-shell-v0.16.1";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -19,7 +19,7 @@ const APP_SHELL = [
   "./src/items.js?v=0.14.0",
   "./src/player-profile.js?v=0.15.0",
   "./src/loot.js?v=0.16.0",
-  "./src/chests.js?v=0.16.0",
+  "./src/chests.js?v=0.16.1",
   "./src/inventory.js?v=0.15.0",
   "./src/health-sync.js?v=0.4.3",
   "./src/app-shell.js?v=0.4.0",
