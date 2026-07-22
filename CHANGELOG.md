@@ -2,6 +2,25 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.19.0] — 2026-07-22
+
+### Layout premium du menu des niveaux
+
+- Refonte complète de la composition portrait du menu des niveaux en conservant toute la progression existante.
+- Nouvelle barre supérieure avec portrait de Jack, progression du Monde 1, golds et puissance réelle du build.
+- Ajout d’une présentation centrale du monde avec raccourcis Paramètres et Journal, sans ajouter de boutique, énergie ou pack payant fictif.
+- Reconstruction de la scène du niveau avec plaque dédiée, décor provisoire, héros provisoire, cadre renforcé et atmosphère animée.
+- Ajout d’un panneau compact combinant puissance conseillée, état du build et coffre garanti.
+- Nouvelle navigation présentant les dix niveaux simultanément, avec états normal, sélectionné, terminé, verrouillé, Élite et Boss.
+- Ajout d’une légende de progression et d’un bouton Jouer principal plus lisible.
+- Activation du bouton Inventaire dans la navigation inférieure et conservation des onglets Compétences, Niveaux et Coffres.
+- Ajout de `src/menu-assets.js`, manifeste central permettant aux futurs sprites d’apparaître automatiquement dès qu’ils sont ajoutés aux chemins prévus.
+- Ajout de `src/menu-layout.js`, couche d’amélioration non destructive préservant la logique du menu, des coffres, du build et du déblocage des niveaux.
+- Ajout de fallbacks CSS complets pour que le layout soit testable avant la production des images.
+- Ajout de `docs/MENU_ASSET_MANIFEST.md` avec les noms de fichiers, dimensions, formats et ordre de génération de tous les futurs assets.
+- Adaptation spécifique aux petits écrans et aux faibles hauteurs Safari en portrait.
+- Mise à jour du cache PWA en version `0.19.0`.
+
 ## [0.18.0] — 2026-07-22
 
 ### Équipements appliqués au véritable combat
