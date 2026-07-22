@@ -38,9 +38,9 @@
     };
   }
 
-  function normalizeCount(value) {
+  function normalizeCount(value, fallback = 0) {
     const parsed = Number(value);
-    return Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : 0;
+    return Number.isFinite(parsed) ? Math.max(0, Math.floor(parsed)) : fallback;
   }
 
   function sanitizePending(raw) {
@@ -448,7 +448,9 @@
     if (!title.includes("Secteur nettoyé")) return;
 
     restartButton.dataset.chestRewarded = "true";
-    grantChest("bronze", 1);
+    state.legacyLevelOneRewardGranted = true;
+    state.chests.bronze += 1;
+    saveState();
 
     const rewardNotice = document.createElement("section");
     rewardNotice.className = "victory-chest-reward";
@@ -464,9 +466,9 @@
 
   const observer = new MutationObserver(() => {
     requestAnimationFrame(() => {
+      inspectVictoryScreen();
       migrateCompletedLevelReward();
       injectChestDockButton();
-      inspectVictoryScreen();
     });
   });
   observer.observe(modalContent, { childList: true, subtree: true });
@@ -498,8 +500,8 @@
     recoverPendingOpening
   });
 
+  inspectVictoryScreen();
   migrateCompletedLevelReward();
   recoverPendingOpening();
   injectChestDockButton();
-  inspectVictoryScreen();
 })();
