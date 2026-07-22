@@ -2,6 +2,20 @@
 
 Toutes les modifications importantes du projet sont enregistrées ici.
 
+## [0.14.0] — 2026-07-22
+
+### Icônes et caractéristiques des équipements
+
+- Liaison exacte des fichiers `assets/icons/1.png` à `assets/icons/48.png` avec les 48 équipements, dans l’ordre validé des prompts.
+- Ajout de statistiques chiffrées à chaque fiche : dégâts, armure, PV, puissance, vitesse et bonus secondaires selon l’objet.
+- Ajout d’une description de statistiques générée automatiquement et d’un score de puissance indicatif.
+- Validation automatique de la présence d’une fiche de caractéristiques et du bon numéro d’image pour chaque objet.
+- Affichage des PNG transparents dans les cases d’inventaire et dans la fiche de l’objet sélectionné.
+- Connexion du catalogue central à l’inventaire sans ajouter automatiquement les 48 objets au sac.
+- Ajout de `RightboundInventory.grantItem(itemId)` pour permettre aux coffres d’attribuer plus tard un objet et de sauvegarder sa possession.
+- Conservation du comportement actuel des coffres : aucun taux de drop d’objet n’est encore activé.
+- Mise à jour du cache PWA afin de charger immédiatement les nouvelles données sur mobile.
+
 ## [0.13.0] — 2026-07-22
 
 ### Catalogue d’équipements
