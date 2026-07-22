@@ -1,0 +1,308 @@
+/* Complete medieval menu sprite pack.
+   Loaded after the legacy/premium menu styles. */
+
+/* ---------- Topbar ---------- */
+#overlay.menu-overlay .premium-level-menu .reference-topbar.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:#05090b!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-topbar.menu-asset-ready:before,
+#overlay.menu-overlay .premium-level-menu .reference-topbar.menu-asset-ready:after{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait{
+  isolation:isolate;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait.menu-asset-ready .portrait-fallback{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-portrait-frame{
+  position:absolute;
+  z-index:5;
+  inset:-1px;
+  display:block;
+  pointer-events:none;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-level{
+  border-color:rgba(82,111,69,.6);
+  background:linear-gradient(180deg,rgba(23,43,23,.94),rgba(5,13,7,.96));
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp{
+  position:relative;
+  padding:0!important;
+  overflow:hidden!important;
+  border:0!important;
+  border-radius:3px!important;
+  background:#020506!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp:before{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp-fill,
+#overlay.menu-overlay .premium-level-menu .reference-player-xp-frame{
+  position:absolute;
+  inset:0;
+  display:block;
+  pointer-events:none;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp-fill{
+  z-index:1;
+  clip-path:inset(0 calc(100% - var(--xp-ratio,0%)) 0 0);
+  -webkit-clip-path:inset(0 calc(100% - var(--xp-ratio,0%)) 0 0);
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-player-xp-frame{z-index:2}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon.menu-asset-ready{
+  transform:none!important;
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon.menu-asset-ready:after,
+#overlay.menu-overlay .premium-level-menu .reference-resource-icon.menu-asset-ready .reference-energy-bolt{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-add.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .reference-resource-add.menu-asset-ready>span{
+  position:relative;
+  z-index:2;
+  display:grid;
+  place-items:center;
+  color:#e3bb63;
+  font-size:21px;
+  font-weight:900;
+  line-height:1;
+  text-shadow:0 1px 2px #000;
+}
+
+/* ---------- Utility buttons and world heading ---------- */
+#overlay.menu-overlay .premium-level-menu .premium-utility-button.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-utility-icon.menu-asset-ready svg{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-utility-icon.menu-asset-ready{
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.7));
+}
+
+/* ---------- Stage ---------- */
+#overlay.menu-overlay .premium-level-menu .premium-stage-background.menu-asset-ready{
+  background-color:#0a151a!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-stage-atmosphere.menu-asset-ready{
+  opacity:.62;
+  mix-blend-mode:screen;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-stage-hero-asset.menu-asset-ready{
+  width:54%;
+  height:72%;
+  bottom:26px!important;
+  filter:drop-shadow(0 13px 8px rgba(0,0,0,.72));
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-stage-frame-asset.menu-asset-ready{
+  inset:0!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-card-header.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+}
+
+/* ---------- Information panel ---------- */
+#overlay.menu-overlay .premium-level-menu .level-facts.menu-asset-ready{
+  padding:2px 5px;
+  background-color:transparent!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-facts.menu-asset-ready .level-fact{
+  border:0!important;
+  border-radius:0!important;
+  background:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-facts.menu-asset-ready .level-fact.reward:before{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .power-visual.menu-asset-ready:before{
+  content:none!important;
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-fact-icon.menu-asset-ready{
+  background-color:transparent!important;
+}
+
+/* ---------- Level selector ---------- */
+#overlay.menu-overlay .premium-level-menu .level-arrow.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  color:transparent!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  font-size:0!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-dot.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+  clip-path:none!important;
+  -webkit-clip-path:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-dot.completed:after,
+#overlay.menu-overlay .premium-level-menu .level-dot.locked:before{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .node-status-icon{
+  position:absolute;
+  z-index:5;
+  right:-2px;
+  top:-3px;
+  width:15px;
+  height:15px;
+  display:block;
+  pointer-events:none;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.8));
+}
+
+#overlay.menu-overlay .premium-level-menu .node-status-icon[hidden]{display:none!important}
+
+#overlay.menu-overlay .premium-level-menu .premium-level-legend i{
+  width:13px;
+  height:13px;
+  display:block;
+  flex:0 0 13px;
+  font-size:0!important;
+  filter:drop-shadow(0 1px 1px rgba(0,0,0,.8));
+}
+
+/* ---------- Play button ---------- */
+#overlay.menu-overlay .premium-level-menu .level-play-button.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .level-play-button.menu-asset-ready:before{
+  display:none!important;
+}
+
+/* ---------- Bottom dock ---------- */
+#overlay.menu-overlay .premium-level-menu .game-dock.menu-asset-ready,
+#overlay.menu-overlay .menu-full-chest-assets .chest-dock.menu-asset-ready{
+  border:0!important;
+  background-color:#05090b!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .game-dock .dock-button.menu-asset-ready,
+#overlay.menu-overlay .premium-level-menu .game-dock .chest-dock-button.menu-asset-ready,
+#overlay.menu-overlay .menu-full-chest-assets .chest-dock button.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-dock-icon.menu-asset-ready svg{
+  display:none!important;
+}
+
+#overlay.menu-overlay .premium-level-menu .premium-dock-icon.menu-asset-ready,
+#overlay.menu-overlay .menu-full-chest-assets .chest-dock button>span.menu-asset-ready{
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.7));
+}
+
+/* ---------- Chest screen ---------- */
+#overlay.menu-overlay .menu-full-chest-assets .chest-gold-balance i.menu-asset-ready{
+  border:0!important;
+  border-radius:0!important;
+  background-color:transparent!important;
+  box-shadow:none!important;
+}
+
+#overlay.menu-overlay .menu-full-chest-assets .chest-art.menu-asset-ready{
+  background-color:transparent!important;
+  filter:drop-shadow(0 7px 6px rgba(0,0,0,.48));
+}
+
+#overlay.menu-overlay .menu-full-chest-assets .chest-art.menu-asset-ready .chest-lid,
+#overlay.menu-overlay .menu-full-chest-assets .chest-art.menu-asset-ready .chest-body,
+#overlay.menu-overlay .menu-full-chest-assets .chest-art.menu-asset-ready>strong{
+  display:none!important;
+}
+
+#overlay.menu-overlay .menu-full-chest-assets .chest-dock button>span.menu-asset-ready{
+  font-size:0!important;
+  background-color:transparent!important;
+}
+
+@media(max-width:370px){
+  #overlay.menu-overlay .premium-level-menu .premium-stage-hero-asset.menu-asset-ready{
+    width:58%;
+    height:70%;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .node-status-icon{
+    width:13px;
+    height:13px;
+  }
+
+  #overlay.menu-overlay .premium-level-menu .reference-resource-add.menu-asset-ready>span{
+    font-size:18px;
+  }
+}
