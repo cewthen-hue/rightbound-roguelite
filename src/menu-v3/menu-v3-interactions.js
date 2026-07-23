@@ -4,8 +4,9 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.33.0-lot3.3";
+  const VERSION = "0.34.0-lot3.4";
   let scheduled = false;
+  let latestSnapshot = null;
 
   function toast(message, duration) {
     window.RightboundUI?.showToast?.(message, duration);
@@ -16,7 +17,7 @@
   }
 
   function getSnapshot() {
-    return window.RightboundMenuV3Data?.getSnapshot?.() || null;
+    return latestSnapshot || window.RightboundMenuV3Data?.getLastSnapshot?.() || window.RightboundMenuV3Data?.getSnapshot?.() || null;
   }
 
   function pulse() {
@@ -64,36 +65,39 @@
     if (typeof window.RightboundInventory?.renderInventory === "function") {
       pulse();
       window.RightboundInventory.renderInventory();
-      return;
+      return true;
     }
     toast("L’équipement est encore en cours de chargement.");
+    return false;
   }
 
   function openChests() {
     if (typeof window.RightboundChests?.render === "function") {
       pulse();
       window.RightboundChests.render();
-      return;
+      return true;
     }
     toast("Les coffres sont encore en cours de chargement.");
+    return false;
   }
 
   function openShop() {
     pulse();
     toast("La boutique sera construite dans un prochain chantier.", 3000);
+    return false;
   }
 
   function handleDockAction(key) {
-    if (key === "expedition") return;
+    if (key === "expedition") return true;
     if (key === "equipment") return openEquipment();
     if (key === "chests") return openChests();
     if (key === "shop") return openShop();
+    return false;
   }
 
   function handleUtilityAction(key) {
     if (key === "options") {
-      window.RightboundUI?.showInstallHelp?.();
-      if (!window.RightboundUI?.showInstallHelp) toast("Les options seront ajoutées prochainement.");
+      toast("Les options du jeu seront ajoutées dans un prochain chantier.");
       return;
     }
     if (key === "journal") toast("Le journal d’expédition sera ajouté prochainement.");
@@ -174,7 +178,7 @@
     }
   }
 
-  function syncDock(shell) {
+  function syncDock(shell, snapshot) {
     shell.querySelectorAll("[data-v3-dock]").forEach((button) => {
       const active = button.dataset.v3Dock === "expedition";
       button.classList.toggle("is-active", active);
@@ -182,8 +186,7 @@
       else button.removeAttribute("aria-current");
     });
 
-    const chests = window.RightboundChests?.getState?.();
-    const total = Number(chests?.total) || 0;
+    const total = Number(snapshot?.chests?.total) || 0;
     const notification = shell.querySelector('[data-v3-dock="chests"] .menu-v3-dock-notification');
     if (notification) {
       notification.hidden = total <= 0;
@@ -195,12 +198,13 @@
   function sync() {
     scheduled = false;
     const shell = modalContent.querySelector(".menu-v3-shell.menu-v3-components-ready");
-    if (!shell) return;
+    if (!shell) return false;
     bindShell(shell);
     const snapshot = getSnapshot();
     syncPlayButton(shell, snapshot);
-    syncDock(shell);
+    syncDock(shell, snapshot);
     if (shell.dataset.menuV3InteractionsReady !== VERSION) shell.dataset.menuV3InteractionsReady = VERSION;
+    return true;
   }
 
   function scheduleSync() {
@@ -211,19 +215,34 @@
 
   new MutationObserver(scheduleSync).observe(modalContent, { childList:true, subtree:true });
 
+  document.addEventListener("rightbound:menu-v3-data-bound", (event) => {
+    latestSnapshot = event.detail?.snapshot || null;
+    scheduleSync();
+  });
+
   [
     "rightbound:menu-v3-synced",
+    "rightbound:menu-v3-refresh-request",
     "rightbound:progression-changed",
     "rightbound:run-rewarded",
     "rightbound:chests-changed",
     "rightbound:chests-ready",
+    "rightbound:chest-opening-recovered",
     "rightbound:profile-changed",
-    "rightbound:build-changed"
+    "rightbound:build-changed",
+    "rightbound:hero-progression-changed"
   ].forEach((eventName) => document.addEventListener(eventName, scheduleSync));
+
+  window.addEventListener("pageshow", scheduleSync);
+  window.addEventListener("focus", scheduleSync, { passive:true });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") scheduleSync();
+  });
 
   window.RightboundMenuV3Interactions = Object.freeze({
     version:VERSION,
     refresh:scheduleSync,
+    refreshNow:sync,
     launchSelectedLevel,
     openEquipment,
     openChests
