@@ -1,0 +1,94 @@
+/* Menu V3 — Lot 1 debug visualization.
+   This layer is temporary and can be disabled through RightboundMenuV3.setDebug(false). */
+
+.menu-v3-shell.menu-v3-debug .menu-v3-zone,
+.menu-v3-shell.menu-v3-debug .menu-v3-profile-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-resource-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-utility-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-world-ribbon,
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-heading,
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-scene,
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-stats,
+.menu-v3-shell.menu-v3-debug .menu-v3-stat-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-level-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-play-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-dock-slot{
+  outline:1px solid var(--menu-v3-debug-line);
+  outline-offset:-1px;
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-zone{
+  background:var(--menu-v3-debug-fill);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-topbar{
+  background:rgba(13,107,129,.16);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-world-header{
+  background:rgba(116,168,41,.12);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-card{
+  background:rgba(21,112,156,.12);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-selector{
+  background:rgba(199,142,35,.1);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-action{
+  background:rgba(96,178,31,.12);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-dock{
+  background:rgba(17,76,99,.32);
+}
+
+.menu-v3-shell.menu-v3-debug [data-v3-module]::after{
+  content:attr(data-v3-module);
+  position:absolute;
+  z-index:20;
+  top:2px;
+  left:3px;
+  max-width:calc(100% - 6px);
+  padding:2px 5px;
+  overflow:hidden;
+  border-radius:4px;
+  color:#fff;
+  background:rgba(0,0,0,.64);
+  font-size:8px;
+  font-weight:800;
+  line-height:1;
+  letter-spacing:.04em;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+  pointer-events:none;
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-profile-avatar,
+.menu-v3-shell.menu-v3-debug .menu-v3-profile-xp,
+.menu-v3-shell.menu-v3-debug .menu-v3-resource-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-utility-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-world-ribbon,
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-badge,
+.menu-v3-shell.menu-v3-debug .menu-v3-stat-icon,
+.menu-v3-shell.menu-v3-debug .menu-v3-level-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-play-slot,
+.menu-v3-shell.menu-v3-debug .menu-v3-dock-icon{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.07),rgba(255,255,255,.015)),
+    rgba(8,25,33,.78);
+  border:1px dashed rgba(255,255,255,.34);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-scene{
+  background:
+    linear-gradient(135deg,rgba(255,255,255,.035) 25%,transparent 25%) 0 0/18px 18px,
+    linear-gradient(315deg,rgba(255,255,255,.035) 25%,transparent 25%) 0 0/18px 18px,
+    #0b2730;
+}
+
+.menu-v3-shell:not(.menu-v3-debug) [data-v3-module]::after{
+  content:none;
+}
