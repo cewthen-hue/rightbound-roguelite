@@ -44,10 +44,7 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
   height:100dvh;
   min-height:0;
   margin:0 auto;
-  padding:
-    max(6px,env(safe-area-inset-top))
-    var(--menu-v3-inline)
-    max(0px,env(safe-area-inset-bottom));
+  padding:max(6px,env(safe-area-inset-top)) var(--menu-v3-inline) 0;
   display:grid;
   grid-template-rows:
     clamp(var(--menu-v3-topbar-min),var(--menu-v3-topbar-fluid),var(--menu-v3-topbar-max))
@@ -59,13 +56,13 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
   gap:var(--menu-v3-gap);
   overflow:hidden;
   isolation:isolate;
+  contain:layout paint;
   color:var(--menu-v3-text);
   background:
     radial-gradient(circle at 50% 31%,rgba(36,110,128,.16),transparent 40%),
     linear-gradient(180deg,#061a23 0%,#05151d 58%,#031018 100%);
   font-family:"Roboto Condensed",Arial,sans-serif;
   font-variant-numeric:tabular-nums;
-  contain:layout paint;
 }
 
 .menu-v3-shell *,
@@ -102,8 +99,8 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
   min-width:0;
   display:grid;
   grid-template-columns:clamp(54px,15vw,66px) minmax(0,1fr);
-  gap:clamp(5px,1.3vw,8px);
   align-items:center;
+  gap:clamp(5px,1.3vw,8px);
 }
 
 .menu-v3-profile-avatar{
@@ -131,7 +128,9 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 .menu-v3-profile-xp{
   align-self:end;
   min-height:14px;
+  overflow:hidden;
   border-radius:999px;
+  white-space:nowrap;
 }
 
 .menu-v3-resource-track{
@@ -217,7 +216,10 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 /* 3 — Main stage card */
 .menu-v3-stage-card{
   display:grid;
-  grid-template-rows:clamp(48px,6.1dvh,58px) minmax(150px,1fr) clamp(75px,9.5dvh,91px);
+  grid-template-rows:
+    clamp(var(--menu-v3-stage-heading-min),var(--menu-v3-stage-heading-fluid),var(--menu-v3-stage-heading-max))
+    minmax(132px,1fr)
+    clamp(var(--menu-v3-stage-stats-min),var(--menu-v3-stage-stats-fluid),var(--menu-v3-stage-stats-max));
   border-radius:var(--menu-v3-radius-large);
 }
 
@@ -276,47 +278,60 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 
 .menu-v3-stage-stats{
   min-width:0;
+  min-height:0;
   display:grid;
   grid-template-columns:1fr 1fr;
-  gap:clamp(4px,1vw,6px);
-  padding:clamp(5px,.65dvh,7px);
+  gap:clamp(5px,1.2vw,7px);
+  padding:clamp(6px,.8dvh,9px);
 }
 
 .menu-v3-stat-slot{
   min-width:0;
+  min-height:0;
   display:grid;
   grid-template-columns:clamp(42px,11vw,54px) minmax(0,1fr);
   align-items:center;
   gap:clamp(6px,1.6vw,10px);
-  padding:clamp(6px,.75dvh,9px) clamp(7px,1.8vw,11px);
+  padding:clamp(7px,.9dvh,10px) clamp(7px,1.8vw,11px);
+  overflow:hidden;
   border-radius:var(--menu-v3-radius-medium);
 }
 
 .menu-v3-stat-icon{
   width:100%;
   aspect-ratio:1;
+  align-self:center;
   border-radius:12px;
 }
 
 .menu-v3-stat-copy{
   min-width:0;
+  min-height:0;
   display:grid;
   align-content:center;
   gap:2px;
+  overflow:hidden;
 }
 
 .menu-v3-stat-copy span,
 .menu-v3-stat-copy strong{
   min-width:0;
-  overflow:hidden;
-  text-overflow:ellipsis;
+  max-width:100%;
+  overflow-wrap:anywhere;
+  line-height:1.04;
+}
+
+.menu-v3-stat-copy strong{
+  white-space:normal;
 }
 
 /* 4 — Level selector */
 .menu-v3-selector{
   display:grid;
-  grid-template-rows:clamp(19px,2.55dvh,24px) minmax(44px,1fr) clamp(23px,3dvh,29px);
-  gap:clamp(2px,.35dvh,4px);
+  grid-template-rows:clamp(19px,2.55dvh,24px) minmax(48px,1fr) clamp(23px,3dvh,29px);
+  align-content:stretch;
+  gap:clamp(3px,.45dvh,5px);
+  padding-top:clamp(2px,.25dvh,3px);
 }
 
 .menu-v3-selector-title{
@@ -336,6 +351,7 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 
 .menu-v3-level-track{
   min-width:0;
+  min-height:0;
   display:grid;
   grid-template-columns:repeat(10,minmax(0,1fr));
   align-items:center;
@@ -407,34 +423,37 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 /* 6 — Bottom dock */
 .menu-v3-dock{
   display:grid;
-  grid-template-columns:repeat(5,minmax(0,1fr));
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  align-items:stretch;
   margin-inline:calc(var(--menu-v3-inline) * -1);
-  margin-bottom:max(0px,calc(env(safe-area-inset-bottom) * -1));
-  padding-bottom:max(4px,env(safe-area-inset-bottom));
+  margin-bottom:0;
+  overflow:hidden;
 }
 
 .menu-v3-dock-slot{
   position:relative;
   min-width:0;
+  min-height:0;
+  height:100%;
   display:grid;
   grid-template-rows:minmax(0,1fr) auto;
   place-items:center;
-  gap:2px;
-  padding:5px 2px 6px;
+  gap:3px;
+  padding:6px 4px max(8px,calc(env(safe-area-inset-bottom) + 4px));
 }
 
 .menu-v3-dock-slot + .menu-v3-dock-slot::before{
   content:"";
   position:absolute;
   left:0;
-  top:12%;
-  bottom:12%;
+  top:10%;
+  bottom:max(10%,env(safe-area-inset-bottom));
   width:1px;
   background:var(--menu-v3-line-soft);
 }
 
 .menu-v3-dock-icon{
-  width:clamp(30px,8vw,39px);
+  width:clamp(36px,9.6vw,44px);
   aspect-ratio:1;
   border-radius:10px;
 }
@@ -442,6 +461,8 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
 .menu-v3-dock-slot span:last-child{
   max-width:100%;
   overflow:hidden;
+  font-size:clamp(10px,2.75vw,12px);
+  line-height:1;
   text-align:center;
   text-overflow:ellipsis;
   white-space:nowrap;
@@ -503,6 +524,14 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
   .menu-v3-action{
     padding-inline:23px;
   }
+
+  .menu-v3-dock-icon{
+    width:34px;
+  }
+
+  .menu-v3-dock-slot span:last-child{
+    font-size:9.5px;
+  }
 }
 
 @media (max-height:811px) and (orientation:portrait){
@@ -510,15 +539,15 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
     --menu-v3-gap:3px;
     grid-template-rows:
       64px
-      82px
-      minmax(245px,1fr)
-      82px
-      68px
-      63px;
+      80px
+      minmax(246px,1fr)
+      86px
+      66px
+      96px;
   }
 
   .menu-v3-stage-card{
-    grid-template-rows:45px minmax(130px,1fr) 69px;
+    grid-template-rows:45px minmax(132px,1fr) 84px;
   }
 
   .menu-v3-world-header{
@@ -543,16 +572,24 @@ body.menu-v3-active #modalContent > .game-menu.level-menu:not(.menu-v3-shell){
   }
 
   .menu-v3-selector{
-    grid-template-rows:17px minmax(41px,1fr) 21px;
+    grid-template-rows:17px minmax(45px,1fr) 22px;
+  }
+
+  .menu-v3-dock-icon{
+    width:35px;
   }
 }
 
 @media (min-width:410px) and (min-height:900px){
   .menu-v3-stage-card{
-    grid-template-rows:58px minmax(220px,1fr) 91px;
+    grid-template-rows:58px minmax(220px,1fr) 100px;
   }
 
   .menu-v3-level-slot{
     max-width:42px;
+  }
+
+  .menu-v3-dock-icon{
+    width:44px;
   }
 }
