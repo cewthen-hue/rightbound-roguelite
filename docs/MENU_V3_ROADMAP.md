@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.3.0`
+Version du plan : `1.4.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -191,7 +191,7 @@ assets/menu-v3/
 
 ## Implémentation du Lot 1
 
-Version applicative : `0.30.2`
+Version applicative : `0.30.3`
 
 Fichiers actifs :
 
@@ -220,7 +220,7 @@ La première capture iPhone a conduit aux décisions suivantes :
 
 ### Révision Lot 1.2
 
-La seconde capture iPhone a révélé trois derniers défauts géométriques : contenu de puissance coupé, légende masquée et fin de dock non alignée sur la hauteur dynamique.
+La seconde capture iPhone a révélé trois défauts géométriques : contenu de puissance coupé, légende masquée et fin de dock non alignée sur la hauteur dynamique.
 
 Corrections appliquées :
 
@@ -228,11 +228,28 @@ Corrections appliquées :
 - hauteurs du panneau puissance/récompense, du sélecteur et du dock recalibrées dans les tokens ;
 - typographie interne des deux panneaux contrainte pour garantir toutes les lignes ;
 - ligne `(Supérieur)` conservée sans sortie du panneau ;
-- légende dotée d’une rangée réservée et d’un débordement visible ;
-- nodes légèrement remontés pour créer une séparation réelle avant la légende ;
-- dock étendu sur toute sa dernière rangée avec un fond continu ;
-- fond HTML et body harmonisé pour que la zone Safari externe ne crée pas de rupture de couleur ;
-- profils spécifiques ajoutés pour les hauteurs sous 811 px et sous 700 px.
+- légende dotée d’une rangée réservée ;
+- nodes légèrement remontés ;
+- dock étendu avec un fond continu ;
+- profils spécifiques ajoutés pour les petites hauteurs.
+
+### Révision Lot 1.3
+
+La troisième capture a validé la lisibilité mais montré que la scène restait trop petite par rapport à la référence, tandis que le dock occupait trop de hauteur.
+
+Corrections appliquées :
+
+- top bar et en-tête du monde légèrement compactés sans réduire leurs zones tactiles ;
+- scène centrale rendue prioritaire dans la grille verticale ;
+- profil standard iPhone ajouté jusqu’à `860px` de hauteur dynamique ;
+- scène réservée à au moins `300px` dans ce profil ;
+- panneau puissance/récompense compacté tout en conservant toutes ses lignes ;
+- sélecteur et CTA réduits uniquement sur leur espace superflu ;
+- dock ramené à une hauteur mobile plus réaliste ;
+- icônes et libellés du dock conservés lisibles ;
+- couleur du dock centralisée dans `--menu-v3-dock-bg` ;
+- surface inférieure, `theme-color`, HTML, body et overlay harmonisés afin que la zone système iPhone prolonge visuellement le dock ;
+- aucun sprite V3 ajouté et aucune géométrie dépendante d’une image.
 
 Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
 
@@ -243,7 +260,7 @@ RightboundMenuV3.setDebug(false);
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [x] Lot 1 — Squelette mobile intégral et révisions 1.1/1.2 implémentés ; validation iPhone finale en attente.
+- [x] Lot 1 — Squelette mobile intégral et révisions 1.1/1.2/1.3 implémentés ; validation iPhone finale en attente.
 - [ ] Lot 2 — Composants HTML complets.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
