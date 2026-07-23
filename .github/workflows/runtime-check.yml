@@ -32,6 +32,7 @@ jobs:
           node --check src/menu-v2-topbar.js
           node --check src/menu-v2-world-header.js
           node --check src/menu-v3/menu-v3-shell.js
+          node --check src/menu-v3/menu-v3-components.js
           node --check src/chests.js
           node --check src/inventory.js
 
@@ -40,3 +41,6 @@ jobs:
 
       - name: Validate Menu V3 structural contract
         run: node tests/menu-v3-contract.mjs
+
+      - name: Validate Menu V3 Lot 2 components
+        run: node tests/menu-v3-components-contract.mjs
