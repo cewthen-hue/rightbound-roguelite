@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.5.0`
+Version du plan : `1.6.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -189,87 +189,67 @@ assets/menu-v3/
   README.md
 ```
 
-## Implémentation du Lot 1
+## Implémentation active
 
-Version applicative : `0.30.4`
+Version applicative : `0.31.0`
 
 Fichiers actifs :
 
 - `src/menu-v3/menu-v3-shell.js` ;
+- `src/menu-v3/menu-v3-components.js` ;
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
+- `styles/menu-v3/menu-v3.components.css` ;
 - `styles/menu-v3/menu-v3.responsive.css` ;
 - `styles/menu-v3/menu-v3.debug.css` ;
-- `tests/menu-v3-contract.mjs`.
+- `tests/menu-v3-contract.mjs` ;
+- `tests/menu-v3-components-contract.mjs`.
 
 Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
 
-### Révision Lot 1.1
+### Lot 1 verrouillé
 
-La première capture iPhone a conduit aux décisions suivantes :
+Le squelette mobile a été validé après quatre passes :
 
-- suppression de l’onglet Héros ;
-- dock réduit à quatre onglets égaux : Expédition, Équipement, Coffres, Boutique ;
-- hauteur du dock augmentée ;
-- fond des cases prolongé jusque dans la safe area inférieure ;
-- suppression de la bande vide sous les boutons ;
-- panneau puissance/récompense agrandi ;
-- récompense affichée sur plusieurs lignes sans troncature ;
-- légère respiration ajoutée au sélecteur ;
-- hauteur de scène recalculée automatiquement pour conserver un écran sans scroll.
-
-### Révision Lot 1.2
-
-La seconde capture iPhone a révélé trois défauts géométriques : contenu de puissance coupé, légende masquée et fin de dock non alignée sur la hauteur dynamique.
-
-Corrections appliquées :
-
-- `box-sizing:border-box` imposé au shell afin que la safe area supérieure soit incluse dans `100dvh` ;
-- hauteurs du panneau puissance/récompense, du sélecteur et du dock recalibrées dans les tokens ;
-- typographie interne des deux panneaux contrainte pour garantir toutes les lignes ;
-- légende dotée d’une rangée réservée ;
-- nodes légèrement remontés ;
-- dock étendu avec un fond continu ;
-- profils spécifiques ajoutés pour les petites hauteurs.
-
-### Révision Lot 1.3
-
-La troisième capture a validé la lisibilité mais montré que la scène restait trop petite par rapport à la référence, tandis que le dock occupait trop de hauteur.
-
-Corrections appliquées :
-
-- top bar et en-tête du monde légèrement compactés sans réduire leurs zones tactiles ;
-- scène centrale rendue prioritaire dans la grille verticale ;
-- profil standard iPhone ajouté jusqu’à `860px` de hauteur dynamique ;
-- scène réservée à au moins `300px` dans ce profil ;
-- panneau puissance/récompense compacté tout en conservant toutes ses lignes ;
-- sélecteur et CTA réduits uniquement sur leur espace superflu ;
-- dock ramené à une hauteur mobile plus réaliste ;
-- surface inférieure et zone système iPhone harmonisées ;
-- aucun sprite V3 ajouté et aucune géométrie dépendante d’une image.
-
-### Ajustement final du Lot 1
-
-Après validation visuelle de la structure, trois micro-ajustements ont été demandés :
-
-- bouton Jouer agrandi de 6 px sur le profil iPhone standard ;
-- sélecteur de niveaux réduit de 6 px, sans réduire la lisibilité de ses dix nodes ni de la légende ;
+- grille verticale unique sans scroll ;
+- scène centrale dominante ;
+- sélection des niveaux compacte ;
+- bouton Jouer renforcé ;
+- dock à quatre onglets ;
+- safe areas iOS absorbées ;
 - ligne redondante `(Supérieur)` retirée du panneau de puissance ;
-- hauteur du bloc puissance/récompense réduite de 6 px ;
-- espace récupéré attribué à la scène centrale ;
-- test structurel verrouillé pour empêcher le retour de la ligne redondante ou de l’ancien équilibre vertical.
+- géométrie protégée par un test structurel.
 
-Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
+### Lot 2 — Composants temporaires
 
-```js
-RightboundMenuV3.setDebug(false);
-```
+Implémentation réalisée :
+
+- portrait temporaire de Jack construit uniquement en CSS ;
+- nom, niveau et barre XP structurés ;
+- trois capsules de ressources avec icône, valeur et bouton `+` ;
+- panneaux Options et Journal avec état de notification ;
+- ruban vert du monde et ornements du titre ;
+- véritable cadre temporaire de carte ;
+- décor médiéval lumineux provisoire construit en CSS ;
+- silhouette temporaire de Jack ancrée au sol avec épée ;
+- badge de difficulté ;
+- panneaux puissance et récompense différenciés ;
+- bouclier et coffre temporaires construits en CSS ;
+- dix nodes avec états normal, terminé, disponible, verrouillé, élite, boss et sélectionné ;
+- légende structurée ;
+- bouton Jouer visuellement complet ;
+- dock de quatre onglets avec onglet actif et notification Coffres ;
+- mode debug désactivé par défaut, mais toujours accessible avec `RightboundMenuV3.setDebug(true)` ;
+- aucune image chargée depuis `assets/menu-v3/` ;
+- contrat CI dédié au Lot 2.
+
+Les valeurs affichées restent provisoires jusqu’au Lot 3. Les états de nodes sont des états de démonstration destinés à valider le rendu avant le branchement aux sauvegardes réelles.
 
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [x] Lot 1 — Squelette mobile intégral, révisions et ajustement final implémentés ; capture de contrôle finale recommandée.
-- [ ] Lot 2 — Composants HTML complets.
+- [x] Lot 1 — Squelette mobile intégral verrouillé.
+- [x] Lot 2 — Composants HTML/CSS temporaires implémentés ; validation iPhone en attente.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
 - [ ] Lot 5 — Production des sprites.
