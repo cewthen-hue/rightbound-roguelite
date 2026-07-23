@@ -17,8 +17,7 @@
     "rightbound:chest-opening-recovered",
     "rightbound:item-granted",
     "rightbound:hero-progression-changed",
-    "rightbound:player-profile-ready",
-    "rightbound:menu-v3-synced"
+    "rightbound:player-profile-ready"
   ]);
   const STORAGE_KEYS = Object.freeze(new Set([
     "rightbound-economy-v1",
@@ -102,6 +101,7 @@
     }
 
     const signature = snapshotSignature(snapshot);
+    const changed = signature !== lastSignature;
     revision += 1;
     lastSignature = signature;
     shell.dataset.menuV3Sync = VERSION;
@@ -113,7 +113,7 @@
         version:VERSION,
         revision,
         reasons,
-        changed:signature !== lastSignature,
+        changed,
         selectedLevelId:snapshot?.level?.id ?? null,
         selectedLevelState:snapshot?.level?.state ?? null,
         heroPower:snapshot?.level?.heroPower ?? null,
@@ -146,7 +146,6 @@
     requestAnimationFrame(() => {
       const snapshot = window.RightboundMenuV3Data?.refreshNow?.() || window.RightboundMenuV3Data?.getSnapshot?.() || null;
       window.RightboundMenuV3Interactions?.refreshNow?.();
-
       requestAnimationFrame(() => finalizeSync(reasons, snapshot));
     });
   }
