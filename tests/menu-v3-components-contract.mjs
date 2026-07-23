@@ -33,16 +33,12 @@ for (const resource of ["gold", "gems", "energy"]) {
   if (!components.includes(resource)) throw new Error(`Menu V3 resource component missing: ${resource}.`);
 }
 
-const requiredAssetSlots = [
-  "hero-portrait", "resource-gold", "resource-gems", "resource-energy", "utility-options",
-  "utility-journal", "world-ribbon", "stage-background", "stage-hero", "stage-frame",
-  "stat-power", "stat-reward", "play-frame", "play-icon", "dock-expedition",
-  "dock-equipment", "dock-chests", "dock-shop"
-];
-for (const slot of requiredAssetSlots) {
-  if (!components.includes(slot)) throw new Error(`Lot 4 future asset slot missing: ${slot}.`);
+for (const slot of ["hero-portrait", "world-ribbon", "stage-background", "stage-hero", "stage-frame", "play-frame", "play-icon"]) {
+  if (!components.includes(slot)) throw new Error(`Static Lot 4 asset slot missing: ${slot}.`);
 }
-if (!components.includes("`level-node-${level}`")) throw new Error("Dynamic level-node asset slots are missing.");
+for (const dynamicSlot of ["`resource-${type}`", "`utility-${key}`", "`stat-${key}`", "`level-node-${level}`", "`dock-${key}`"]) {
+  if (!components.includes(dynamicSlot)) throw new Error(`Dynamic Lot 4 asset slot pattern missing: ${dynamicSlot}.`);
+}
 if (!components.includes("function defineAssetSlot")) throw new Error("Central asset-slot metadata helper is missing.");
 if (!components.includes('data-v3-asset-mode="cover"')) throw new Error("Stage background cover mode is missing.");
 if (!components.includes('data-v3-asset-mode="nine-slice"')) throw new Error("Nine-slice frame mode is missing.");
