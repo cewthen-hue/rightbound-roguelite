@@ -11,7 +11,8 @@ const requiredSources = [
   "RightboundEconomy",
   "RightboundProgression",
   "RightboundBuild",
-  "RightboundPlayerProfile"
+  "RightboundPlayerProfile",
+  "RightboundChests"
 ];
 
 for (const source of requiredSources) {
@@ -39,7 +40,7 @@ for (const binding of requiredBindings) {
   }
 }
 
-if (!data.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 data version mismatch.");
+if (!data.includes('VERSION = "0.34.0-lot3.4"')) throw new Error("Menu V3 Lot 3.4 data version mismatch.");
 if (!data.includes('HERO_STORAGE_KEY = "rightbound-hero-progression-v1"')) throw new Error("Persistent hero progression key is missing.");
 if (!data.includes("function xpRequiredForLevel")) throw new Error("Permanent hero XP curve is missing.");
 if (!data.includes("function addHeroXp")) throw new Error("Future permanent XP grant API is missing.");
@@ -49,6 +50,8 @@ if (!data.includes("getSelectedLevel")) throw new Error("Selected-level data mus
 if (!data.includes("getGold")) throw new Error("Gold must come from the real economy API.");
 if (!data.includes("getPowerScore")) throw new Error("Hero power must come from the real build or profile API.");
 if (!data.includes("function getLevelsSnapshot")) throw new Error("Real ten-level snapshot is missing.");
+if (!data.includes("function getChestSnapshot")) throw new Error("Real chest stock snapshot is missing.");
+if (!data.includes("chests:getChestSnapshot()")) throw new Error("Chest stock is not included in the unified snapshot.");
 if (!data.includes('state = completed ? "completed" : unlocked ? "available" : "locked"')) {
   throw new Error("Real completed/available/locked state resolution is missing.");
 }
@@ -59,7 +62,11 @@ if (!data.includes('node.classList.toggle("selected", level.selected)')) throw n
 if (!data.includes("rightbound:economy-changed")) throw new Error("Economy refresh event is missing.");
 if (!data.includes("rightbound:progression-changed")) throw new Error("Progression refresh event is missing.");
 if (!data.includes("rightbound:build-changed")) throw new Error("Build refresh event is missing.");
-if (!data.includes("rightbound:menu-v3-synced")) throw new Error("Menu selection refresh event is missing.");
+if (!data.includes("rightbound:chests-changed")) throw new Error("Chest refresh event is missing.");
+if (!data.includes("rightbound:menu-v3-refresh-request")) throw new Error("Central synchronization refresh event is missing.");
+if (!data.includes("rightbound:menu-v3-data-bound")) throw new Error("Synchronized data-bound event is missing.");
+if (!data.includes("window.addEventListener(\"pageshow\"")) throw new Error("Page-resume data refresh is missing.");
+if (!data.includes("document.visibilityState === \"visible\"")) throw new Error("Visible-app data refresh is missing.");
 if (!data.includes("node.textContent !== next")) throw new Error("Binder must avoid redundant text mutations.");
 if (!components.includes('levelState || "loading"')) throw new Error("Components must not restore demo progression.");
 if (!skin.includes('selected[data-level-state="locked"]')) throw new Error("Selected locked nodes must preserve their locked identity.");
@@ -73,13 +80,15 @@ if (/assets\/menu-v3\//.test(data + shell + skin)) throw new Error("Menu V3 data
 
 const shellIndex = index.indexOf("menu-v3-shell.js?v=0.33.0");
 const componentsIndex = index.indexOf("menu-v3-components.js?v=0.32.1");
-const dataIndex = index.indexOf("menu-v3-data.js?v=0.32.1");
-const interactionsIndex = index.indexOf("menu-v3-interactions.js?v=0.33.0");
-if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || interactionsIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex && dataIndex < interactionsIndex)) {
-  throw new Error("Menu V3 scripts must load in shell, components, data, interactions order.");
+const dataIndex = index.indexOf("menu-v3-data.js?v=0.34.0");
+const interactionsIndex = index.indexOf("menu-v3-interactions.js?v=0.34.0");
+const syncIndex = index.indexOf("menu-v3-sync.js?v=0.34.0");
+if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || interactionsIndex < 0 || syncIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex && dataIndex < interactionsIndex && interactionsIndex < syncIndex)) {
+  throw new Error("Menu V3 scripts must load in shell, components, data, interactions, sync order.");
 }
-if (!serviceWorker.includes('rightbound-shell-v0.33.0')) throw new Error("PWA cache version is not aligned with Lot 3.3.");
-if (!serviceWorker.includes("menu-v3-data.js?v=0.32.1")) throw new Error("Menu V3 data layer is missing from the PWA shell.");
-if (!serviceWorker.includes("menu-v3-interactions.js?v=0.33.0")) throw new Error("Menu V3 interaction layer is missing from the PWA shell.");
+if (!serviceWorker.includes('rightbound-shell-v0.34.0')) throw new Error("PWA cache version is not aligned with Lot 3.4.");
+if (!serviceWorker.includes("menu-v3-data.js?v=0.34.0")) throw new Error("Menu V3 data layer is missing from the PWA shell.");
+if (!serviceWorker.includes("menu-v3-interactions.js?v=0.34.0")) throw new Error("Menu V3 interaction layer is missing from the PWA shell.");
+if (!serviceWorker.includes("menu-v3-sync.js?v=0.34.0")) throw new Error("Menu V3 synchronization layer is missing from the PWA shell.");
 
-console.log("Menu V3 data contract passed during Lot 3.3.");
+console.log("Menu V3 Lot 3.4 synchronized data contract passed.");
