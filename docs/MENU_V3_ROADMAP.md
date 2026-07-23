@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.6.0`
+Version du plan : `1.7.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -191,7 +191,7 @@ assets/menu-v3/
 
 ## Implémentation active
 
-Version applicative : `0.31.0`
+Version applicative : `0.31.1`
 
 Fichiers actifs :
 
@@ -200,6 +200,7 @@ Fichiers actifs :
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
 - `styles/menu-v3/menu-v3.components.css` ;
+- `styles/menu-v3/menu-v3.skin.css` ;
 - `styles/menu-v3/menu-v3.responsive.css` ;
 - `styles/menu-v3/menu-v3.debug.css` ;
 - `tests/menu-v3-contract.mjs` ;
@@ -243,13 +244,29 @@ Implémentation réalisée :
 - aucune image chargée depuis `assets/menu-v3/` ;
 - contrat CI dédié au Lot 2.
 
+### Révision Lot 2.1
+
+La première capture réelle du Lot 2 a confirmé la structure et conduit à une passe complète de finition temporaire :
+
+- espacement renforcé entre les trois capsules de ressources ;
+- connecteurs décoratifs des capsules réduits pour supprimer l’impression de chevauchement ;
+- boutons `+` légèrement réduits et valeurs mieux aérées ;
+- respiration verticale augmentée entre le ruban `MONDE 1` et le titre du monde ;
+- personnage CSS temporaire réduit à environ 58 % de la hauteur de scène afin de mieux représenter le futur contrat de sprite ;
+- légende des niveaux légèrement agrandie sur les tailles d’iPhone standards ;
+- tailles minimales spécifiques conservées sur les écrans étroits et courts ;
+- icônes temporaires du dock placées dans des conteneurs uniformes ;
+- symbole temporaire Coffres remplacé par une forme carrée plus lisible ;
+- nouveau fichier prévu par l’architecture activé : `styles/menu-v3/menu-v3.skin.css` ;
+- cache, versions et contrats CI alignés sur `0.31.1`.
+
 Les valeurs affichées restent provisoires jusqu’au Lot 3. Les états de nodes sont des états de démonstration destinés à valider le rendu avant le branchement aux sauvegardes réelles.
 
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
 - [x] Lot 1 — Squelette mobile intégral verrouillé.
-- [x] Lot 2 — Composants HTML/CSS temporaires implémentés ; validation iPhone en attente.
+- [x] Lot 2 — Composants HTML/CSS temporaires et révision 2.1 implémentés ; validation iPhone finale en attente.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
 - [ ] Lot 5 — Production des sprites.
