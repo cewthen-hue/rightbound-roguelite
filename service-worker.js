@@ -22,6 +22,7 @@ const APP_SHELL = [
   "./styles/inventory.css?v=0.9.0",
   "./styles/typography.css?v=0.22.1",
   "./styles/menu-polish.css?v=0.24.0",
+  "./styles/runtime-performance.css?v=0.25.0",
   "./src/items.js?v=0.14.0",
   "./src/player-profile.js?v=0.15.0",
   "./src/build.js?v=0.18.0",
