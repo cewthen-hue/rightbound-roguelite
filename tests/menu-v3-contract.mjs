@@ -34,7 +34,7 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.32.0-lot3.1"')) throw new Error("Menu V3 shell version must match the active Lot 3.1 build.");
+if (!shell.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 shell version must match the active Lot 3.2 build.");
 
 const requiredBindings = [
   "hero-name",
@@ -78,12 +78,13 @@ if (!layout.includes("env(safe-area-inset-top)")) throw new Error("Menu V3 top s
 if (!layout.includes("env(safe-area-inset-bottom)")) throw new Error("Menu V3 bottom safe area is missing.");
 if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3 dock must use four equal columns.");
 if (!skin.includes("menu-v3-resource-track")) throw new Error("Menu V3 skin layer is missing its top-bar refinement.");
+if (!skin.includes('selected[data-level-state="locked"]')) throw new Error("Lot 3.2 selected locked-node protection is missing.");
 if (!responsive.includes("box-sizing:border-box")) throw new Error("Menu V3 shell must include its safe-area padding inside 100dvh.");
 if (!responsive.includes("menu-v3-selector-legend")) throw new Error("Menu V3 legend overflow protection is missing.");
 if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats readability rules are missing.");
 if (!responsive.includes("menu-v3-dock-slot")) throw new Error("Menu V3 dock continuation rules are missing.");
-if (!responsive.includes("max-height:860px")) throw new Error("Menu V3 standard iPhone height profile is missing.");
-if (!responsive.includes("minmax(306px,1fr)")) throw new Error("Menu V3 must reserve a dominant stage on standard iPhones.");
+if (!responsive.includes("max-height:860px")) throw new Error("Menu V3 standard phone height profile is missing.");
+if (!responsive.includes("minmax(306px,1fr)")) throw new Error("Menu V3 must reserve a dominant stage on standard phones.");
 if (!responsive.includes("74px\n      74px")) throw new Error("Lot 2.2 selector and action balance is missing.");
 if (!responsive.includes("width:32px!important")) throw new Error("Lot 2.2 compact level node profile is missing.");
 if (!responsive.includes("min-height:70px!important")) throw new Error("Lot 2.2 enlarged play button profile is missing.");
@@ -93,4 +94,4 @@ if (/assets\/menu-v3\//.test(shell + layout + skin + responsive + tokens + debug
   throw new Error("Menu V3 must remain independent from final sprites before Lot 5.");
 }
 
-console.log("Menu V3 structural contract passed during Lot 3.1.");
+console.log("Menu V3 structural contract passed during Lot 3.2.");
