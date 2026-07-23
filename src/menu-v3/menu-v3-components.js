@@ -4,7 +4,7 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.32.1-lot3.2";
+  const VERSION = "0.35.0-lot4";
   let scheduled = false;
 
   const resourceTypes = ["gold", "gems", "energy"];
@@ -21,8 +21,16 @@
     shop:"▦"
   };
 
+  function defineAssetSlot(node, id, mode = "contain", anchor = "50% 50%") {
+    if (!node) return;
+    node.dataset.v3AssetSlot = id;
+    node.dataset.v3AssetMode = mode;
+    node.dataset.v3AssetAnchor = anchor;
+  }
+
   function decorateProfile(shell) {
     const avatar = shell.querySelector(".menu-v3-profile-avatar");
+    defineAssetSlot(avatar, "hero-portrait", "contain", "50% 50%");
     if (avatar && !avatar.querySelector(".menu-v3-avatar-art")) {
       avatar.innerHTML = `
         <span class="menu-v3-avatar-art" aria-hidden="true">
@@ -59,6 +67,7 @@
       if (icon) {
         icon.className = "menu-v3-resource-icon";
         icon.textContent = resourceGlyphs[type];
+        defineAssetSlot(icon, `resource-${type}`, "contain", "50% 50%");
       }
       value?.classList.add("menu-v3-resource-value");
       plus?.classList.add("menu-v3-resource-plus");
@@ -67,21 +76,25 @@
 
   function decorateUtilities(shell) {
     shell.querySelectorAll(".menu-v3-utility-slot").forEach((button) => {
+      const key = button.dataset.v3Utility || "utility";
       const icon = button.querySelector(":scope > span:first-child");
       const label = button.querySelector(":scope > span:nth-child(2)");
       icon?.classList.add("menu-v3-utility-icon");
       label?.classList.add("menu-v3-utility-label");
+      defineAssetSlot(icon, `utility-${key}`, "contain", "50% 50%");
 
-      if (button.dataset.v3Utility === "journal" && !button.querySelector(".menu-v3-notification")) {
+      if (key === "journal" && !button.querySelector(".menu-v3-notification")) {
         button.insertAdjacentHTML("beforeend", '<span class="menu-v3-notification" aria-label="Nouveau"></span>');
       }
     });
+
+    defineAssetSlot(shell.querySelector(".menu-v3-world-ribbon"), "world-ribbon", "nine-slice", "50% 50%");
   }
 
   function decorateStage(shell) {
     const scene = shell.querySelector(".menu-v3-stage-scene");
     if (scene && !scene.querySelector(".menu-v3-scene-art")) {
-      scene.innerHTML = `
+      scene.insertAdjacentHTML("afterbegin", `
         <div class="menu-v3-scene-art" aria-hidden="true">
           <span class="menu-v3-scene-sun"></span>
           <span class="menu-v3-scene-cloud menu-v3-scene-cloud-a"></span>
@@ -100,15 +113,26 @@
             <i class="menu-v3-css-hero-leg menu-v3-css-hero-leg-right"></i>
             <i class="menu-v3-css-hero-sword"></i>
           </span>
-        </div>`;
+        </div>`);
+    }
+
+    if (scene && !scene.querySelector(".menu-v3-future-assets")) {
+      scene.insertAdjacentHTML("beforeend", `
+        <div class="menu-v3-future-assets" aria-hidden="true">
+          <span class="menu-v3-future-asset menu-v3-future-stage-background" data-v3-asset-slot="stage-background" data-v3-asset-mode="cover" data-v3-asset-anchor="50% 50%"></span>
+          <span class="menu-v3-future-asset menu-v3-future-stage-hero" data-v3-asset-slot="stage-hero" data-v3-asset-mode="contain" data-v3-asset-anchor="50% 100%"></span>
+          <span class="menu-v3-future-asset menu-v3-future-stage-frame" data-v3-asset-slot="stage-frame" data-v3-asset-mode="nine-slice" data-v3-asset-anchor="50% 50%"></span>
+        </div>`);
     }
 
     shell.querySelectorAll(".menu-v3-stat-slot").forEach((panel, index) => {
-      panel.dataset.stat = index === 0 ? "power" : "reward";
+      const key = index === 0 ? "power" : "reward";
+      panel.dataset.stat = key;
       const icon = panel.querySelector(".menu-v3-stat-icon");
       if (icon) {
         icon.dataset.icon = index === 0 ? "shield" : "chest";
         icon.setAttribute("aria-hidden", "true");
+        defineAssetSlot(icon, `stat-${key}`, "contain", "50% 50%");
       }
     });
   }
@@ -118,6 +142,7 @@
       const level = Number(node.dataset.v3Level || 1);
       node.dataset.levelType = node.dataset.levelType || "normal";
       node.dataset.levelState = node.dataset.levelState || "loading";
+      defineAssetSlot(node, `level-node-${level}`, "contain", "50% 50%");
 
       if (!node.querySelector(".menu-v3-node-number")) {
         node.innerHTML = `
@@ -145,6 +170,8 @@
     const cost = play.querySelector(":scope > span:last-child");
     icon?.classList.add("menu-v3-play-icon");
     cost?.classList.add("menu-v3-play-cost");
+    defineAssetSlot(play, "play-frame", "nine-slice", "50% 50%");
+    defineAssetSlot(icon, "play-icon", "contain", "50% 50%");
   }
 
   function decorateDock(shell) {
@@ -156,6 +183,7 @@
       if (icon) {
         icon.textContent = dockGlyphs[key] || "•";
         icon.dataset.icon = key;
+        defineAssetSlot(icon, `dock-${key}`, "contain", "50% 50%");
       }
       label?.classList.add("menu-v3-dock-label");
 
