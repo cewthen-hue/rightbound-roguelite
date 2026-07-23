@@ -3,6 +3,7 @@ import fs from "node:fs";
 const shell = fs.readFileSync("src/menu-v3/menu-v3-shell.js", "utf8");
 const tokens = fs.readFileSync("styles/menu-v3/menu-v3.tokens.css", "utf8");
 const layout = fs.readFileSync("styles/menu-v3/menu-v3.layout.css", "utf8");
+const skin = fs.readFileSync("styles/menu-v3/menu-v3.skin.css", "utf8");
 const responsive = fs.readFileSync("styles/menu-v3/menu-v3.responsive.css", "utf8");
 const debug = fs.readFileSync("styles/menu-v3/menu-v3.debug.css", "utf8");
 
@@ -33,7 +34,7 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.31.0-lot2"')) throw new Error("Menu V3 shell version must match the active Lot 2 component build.");
+if (!shell.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 shell version must match the active Lot 2.1 build.");
 
 const requiredTokens = [
   "--menu-v3-topbar-min",
@@ -55,6 +56,7 @@ if (!layout.includes("overflow:hidden")) throw new Error("Menu V3 shell must exp
 if (!layout.includes("env(safe-area-inset-top)")) throw new Error("Menu V3 top safe area is missing.");
 if (!layout.includes("env(safe-area-inset-bottom)")) throw new Error("Menu V3 bottom safe area is missing.");
 if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3 dock must use four equal columns.");
+if (!skin.includes("menu-v3-resource-track")) throw new Error("Menu V3 skin layer is missing its top-bar refinement.");
 if (!responsive.includes("box-sizing:border-box")) throw new Error("Menu V3 shell must include its safe-area padding inside 100dvh.");
 if (!responsive.includes("menu-v3-selector-legend")) throw new Error("Menu V3 legend overflow protection is missing.");
 if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats readability rules are missing.");
@@ -64,8 +66,8 @@ if (!responsive.includes("minmax(306px,1fr)")) throw new Error("Menu V3 must res
 if (!responsive.includes("86px\n      62px")) throw new Error("The compact selector and enlarged CTA balance is missing.");
 if (!responsive.includes("body.menu-v3-active #overlay::after")) throw new Error("Menu V3 bottom surface continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
-if (/assets\/menu-v3\/.test(shell + layout + responsive + tokens + debug)) {
+if (/assets\/menu-v3\//.test(shell + layout + skin + responsive + tokens + debug)) {
   throw new Error("Lots 1 and 2 must remain independent from final Menu V3 sprites.");
 }
 
-console.log("Menu V3 structural contract passed during Lot 2.");
+console.log("Menu V3 structural contract passed during Lot 2.1.");
