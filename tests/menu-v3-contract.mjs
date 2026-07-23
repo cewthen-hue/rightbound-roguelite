@@ -40,6 +40,7 @@ const requiredTokens = [
   "--menu-v3-selector-min",
   "--menu-v3-action-min",
   "--menu-v3-dock-min",
+  "--menu-v3-dock-bg",
   "--menu-v3-max-width"
 ];
 
@@ -55,10 +56,13 @@ if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3
 if (!responsive.includes("box-sizing:border-box")) throw new Error("Menu V3 shell must include its safe-area padding inside 100dvh.");
 if (!responsive.includes("menu-v3-selector-legend")) throw new Error("Menu V3 legend overflow protection is missing.");
 if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats readability rules are missing.");
-if (!responsive.includes("menu-v3-dock-slot")) throw new Error("Menu V3 dock safe-area continuation is missing.");
+if (!responsive.includes("menu-v3-dock-slot")) throw new Error("Menu V3 dock continuation rules are missing.");
+if (!responsive.includes("max-height:860px")) throw new Error("Menu V3 standard iPhone height profile is missing.");
+if (!responsive.includes("minmax(300px,1fr)")) throw new Error("Menu V3 must reserve a dominant stage on standard iPhones.");
+if (!responsive.includes("body.menu-v3-active #overlay::after")) throw new Error("Menu V3 bottom surface continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
 if (/assets\/menu-v3\/.test(shell + layout + responsive + tokens + debug)) {
   throw new Error("Lot 1 must not depend on final Menu V3 sprites.");
 }
 
-console.log("Menu V3 Lot 1.2 structural contract passed.");
+console.log("Menu V3 Lot 1.3 structural contract passed.");
