@@ -158,7 +158,7 @@
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", async () => {
       try {
-        const registration = await navigator.serviceWorker.register("service-worker.js?v=0.34.0", { scope: "./" });
+        const registration = await navigator.serviceWorker.register("service-worker.js?v=0.35.0", { scope: "./" });
         registration.update();
       } catch (error) {
         console.warn("Service worker non disponible :", error);
@@ -167,7 +167,7 @@
   }
 
   window.RightboundPlatform = Object.freeze({
-    version:"1.0.1",
+    version:"1.0.2",
     orientation:PORTRAIT_ORIENTATION,
     isStandalone,
     requestPortraitLock
