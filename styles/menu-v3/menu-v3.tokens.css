@@ -18,17 +18,17 @@
   --menu-v3-stage-heading-fluid:5.9dvh;
   --menu-v3-stage-heading-max:56px;
 
-  --menu-v3-stage-stats-min:86px;
-  --menu-v3-stage-stats-fluid:10.6dvh;
-  --menu-v3-stage-stats-max:100px;
+  --menu-v3-stage-stats-min:80px;
+  --menu-v3-stage-stats-fluid:9.9dvh;
+  --menu-v3-stage-stats-max:94px;
 
-  --menu-v3-selector-min:90px;
-  --menu-v3-selector-fluid:11.1dvh;
-  --menu-v3-selector-max:106px;
+  --menu-v3-selector-min:84px;
+  --menu-v3-selector-fluid:10.4dvh;
+  --menu-v3-selector-max:100px;
 
-  --menu-v3-action-min:60px;
-  --menu-v3-action-fluid:7.9dvh;
-  --menu-v3-action-max:82px;
+  --menu-v3-action-min:66px;
+  --menu-v3-action-fluid:8.5dvh;
+  --menu-v3-action-max:88px;
 
   --menu-v3-dock-min:78px;
   --menu-v3-dock-fluid:9.6dvh;
