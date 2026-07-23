@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.9.0`
+Version du plan : `2.0.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 Plateformes cibles : iPhone et Android, avec publication Android prévue sur Google Play.
@@ -213,13 +213,14 @@ assets/menu-v3/
 
 ## Implémentation active
 
-Version applicative : `0.32.1`
+Version applicative : `0.33.0`
 
 Fichiers actifs :
 
 - `src/menu-v3/menu-v3-shell.js` ;
 - `src/menu-v3/menu-v3-components.js` ;
 - `src/menu-v3/menu-v3-data.js` ;
+- `src/menu-v3/menu-v3-interactions.js` ;
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
 - `styles/menu-v3/menu-v3.components.css` ;
@@ -229,9 +230,10 @@ Fichiers actifs :
 - `tests/menu-v3-contract.mjs` ;
 - `tests/menu-v3-components-contract.mjs` ;
 - `tests/menu-v3-data-contract.mjs` ;
+- `tests/menu-v3-interactions-contract.mjs` ;
 - `tests/mobile-platform-contract.mjs`.
 
-Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
+Le shell V3 masque temporairement l’affichage V2. Le pont invisible V2 reste utilisé uniquement pour déclencher la sélection et le lancement déjà éprouvés, tandis que toutes les interactions visibles appartiennent maintenant à `menu-v3-interactions.js`. Aucun sprite Menu V3 définitif n’est utilisé.
 
 ### Lot 1 verrouillé
 
@@ -312,6 +314,27 @@ Implémentation réalisée :
 - mise à jour instantanée après victoire et déblocage ;
 - tests automatiques empêchant le retour des faux états du Lot 2.
 
+### Lot 3.3 — Bouton Jouer et navigation
+
+Implémentation réalisée :
+
+- création de `src/menu-v3/menu-v3-interactions.js` ;
+- suppression des écouteurs de clic du shell structurel afin d’éviter les doubles lancements ;
+- bouton `JOUER` pour un niveau disponible ;
+- bouton `REJOUER` pour un niveau terminé ;
+- bouton `VERROUILLÉ` avec instruction indiquant le niveau précédent à terminer ;
+- masquage du coût d’énergie lorsqu’un niveau est verrouillé ;
+- lancement relié à la logique d’expédition existante sans dupliquer les runs ;
+- onglet Équipement relié à l’inventaire réel ;
+- onglet Coffres relié à l’écran de coffres réel ;
+- notification Coffres reliée au nombre réellement disponible ;
+- onglet Expédition conservé comme onglet actif ;
+- onglet Boutique relié à une réponse explicite en attendant son système dédié ;
+- messages cohérents pour Options, Journal et les boutons de ressources encore provisoires ;
+- feedback vibratoire léger lorsqu’il est supporté par Android ;
+- styles distincts pour les états disponible, rejouable et verrouillé ;
+- contrat automatique dédié au Lot 3.3.
+
 ### Orientation portrait
 
 - orientation PWA passée à `portrait-primary` ;
@@ -326,8 +349,8 @@ Implémentation réalisée :
 - [x] Lot 1 — Squelette mobile intégral verrouillé.
 - [x] Lot 2 — Composants HTML/CSS temporaires et révisions 2.1/2.2 validés.
 - [x] Lot 3.1 — Valeurs réelles et synchronisation des données implémentées.
-- [x] Lot 3.2 — États réels des niveaux implémentés ; validation sur téléphone en attente.
-- [ ] Lot 3.3 — Bouton Jouer et navigation.
+- [x] Lot 3.2 — États réels des niveaux implémentés.
+- [x] Lot 3.3 — Bouton Jouer et navigation implémentés ; validation sur téléphone en attente.
 - [ ] Lot 3.4 — Synchronisation complète après tous les changements de jeu.
 - [ ] Lot 4 — Validation géométrique.
 - [ ] Lot 5 — Production des sprites.
