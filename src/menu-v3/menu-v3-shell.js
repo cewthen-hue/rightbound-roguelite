@@ -7,17 +7,13 @@
     return;
   }
 
-  const VERSION = "0.32.1-lot3.2";
+  const VERSION = "0.33.0-lot3.3";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
   let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) === "true";
 
   function legacyMenu() {
     return modalContent.querySelector(".menu-v2-shell");
-  }
-
-  function toast(message) {
-    window.RightboundUI?.showToast?.(message);
   }
 
   function moduleLabel(name) {
@@ -125,36 +121,6 @@
         ${dockSlot("shop", "BOUTIQUE")}
       </nav>`;
 
-    shell.querySelectorAll("[data-v3-level]").forEach((button) => {
-      button.addEventListener("click", () => {
-        const source = legacyMenu();
-        source?.querySelector(`[data-menu-v2-level="${button.dataset.v3Level}"]`)?.click();
-        scheduleSync();
-      });
-    });
-
-    shell.querySelector('[data-v3-action="play"]')?.addEventListener("click", () => {
-      const source = legacyMenu();
-      const play = source?.querySelector('[data-menu-v2-action="play"], #playSelectedLevel');
-      if (play && !play.disabled) play.click();
-      else toast("Ce niveau n’est pas encore disponible.");
-    });
-
-    shell.querySelectorAll("[data-v3-utility]").forEach((button) => {
-      button.addEventListener("click", () => toast(`Le module ${button.dataset.v3Utility} sera connecté dans les prochains sous-lots du Lot 3.`));
-    });
-
-    shell.querySelectorAll("[data-v3-dock]").forEach((button) => {
-      button.addEventListener("click", () => {
-        if (button.dataset.v3Dock === "expedition") return;
-        toast(`L’onglet ${button.textContent.trim()} sera connecté dans les prochains sous-lots du Lot 3.`);
-      });
-    });
-
-    shell.querySelectorAll(".menu-v3-resource-slot button").forEach((button) => {
-      button.addEventListener("click", () => toast("Les achats de ressources seront ajoutés ultérieurement."));
-    });
-
     return shell;
   }
 
@@ -181,8 +147,9 @@
     const sourcePlay = source.querySelector('[data-menu-v2-action="play"], #playSelectedLevel');
     const play = shell.querySelector('[data-v3-action="play"]');
     if (play) {
-      play.disabled = Boolean(sourcePlay?.disabled);
-      play.setAttribute("aria-disabled", play.disabled ? "true" : "false");
+      const disabled = Boolean(sourcePlay?.disabled);
+      if (play.disabled !== disabled) play.disabled = disabled;
+      play.setAttribute("aria-disabled", disabled ? "true" : "false");
     }
 
     document.dispatchEvent(new CustomEvent("rightbound:menu-v3-synced", {
