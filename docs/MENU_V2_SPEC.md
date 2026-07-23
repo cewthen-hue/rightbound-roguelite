@@ -1,7 +1,7 @@
 # Menu V2 — spécification structurelle
 
-Version : `0.27.0`
-Statut : phase 2, top bar recalibrée
+Version : `0.28.0`
+Statut : phase 3, en-tête du monde recalibré
 
 ## Objectif
 
@@ -15,6 +15,8 @@ Le Menu V2 est construit dans des fichiers isolés :
 - `styles/menu-v2.css`
 - `src/menu-v2-topbar.js`
 - `styles/menu-v2-topbar.css`
+- `src/menu-v2-world-header.js`
+- `styles/menu-v2-world-header.css`
 
 L’ancien menu reste monté mais invisible avec la classe `menu-v2-legacy-source`. Il sert temporairement de pont pour les actions existantes : sélection d’un niveau, flèches précédente/suivante et lancement d’une expédition. Cette méthode permet de reconstruire l’interface sans casser les récompenses ou la sauvegarde.
 
@@ -95,6 +97,23 @@ Corrections appliquées :
 - gemmes et énergie explicitement maintenues à `0` tant que leurs systèmes ne sont pas développés ;
 - règles spécifiques pour les écrans sous 370 px et les hauteurs sous 700 px.
 
+## Phase 3 — en-tête du monde
+
+L’en-tête a été isolé afin de contrôler sa géométrie indépendamment de la scène centrale.
+
+Corrections appliquées :
+
+- colonnes Options, titre et Journal rendues symétriques ;
+- panneaux latéraux limités à une largeur et une hauteur stables ;
+- icônes recentrées et redimensionnées sans déformer les sprites ;
+- libellés Options et Journal empêchés d’être tronqués ;
+- titre forcé sur exactement deux lignes : `LES FAUBOURGS` puis `OUBLIÉS` ;
+- `MONDE 1` recentré avec un espacement de lettres contrôlé ;
+- interligne et ombre du titre recalibrés ;
+- léger halo central limité au module ;
+- état pressé discret sur les deux boutons ;
+- adaptations spécifiques aux écrans étroits et aux faibles hauteurs.
+
 ## Responsive
 
 Trois plages sont prévues :
@@ -119,4 +138,4 @@ Les safe areas iOS sont absorbées par le shell et le dock.
 
 ## Étape suivante
 
-La phase 3 recalibrera l’en-tête du monde : dimensions des panneaux Options et Journal, largeur du titre, interligne, centrage horizontal et espacement avec la carte d’expédition.
+La phase 4 reconstruira précisément la carte d’expédition unifiée : plaque du niveau, badge de type, dimensions du cadre, cadrage du décor, taille et ancrage de Jack, footer de zone, puissance et récompense.
