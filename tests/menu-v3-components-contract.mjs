@@ -51,7 +51,7 @@ if (components.includes('level <= 2 ? "completed"')) {
   throw new Error("Hard-coded demo level states must not return after Lot 3.2.");
 }
 if (!components.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 component version mismatch.");
-if (!shell.includes('VERSION = "0.33.0-lot3.3"')) throw new Error("Menu V3 shell is not running the active Lot 3.3 version.");
+if (!shell.includes('VERSION = "0.33.0-lot3.3"')) throw new Error("Menu V3 structural shell version mismatch.");
 if (!shell.includes('localStorage.getItem(DEBUG_STORAGE_KEY) === "true"')) {
   throw new Error("Menu V3 debug mode must remain disabled by default.");
 }
@@ -79,14 +79,15 @@ const skinIndex = index.indexOf("menu-v3.skin.css?v=0.33.0");
 const responsiveIndex = index.indexOf("menu-v3.responsive.css?v=0.31.2");
 const shellIndex = index.indexOf("menu-v3-shell.js?v=0.33.0");
 const componentJsIndex = index.indexOf("menu-v3-components.js?v=0.32.1");
-const dataJsIndex = index.indexOf("menu-v3-data.js?v=0.32.1");
-const interactionsIndex = index.indexOf("menu-v3-interactions.js?v=0.33.0");
+const dataJsIndex = index.indexOf("menu-v3-data.js?v=0.34.0");
+const interactionsIndex = index.indexOf("menu-v3-interactions.js?v=0.34.0");
+const syncIndex = index.indexOf("menu-v3-sync.js?v=0.34.0");
 
 if (cssIndex < 0 || skinIndex < 0 || responsiveIndex < 0 || !(cssIndex < skinIndex && skinIndex < responsiveIndex)) {
   throw new Error("Menu V3 CSS order must be components, skin, then responsive.");
 }
-if (shellIndex < 0 || componentJsIndex < 0 || dataJsIndex < 0 || interactionsIndex < 0 || !(shellIndex < componentJsIndex && componentJsIndex < dataJsIndex && dataJsIndex < interactionsIndex)) {
-  throw new Error("Menu V3 scripts must load in shell, components, data, interactions order.");
+if (shellIndex < 0 || componentJsIndex < 0 || dataJsIndex < 0 || interactionsIndex < 0 || syncIndex < 0 || !(shellIndex < componentJsIndex && componentJsIndex < dataJsIndex && dataJsIndex < interactionsIndex && interactionsIndex < syncIndex)) {
+  throw new Error("Menu V3 scripts must load in shell, components, data, interactions, sync order.");
 }
 
-console.log("Menu V3 component contract passed during Lot 3.3.");
+console.log("Menu V3 component contract passed during Lot 3.4.");
