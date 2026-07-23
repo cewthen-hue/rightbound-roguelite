@@ -1,0 +1,47 @@
+/* Rightbound combat runtime performance layer.
+   This file is loaded last and only removes effects that are expensive over a moving canvas. */
+
+#gameZone{
+  contain:layout paint;
+  isolation:isolate;
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+}
+
+#game{
+  transform:translateZ(0);
+  -webkit-transform:translateZ(0);
+  backface-visibility:hidden;
+  -webkit-backface-visibility:hidden;
+  image-rendering:auto;
+}
+
+#hud .panel{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  background:linear-gradient(180deg,rgba(8,15,27,.96),rgba(5,10,18,.93))!important;
+  box-shadow:0 5px 14px rgba(0,0,0,.25),inset 0 1px rgba(255,255,255,.045)!important;
+}
+
+#hud .fill{
+  will-change:width;
+}
+
+#controls .cooldown{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+  background:rgba(3,6,14,.86)!important;
+}
+
+#overlay.hidden{
+  -webkit-backdrop-filter:none!important;
+  backdrop-filter:none!important;
+}
+
+@media (prefers-reduced-motion:reduce){
+  #hud .fill,
+  .action-button,
+  .slot{
+    transition:none!important;
+  }
+}
