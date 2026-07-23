@@ -1,0 +1,205 @@
+/* Rightbound Menu V2 — phase 2: top bar geometry
+   Loaded after menu-v2.css so the module can be tuned independently. */
+
+.menu-v2-topbar{
+  --topbar-edge-left:clamp(9px,2.45vw,12px);
+  --topbar-edge-right:clamp(11px,2.9vw,15px);
+  grid-template-columns:minmax(0,43%) minmax(0,57%)!important;
+  gap:clamp(5px,1.25vw,7px)!important;
+  padding:
+    clamp(5px,.68dvh,7px)
+    var(--topbar-edge-right)
+    clamp(5px,.68dvh,7px)
+    var(--topbar-edge-left)!important;
+  align-items:center!important;
+  overflow:visible!important;
+}
+
+.menu-v2-profile{
+  grid-template-columns:clamp(50px,13.8vw,58px) minmax(0,1fr)!important;
+  gap:clamp(5px,1.25vw,7px)!important;
+  height:100%!important;
+  align-items:center!important;
+}
+
+.menu-v2-portrait{
+  width:100%!important;
+  height:calc(100% - 2px)!important;
+  max-height:66px!important;
+  align-self:center!important;
+  overflow:visible!important;
+}
+
+.menu-v2-portrait-frame{
+  inset:-3px!important;
+}
+
+.menu-v2-profile-copy{
+  height:calc(100% - 5px)!important;
+  grid-template-rows:auto auto minmax(17px,1fr)!important;
+  align-content:center!important;
+  row-gap:1px!important;
+  padding:2px 0 1px!important;
+}
+
+.menu-v2-player-name{
+  margin:0!important;
+  font-size:clamp(17px,4.65vw,21px)!important;
+  line-height:.98!important;
+  letter-spacing:.012em!important;
+}
+
+.menu-v2-player-level{
+  margin-top:1px!important;
+  font-size:clamp(10px,2.75vw,12px)!important;
+  line-height:1!important;
+}
+
+.menu-v2-xp{
+  width:100%!important;
+  min-width:0!important;
+  min-height:17px!important;
+  max-height:20px!important;
+  margin-top:2px!important;
+  align-self:end!important;
+}
+
+.menu-v2-xp strong{
+  max-width:calc(100% - 8px)!important;
+  overflow:hidden!important;
+  font-size:clamp(7.5px,2.05vw,9px)!important;
+  letter-spacing:.025em!important;
+  text-overflow:ellipsis!important;
+  white-space:nowrap!important;
+}
+
+.menu-v2-xp-fill{
+  inset:3px auto 3px 3px!important;
+}
+
+.menu-v2-resources{
+  min-width:0!important;
+  grid-template-columns:repeat(3,minmax(0,1fr))!important;
+  gap:clamp(3px,.7vw,4px)!important;
+  align-self:center!important;
+  align-items:center!important;
+  height:100%!important;
+  padding:0!important;
+}
+
+.menu-v2-resource{
+  min-width:0!important;
+  width:100%!important;
+  height:clamp(31px,4.15dvh,36px)!important;
+  grid-template-columns:clamp(14px,3.95vw,18px) minmax(15px,1fr) clamp(19px,5vw,23px)!important;
+  column-gap:0!important;
+  padding:2px 1px 2px clamp(3px,.8vw,5px)!important;
+  overflow:visible!important;
+}
+
+.menu-v2-resource-icon{
+  width:100%!important;
+  max-width:18px!important;
+  justify-self:center!important;
+}
+
+.menu-v2-resource strong{
+  width:100%!important;
+  min-width:0!important;
+  padding:0 1px!important;
+  overflow:hidden!important;
+  color:#f0eadf!important;
+  font-size:clamp(10px,2.85vw,13px)!important;
+  letter-spacing:0!important;
+  text-align:center!important;
+  text-overflow:clip!important;
+  white-space:nowrap!important;
+}
+
+.menu-v2-resource-add{
+  width:100%!important;
+  min-width:0!important;
+  height:100%!important;
+  padding:0 0 1px!important;
+  font-size:clamp(16px,4.3vw,20px)!important;
+  line-height:1!important;
+}
+
+.menu-v2-resource[data-menu-v2-resource="energy"] strong{
+  font-size:clamp(9.5px,2.65vw,12px)!important;
+}
+
+@media (max-width:370px){
+  .menu-v2-topbar{
+    --topbar-edge-left:7px;
+    --topbar-edge-right:9px;
+    grid-template-columns:minmax(0,42%) minmax(0,58%)!important;
+    gap:3px!important;
+  }
+
+  .menu-v2-profile{
+    grid-template-columns:45px minmax(0,1fr)!important;
+    gap:4px!important;
+  }
+
+  .menu-v2-portrait{
+    max-height:57px!important;
+  }
+
+  .menu-v2-player-name{
+    font-size:15.5px!important;
+  }
+
+  .menu-v2-player-level{
+    font-size:9.5px!important;
+  }
+
+  .menu-v2-xp{
+    min-height:15px!important;
+  }
+
+  .menu-v2-xp strong{
+    font-size:7px!important;
+  }
+
+  .menu-v2-resources{
+    gap:2px!important;
+  }
+
+  .menu-v2-resource{
+    height:29px!important;
+    grid-template-columns:13px minmax(13px,1fr) 18px!important;
+    padding-left:3px!important;
+  }
+
+  .menu-v2-resource strong{
+    font-size:9.5px!important;
+  }
+
+  .menu-v2-resource[data-menu-v2-resource="energy"] strong{
+    font-size:9px!important;
+  }
+
+  .menu-v2-resource-add{
+    font-size:15px!important;
+  }
+}
+
+@media (max-height:700px) and (orientation:portrait){
+  .menu-v2-topbar{
+    padding-top:4px!important;
+    padding-bottom:4px!important;
+  }
+
+  .menu-v2-portrait{
+    max-height:53px!important;
+  }
+
+  .menu-v2-profile-copy{
+    height:calc(100% - 2px)!important;
+  }
+
+  .menu-v2-resource{
+    height:28px!important;
+  }
+}
