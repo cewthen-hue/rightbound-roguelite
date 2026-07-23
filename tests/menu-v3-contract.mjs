@@ -3,6 +3,7 @@ import fs from "node:fs";
 const shell = fs.readFileSync("src/menu-v3/menu-v3-shell.js", "utf8");
 const tokens = fs.readFileSync("styles/menu-v3/menu-v3.tokens.css", "utf8");
 const layout = fs.readFileSync("styles/menu-v3/menu-v3.layout.css", "utf8");
+const responsive = fs.readFileSync("styles/menu-v3/menu-v3.responsive.css", "utf8");
 const debug = fs.readFileSync("styles/menu-v3/menu-v3.debug.css", "utf8");
 
 const requiredModules = [
@@ -51,9 +52,13 @@ if (!layout.includes("overflow:hidden")) throw new Error("Menu V3 shell must exp
 if (!layout.includes("env(safe-area-inset-top)")) throw new Error("Menu V3 top safe area is missing.");
 if (!layout.includes("env(safe-area-inset-bottom)")) throw new Error("Menu V3 bottom safe area is missing.");
 if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3 dock must use four equal columns.");
+if (!responsive.includes("box-sizing:border-box")) throw new Error("Menu V3 shell must include its safe-area padding inside 100dvh.");
+if (!responsive.includes("menu-v3-selector-legend")) throw new Error("Menu V3 legend overflow protection is missing.");
+if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats readability rules are missing.");
+if (!responsive.includes("menu-v3-dock-slot")) throw new Error("Menu V3 dock safe-area continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
-if (/assets\/menu-v3\/.test(shell + layout + tokens + debug)) {
+if (/assets\/menu-v3\/.test(shell + layout + responsive + tokens + debug)) {
   throw new Error("Lot 1 must not depend on final Menu V3 sprites.");
 }
 
-console.log("Menu V3 Lot 1.1 structural contract passed.");
+console.log("Menu V3 Lot 1.2 structural contract passed.");
