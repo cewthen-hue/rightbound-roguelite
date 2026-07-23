@@ -156,7 +156,8 @@
 
   function setText(root, selector, value) {
     const node = root.querySelector(selector);
-    if (node) node.textContent = String(value);
+    const next = String(value);
+    if (node && node.textContent !== next) node.textContent = next;
   }
 
   function bindSnapshot(shell, snapshot) {
@@ -165,8 +166,11 @@
     setText(shell, '[data-v3-bind="hero-name"]', hero.name);
     setText(shell, '[data-v3-bind="hero-level"]', `NIV. ${hero.level}`);
     setText(shell, ".menu-v3-xp-label", `${formatNumber(hero.xp)} / ${formatNumber(hero.xpRequired)} XP`);
+    const xpProgress = `${Math.round(hero.progress * 10000) / 100}%`;
     const xpFill = shell.querySelector(".menu-v3-xp-meter i");
-    if (xpFill) xpFill.style.setProperty("--menu-v3-xp-progress", `${Math.round(hero.progress * 10000) / 100}%`);
+    if (xpFill && xpFill.style.getPropertyValue("--menu-v3-xp-progress") !== xpProgress) {
+      xpFill.style.setProperty("--menu-v3-xp-progress", xpProgress);
+    }
 
     setText(shell, '.menu-v3-resource-slot[data-resource="gold"] .menu-v3-resource-value', formatNumber(resources.gold));
     setText(shell, '.menu-v3-resource-slot[data-resource="gems"] .menu-v3-resource-value', formatNumber(resources.gems));
@@ -174,7 +178,10 @@
 
     setText(shell, '[data-v3-bind="world-label"]', world.label);
     const worldLines = shell.querySelectorAll('[data-v3-bind="world-title"] span');
-    worldLines.forEach((node, index) => { node.textContent = world.titleLines[index] || ""; });
+    worldLines.forEach((node, index) => {
+      const next = world.titleLines[index] || "";
+      if (node.textContent !== next) node.textContent = next;
+    });
 
     setText(shell, '[data-v3-bind="level-number"]', `NIVEAU ${level.id} / ${level.total}`);
     setText(shell, '[data-v3-bind="level-name"]', String(level.name).toLocaleUpperCase("fr-FR"));
@@ -185,14 +192,16 @@
     setText(shell, '[data-v3-bind="energy-cost"]', `ϟ ${formatNumber(resources.energyCost)}`);
 
     const badge = shell.querySelector('[data-v3-bind="readiness"]');
-    if (badge) badge.dataset.readiness = level.readiness.key;
+    if (badge && badge.dataset.readiness !== level.readiness.key) badge.dataset.readiness = level.readiness.key;
     const powerPanel = shell.querySelector('.menu-v3-stat-slot[data-stat="power"]');
-    if (powerPanel) powerPanel.dataset.readiness = level.readiness.key;
+    if (powerPanel && powerPanel.dataset.readiness !== level.readiness.key) powerPanel.dataset.readiness = level.readiness.key;
 
-    shell.dataset.selectedLevel = String(level.id);
-    shell.dataset.heroLevel = String(hero.level);
-    shell.dataset.menuV3Data = VERSION;
-    shell.style.setProperty("--menu-v3-xp-progress", `${Math.round(hero.progress * 10000) / 100}%`);
+    if (shell.dataset.selectedLevel !== String(level.id)) shell.dataset.selectedLevel = String(level.id);
+    if (shell.dataset.heroLevel !== String(hero.level)) shell.dataset.heroLevel = String(hero.level);
+    if (shell.dataset.menuV3Data !== VERSION) shell.dataset.menuV3Data = VERSION;
+    if (shell.style.getPropertyValue("--menu-v3-xp-progress") !== xpProgress) {
+      shell.style.setProperty("--menu-v3-xp-progress", xpProgress);
+    }
   }
 
   function sync() {
