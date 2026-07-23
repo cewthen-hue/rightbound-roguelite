@@ -25,7 +25,7 @@ for (const functionName of requiredFunctions) {
   if (!interactions.includes(`function ${functionName}`)) throw new Error(`Lot 3.3 function missing: ${functionName}.`);
 }
 
-if (!interactions.includes('data-play-state')) throw new Error("Dynamic play-button state binding is missing.");
+if (!interactions.includes("play.dataset.playState")) throw new Error("Dynamic play-button state binding is missing.");
 if (!interactions.includes('setText(title, "JOUER")')) throw new Error("Available-level play label is missing.");
 if (!interactions.includes('setText(title, "REJOUER")')) throw new Error("Completed-level replay label is missing.");
 if (!interactions.includes('setText(title, "VERROUILLÉ")')) throw new Error("Locked-level label is missing.");
