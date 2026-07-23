@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.0.0`
+Version du plan : `1.1.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -189,10 +189,30 @@ assets/menu-v3/
   README.md
 ```
 
+## Implémentation du Lot 1
+
+Version applicative : `0.30.0`
+
+Fichiers actifs :
+
+- `src/menu-v3/menu-v3-shell.js` ;
+- `styles/menu-v3/menu-v3.tokens.css` ;
+- `styles/menu-v3/menu-v3.layout.css` ;
+- `styles/menu-v3/menu-v3.debug.css` ;
+- `tests/menu-v3-contract.mjs`.
+
+Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
+
+Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
+
+```js
+RightboundMenuV3.setDebug(false);
+```
+
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [ ] Lot 1 — Squelette mobile intégral.
+- [x] Lot 1 — Squelette mobile intégral implémenté ; validation iPhone en attente.
 - [ ] Lot 2 — Composants HTML complets.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
