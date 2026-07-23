@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.2.0`
+Version du plan : `1.3.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -191,13 +191,14 @@ assets/menu-v3/
 
 ## Implémentation du Lot 1
 
-Version applicative : `0.30.1`
+Version applicative : `0.30.2`
 
 Fichiers actifs :
 
 - `src/menu-v3/menu-v3-shell.js` ;
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
+- `styles/menu-v3/menu-v3.responsive.css` ;
 - `styles/menu-v3/menu-v3.debug.css` ;
 - `tests/menu-v3-contract.mjs`.
 
@@ -217,6 +218,22 @@ La première capture iPhone a conduit aux décisions suivantes :
 - légère respiration ajoutée au sélecteur ;
 - hauteur de scène recalculée automatiquement pour conserver un écran sans scroll.
 
+### Révision Lot 1.2
+
+La seconde capture iPhone a révélé trois derniers défauts géométriques : contenu de puissance coupé, légende masquée et fin de dock non alignée sur la hauteur dynamique.
+
+Corrections appliquées :
+
+- `box-sizing:border-box` imposé au shell afin que la safe area supérieure soit incluse dans `100dvh` ;
+- hauteurs du panneau puissance/récompense, du sélecteur et du dock recalibrées dans les tokens ;
+- typographie interne des deux panneaux contrainte pour garantir toutes les lignes ;
+- ligne `(Supérieur)` conservée sans sortie du panneau ;
+- légende dotée d’une rangée réservée et d’un débordement visible ;
+- nodes légèrement remontés pour créer une séparation réelle avant la légende ;
+- dock étendu sur toute sa dernière rangée avec un fond continu ;
+- fond HTML et body harmonisé pour que la zone Safari externe ne crée pas de rupture de couleur ;
+- profils spécifiques ajoutés pour les hauteurs sous 811 px et sous 700 px.
+
 Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
 
 ```js
@@ -226,7 +243,7 @@ RightboundMenuV3.setDebug(false);
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [x] Lot 1 — Squelette mobile intégral et révision 1.1 implémentés ; validation iPhone finale en attente.
+- [x] Lot 1 — Squelette mobile intégral et révisions 1.1/1.2 implémentés ; validation iPhone finale en attente.
 - [ ] Lot 2 — Composants HTML complets.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
