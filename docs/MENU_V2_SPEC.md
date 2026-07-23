@@ -1,7 +1,7 @@
 # Menu V2 — spécification structurelle
 
-Version : `0.26.0`
-Statut : phase 1, squelette complet
+Version : `0.27.0`
+Statut : phase 2, top bar recalibrée
 
 ## Objectif
 
@@ -9,10 +9,12 @@ Reconstruire le menu principal selon la composition de référence sans empiler 
 
 ## Architecture temporaire
 
-Le Menu V2 est construit dans deux fichiers isolés :
+Le Menu V2 est construit dans des fichiers isolés :
 
 - `src/menu-v2.js`
 - `styles/menu-v2.css`
+- `src/menu-v2-topbar.js`
+- `styles/menu-v2-topbar.css`
 
 L’ancien menu reste monté mais invisible avec la classe `menu-v2-legacy-source`. Il sert temporairement de pont pour les actions existantes : sélection d’un niveau, flèches précédente/suivante et lancement d’une expédition. Cette méthode permet de reconstruire l’interface sans casser les récompenses ou la sauvegarde.
 
@@ -76,6 +78,23 @@ La hauteur du dock est réservée dans la grille. Il ne peut donc plus être rep
 
 Les icônes du dock utilisent temporairement les sprites existants. Les sprites définitifs seront produits après validation de toute la géométrie.
 
+## Phase 2 — top bar
+
+La capture réelle du Menu V2 a servi à recalibrer la barre supérieure sans modifier le reste de l’écran.
+
+Corrections appliquées :
+
+- largeur du bloc profil portée à 43 % et ressources à 57 % ;
+- marges internes gauche et droite réservées aux ornements du sprite ;
+- portrait stabilisé dans sa zone sans modifier son ratio ;
+- `JACK`, `NIV. 1` et l’XP empilés avec une grille dédiée ;
+- texte `0 / 150 XP` garanti au centre de la barre ;
+- trois capsules strictement identiques ;
+- icônes, nombres et boutons plus redimensionnés indépendamment ;
+- valeurs empêchées de dépasser ou d’être coupées ;
+- gemmes et énergie explicitement maintenues à `0` tant que leurs systèmes ne sont pas développés ;
+- règles spécifiques pour les écrans sous 370 px et les hauteurs sous 700 px.
+
 ## Responsive
 
 Trois plages sont prévues :
@@ -86,7 +105,7 @@ Trois plages sont prévues :
 
 Les safe areas iOS sont absorbées par le shell et le dock.
 
-## Données connectées dès cette phase
+## Données connectées
 
 - golds permanents ;
 - niveau sélectionné ;
@@ -100,4 +119,4 @@ Les safe areas iOS sont absorbées par le shell et le dock.
 
 ## Étape suivante
 
-La phase 2 reconstruira précisément la top bar sur la base de captures réelles du Menu V2 : dimensions du portrait, grille identité/XP, largeur des capsules et alignement des boutons plus.
+La phase 3 recalibrera l’en-tête du monde : dimensions des panneaux Options et Journal, largeur du titre, interligne, centrage horizontal et espacement avec la carte d’expédition.
