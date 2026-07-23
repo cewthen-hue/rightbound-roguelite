@@ -4,7 +4,7 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.32.1-lot3.2";
+  const VERSION = "0.34.0-lot3.4";
   const HERO_STORAGE_KEY = "rightbound-hero-progression-v1";
   const HERO_SCHEMA_VERSION = 1;
   const HERO_NAME = "JACK";
@@ -22,7 +22,9 @@
     chestType:"bronze",
     type:"normal"
   });
+  const CHEST_TYPES = Object.freeze(["bronze", "silver", "gold", "diamond"]);
   let scheduled = false;
+  let lastSnapshot = null;
 
   function normalizeInteger(value, fallback = 0, minimum = 0) {
     const parsed = Number(value);
@@ -66,6 +68,11 @@
   }
 
   let heroProgression = loadHeroProgression();
+
+  function reloadHeroProgression() {
+    heroProgression = loadHeroProgression();
+    return getHeroProgression();
+  }
 
   function saveHeroProgression(reason = "update") {
     heroProgression = sanitizeHeroProgression(heroProgression);
@@ -168,6 +175,22 @@
     });
   }
 
+  function getChestSnapshot() {
+    const raw = window.RightboundChests?.getState?.() || {};
+    const counts = Object.fromEntries(CHEST_TYPES.map((type) => [
+      type,
+      normalizeInteger(raw.chests?.[type], 0, 0)
+    ]));
+    const calculatedTotal = CHEST_TYPES.reduce((total, type) => total + counts[type], 0);
+
+    return Object.freeze({
+      ...counts,
+      total:normalizeInteger(raw.total, calculatedTotal, 0),
+      opened:normalizeInteger(raw.opened, 0, 0),
+      pending:Boolean(raw.pendingOpening)
+    });
+  }
+
   function getSnapshot() {
     const hero = getHeroProgression();
     const levels = getLevelsSnapshot();
@@ -184,6 +207,7 @@
         energyCost:TEMPORARY_RESOURCES.energyCost,
         temporaryPremiumResources:true
       }),
+      chests:getChestSnapshot(),
       world:WORLD,
       level,
       levels
@@ -266,6 +290,7 @@
     if (shell.dataset.selectedLevel !== String(level.id)) shell.dataset.selectedLevel = String(level.id);
     if (shell.dataset.selectedLevelState !== level.state) shell.dataset.selectedLevelState = level.state;
     if (shell.dataset.heroLevel !== String(hero.level)) shell.dataset.heroLevel = String(hero.level);
+    if (shell.dataset.chestTotal !== String(snapshot.chests.total)) shell.dataset.chestTotal = String(snapshot.chests.total);
     if (shell.dataset.menuV3Data !== VERSION) shell.dataset.menuV3Data = VERSION;
     if (shell.style.getPropertyValue("--menu-v3-xp-progress") !== xpProgress) {
       shell.style.setProperty("--menu-v3-xp-progress", xpProgress);
@@ -275,8 +300,14 @@
   function sync() {
     scheduled = false;
     const shell = modalContent.querySelector(".menu-v3-shell.menu-v3-components-ready");
-    if (!shell) return;
-    bindSnapshot(shell, getSnapshot());
+    if (!shell) return null;
+    const snapshot = getSnapshot();
+    bindSnapshot(shell, snapshot);
+    lastSnapshot = snapshot;
+    document.dispatchEvent(new CustomEvent("rightbound:menu-v3-data-bound", {
+      detail:{ version:VERSION, snapshot }
+    }));
+    return snapshot;
   }
 
   function scheduleSync() {
@@ -290,34 +321,55 @@
 
   [
     "rightbound:menu-v3-synced",
+    "rightbound:menu-v3-refresh-request",
     "rightbound:economy-changed",
     "rightbound:progression-changed",
     "rightbound:profile-changed",
     "rightbound:build-changed",
     "rightbound:run-rewarded",
+    "rightbound:chests-changed",
+    "rightbound:chests-ready",
+    "rightbound:chest-opening-recovered",
+    "rightbound:item-granted",
+    "rightbound:player-profile-ready",
     "rightbound:hero-progression-changed"
   ].forEach((eventName) => document.addEventListener(eventName, scheduleSync));
 
   window.addEventListener("storage", (event) => {
-    if (event.key === HERO_STORAGE_KEY) heroProgression = loadHeroProgression();
-    if ([HERO_STORAGE_KEY, "rightbound-economy-v1", "rightbound-progression-v2", "rightbound-player-profile-v1", "rightbound-selected-level-v1"].includes(event.key)) {
+    if (event.key === HERO_STORAGE_KEY) reloadHeroProgression();
+    if ([HERO_STORAGE_KEY, "rightbound-economy-v1", "rightbound-progression-v2", "rightbound-player-profile-v1", "rightbound-selected-level-v1", "rightbound-chests-v1"].includes(event.key)) {
+      scheduleSync();
+    }
+  });
+
+  window.addEventListener("pageshow", () => {
+    reloadHeroProgression();
+    scheduleSync();
+  });
+  window.addEventListener("focus", scheduleSync, { passive:true });
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") {
+      reloadHeroProgression();
       scheduleSync();
     }
   });
 
   window.RightboundHeroProgression = Object.freeze({
-    version:"1.0.0",
+    version:"1.1.0",
     storageKey:HERO_STORAGE_KEY,
     getState:getHeroProgression,
     setState:setHeroProgression,
     addXp:addHeroXp,
+    reload:reloadHeroProgression,
     xpRequiredForLevel
   });
 
   window.RightboundMenuV3Data = Object.freeze({
     version:VERSION,
     getSnapshot,
-    refresh:scheduleSync
+    getLastSnapshot:() => lastSnapshot,
+    refresh:scheduleSync,
+    refreshNow:sync
   });
 
   scheduleSync();
