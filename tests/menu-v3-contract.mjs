@@ -34,7 +34,7 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 shell version must match the active Lot 2.1 build.");
+if (!shell.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 shell version must match the active Lot 2 component build.");
 
 const requiredTokens = [
   "--menu-v3-topbar-min",
@@ -51,6 +51,8 @@ for (const token of requiredTokens) {
   if (!tokens.includes(token)) throw new Error(`Centralized Menu V3 token missing: ${token}`);
 }
 
+if (!tokens.includes("--menu-v3-selector-min:72px")) throw new Error("Lot 2.2 compact selector token is missing.");
+if (!tokens.includes("--menu-v3-action-min:76px")) throw new Error("Lot 2.2 enlarged action token is missing.");
 if (!layout.includes("height:100dvh")) throw new Error("Menu V3 shell must use the dynamic viewport height.");
 if (!layout.includes("overflow:hidden")) throw new Error("Menu V3 shell must explicitly control overflow.");
 if (!layout.includes("env(safe-area-inset-top)")) throw new Error("Menu V3 top safe area is missing.");
@@ -63,11 +65,13 @@ if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats 
 if (!responsive.includes("menu-v3-dock-slot")) throw new Error("Menu V3 dock continuation rules are missing.");
 if (!responsive.includes("max-height:860px")) throw new Error("Menu V3 standard iPhone height profile is missing.");
 if (!responsive.includes("minmax(306px,1fr)")) throw new Error("Menu V3 must reserve a dominant stage on standard iPhones.");
-if (!responsive.includes("86px\n      62px")) throw new Error("The compact selector and enlarged CTA balance is missing.");
+if (!responsive.includes("74px\n      74px")) throw new Error("Lot 2.2 selector and action balance is missing.");
+if (!responsive.includes("width:32px!important")) throw new Error("Lot 2.2 compact level node profile is missing.");
+if (!responsive.includes("min-height:70px!important")) throw new Error("Lot 2.2 enlarged play button profile is missing.");
 if (!responsive.includes("body.menu-v3-active #overlay::after")) throw new Error("Menu V3 bottom surface continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
 if (/assets\/menu-v3\//.test(shell + layout + skin + responsive + tokens + debug)) {
   throw new Error("Lots 1 and 2 must remain independent from final Menu V3 sprites.");
 }
 
-console.log("Menu V3 structural contract passed during Lot 2.1.");
+console.log("Menu V3 structural contract passed during Lot 2.2.");
