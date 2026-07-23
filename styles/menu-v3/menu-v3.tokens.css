@@ -18,21 +18,21 @@
   --menu-v3-stage-heading-fluid:6.1dvh;
   --menu-v3-stage-heading-max:58px;
 
-  --menu-v3-stage-stats-min:88px;
-  --menu-v3-stage-stats-fluid:11.1dvh;
-  --menu-v3-stage-stats-max:104px;
+  --menu-v3-stage-stats-min:96px;
+  --menu-v3-stage-stats-fluid:12.2dvh;
+  --menu-v3-stage-stats-max:114px;
 
-  --menu-v3-selector-min:88px;
-  --menu-v3-selector-fluid:11.4dvh;
-  --menu-v3-selector-max:110px;
+  --menu-v3-selector-min:98px;
+  --menu-v3-selector-fluid:12.3dvh;
+  --menu-v3-selector-max:118px;
 
-  --menu-v3-action-min:70px;
-  --menu-v3-action-fluid:9.2dvh;
-  --menu-v3-action-max:92px;
+  --menu-v3-action-min:66px;
+  --menu-v3-action-fluid:8.8dvh;
+  --menu-v3-action-max:88px;
 
-  --menu-v3-dock-min:94px;
-  --menu-v3-dock-fluid:11.7dvh;
-  --menu-v3-dock-max:110px;
+  --menu-v3-dock-min:100px;
+  --menu-v3-dock-fluid:12.2dvh;
+  --menu-v3-dock-max:116px;
 
   --menu-v3-radius-small:10px;
   --menu-v3-radius-medium:14px;
