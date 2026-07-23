@@ -54,19 +54,20 @@ for (const type of ["elite", "boss", "normal"]) {
   if (!components.includes(`"${type}"`)) throw new Error(`Menu V3 level type missing: ${type}.`);
 }
 
-if (!shell.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 shell is not running the active Lot 2 component version.");
+if (!shell.includes('VERSION = "0.32.0-lot3.1"')) throw new Error("Menu V3 shell is not running the active Lot 3.1 version.");
 if (!shell.includes('localStorage.getItem(DEBUG_STORAGE_KEY) === "true"')) {
-  throw new Error("Menu V3 debug mode must be disabled by default during Lot 2 review.");
+  throw new Error("Menu V3 debug mode must remain disabled by default.");
 }
 if (!components.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 component version mismatch.");
 if (!componentCss.includes("Final sprites remain forbidden before Lot 5")) {
   throw new Error("Menu V3 Lot 2 CSS must explicitly remain sprite-independent.");
 }
 if (!skinCss.includes("no final sprites")) {
-  throw new Error("Menu V3 Lot 2 skin must remain independent from final sprites.");
+  throw new Error("Menu V3 skin must remain independent from final sprites.");
 }
 if (!skinCss.includes("menu-v3-resource-track")) throw new Error("Lot 2.1 resource spacing refinement is missing.");
 if (!skinCss.includes("height:58%")) throw new Error("Lot 2.1 temporary hero scale is missing.");
+if (!skinCss.includes('data-readiness="danger"')) throw new Error("Lot 3.1 readiness skin states are missing.");
 if (!responsive.includes("font-size:clamp(7.4px,1.95vw,9px)")) {
   throw new Error("Lot 2.2 compact legend typography is missing.");
 }
@@ -81,20 +82,21 @@ if (!responsive.includes("font-size:clamp(26px,7.2vw,35px)")) {
 }
 if (!responsive.includes("gap:5px")) throw new Error("Lot 2.1 world-title spacing refinement is missing.");
 if (/<img\b/i.test(components) || /assets\/menu-v3\//.test(components + componentCss + skinCss)) {
-  throw new Error("Menu V3 Lot 2.2 must not load final image assets.");
+  throw new Error("Menu V3 must not load final image assets before Lot 5.");
 }
 
 const cssIndex = index.indexOf("menu-v3.components.css?v=0.31.0");
-const skinIndex = index.indexOf("menu-v3.skin.css?v=0.31.1");
+const skinIndex = index.indexOf("menu-v3.skin.css?v=0.32.0");
 const responsiveIndex = index.indexOf("menu-v3.responsive.css?v=0.31.2");
-const shellIndex = index.indexOf("menu-v3-shell.js?v=0.31.1");
+const shellIndex = index.indexOf("menu-v3-shell.js?v=0.32.0");
 const componentJsIndex = index.indexOf("menu-v3-components.js?v=0.31.1");
+const dataJsIndex = index.indexOf("menu-v3-data.js?v=0.32.0");
 
 if (cssIndex < 0 || skinIndex < 0 || responsiveIndex < 0 || !(cssIndex < skinIndex && skinIndex < responsiveIndex)) {
   throw new Error("Menu V3 CSS order must be components, skin, then responsive.");
 }
-if (shellIndex < 0 || componentJsIndex < 0 || shellIndex > componentJsIndex) {
-  throw new Error("Menu V3 shell must load before the component enhancer.");
+if (shellIndex < 0 || componentJsIndex < 0 || dataJsIndex < 0 || !(shellIndex < componentJsIndex && componentJsIndex < dataJsIndex)) {
+  throw new Error("Menu V3 scripts must load in shell, components, data order.");
 }
 
-console.log("Menu V3 Lot 2.2 component contract passed.");
+console.log("Menu V3 component contract passed during Lot 3.1.");
