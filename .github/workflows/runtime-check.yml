@@ -28,6 +28,7 @@ jobs:
           node --check src/combat-runtime.js
           node --check src/meta-menu.js
           node --check src/menu-layout.js
+          node --check src/menu-v2.js
           node --check src/chests.js
           node --check src/inventory.js
 
