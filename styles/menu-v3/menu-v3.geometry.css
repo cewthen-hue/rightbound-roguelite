@@ -1,0 +1,97 @@
+/* Menu V3 — Lot 4 locked geometry layer.
+   This file is the final layout authority before sprite production. */
+
+.menu-v3-shell{
+  padding-top:var(--menu-v3-safe-top)!important;
+  grid-template-rows:
+    clamp(var(--menu-v3-topbar-min),var(--menu-v3-topbar-fluid),var(--menu-v3-topbar-max))
+    clamp(var(--menu-v3-world-min),var(--menu-v3-world-fluid),var(--menu-v3-world-max))
+    minmax(250px,1fr)
+    clamp(var(--menu-v3-selector-min),var(--menu-v3-selector-fluid),var(--menu-v3-selector-max))
+    clamp(var(--menu-v3-action-min),var(--menu-v3-action-fluid),var(--menu-v3-action-max))
+    max(
+      clamp(var(--menu-v3-dock-min),var(--menu-v3-dock-fluid),var(--menu-v3-dock-max)),
+      calc(58px + env(safe-area-inset-bottom))
+    )!important;
+}
+
+.menu-v3-dock-slot{
+  padding-bottom:var(--menu-v3-safe-bottom)!important;
+}
+
+.menu-v3-future-assets{
+  position:absolute;
+  z-index:40;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:0;
+}
+
+.menu-v3-future-asset{
+  position:absolute;
+  display:block;
+  pointer-events:none;
+}
+
+.menu-v3-future-stage-background,
+.menu-v3-future-stage-frame{
+  inset:0;
+}
+
+.menu-v3-future-stage-hero{
+  left:50%;
+  bottom:var(--menu-v3-stage-hero-slot-bottom);
+  width:var(--menu-v3-stage-hero-slot-width);
+  height:var(--menu-v3-stage-hero-slot-height);
+  transform:translateX(-50%);
+  transform-origin:50% 100%;
+}
+
+@media (max-height:860px) and (orientation:portrait){
+  .menu-v3-shell{
+    grid-template-rows:
+      60px
+      72px
+      minmax(290px,1fr)
+      74px
+      74px
+      max(80px,calc(58px + env(safe-area-inset-bottom)))!important;
+  }
+
+  .menu-v3-stage-card{
+    grid-template-rows:44px minmax(166px,1fr) 80px!important;
+  }
+}
+
+@media (max-height:700px) and (orientation:portrait){
+  .menu-v3-shell{
+    grid-template-rows:
+      56px
+      64px
+      minmax(206px,1fr)
+      70px
+      68px
+      max(72px,calc(50px + env(safe-area-inset-bottom)))!important;
+  }
+
+  .menu-v3-stage-card{
+    grid-template-rows:42px minmax(111px,1fr) 76px!important;
+  }
+}
+
+@media (min-width:410px) and (min-height:900px){
+  .menu-v3-shell{
+    grid-template-rows:
+      clamp(var(--menu-v3-topbar-min),var(--menu-v3-topbar-fluid),var(--menu-v3-topbar-max))
+      clamp(var(--menu-v3-world-min),var(--menu-v3-world-fluid),var(--menu-v3-world-max))
+      minmax(400px,1fr)
+      clamp(var(--menu-v3-selector-min),var(--menu-v3-selector-fluid),var(--menu-v3-selector-max))
+      clamp(var(--menu-v3-action-min),var(--menu-v3-action-fluid),var(--menu-v3-action-max))
+      max(90px,calc(58px + env(safe-area-inset-bottom)))!important;
+  }
+
+  .menu-v3-stage-card{
+    grid-template-rows:54px minmax(256px,1fr) 90px!important;
+  }
+}
