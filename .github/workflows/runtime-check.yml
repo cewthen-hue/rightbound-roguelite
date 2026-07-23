@@ -36,6 +36,7 @@ jobs:
           node --check src/menu-v3/menu-v3-data.js
           node --check src/menu-v3/menu-v3-interactions.js
           node --check src/menu-v3/menu-v3-sync.js
+          node --check src/menu-v3/menu-v3-geometry.js
           node --check src/app-shell.js
           node --check src/chests.js
           node --check src/inventory.js
@@ -55,8 +56,11 @@ jobs:
       - name: Validate Menu V3 synchronized interactions
         run: node tests/menu-v3-interactions-contract.mjs
 
-      - name: Validate Menu V3 Lot 3.4 coordinator
+      - name: Validate Menu V3 synchronization coordinator
         run: node tests/menu-v3-sync-contract.mjs
+
+      - name: Validate Menu V3 Lot 4 geometry lock
+        run: node tests/menu-v3-geometry-contract.mjs
 
       - name: Validate iPhone and Android portrait target
         run: node tests/mobile-platform-contract.mjs
