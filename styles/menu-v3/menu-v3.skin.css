@@ -1,5 +1,5 @@
-/* Menu V3 — Lot 2.1 skin layer.
-   Planned architecture file: visual balance only, no final sprites and no geometry rewrite. */
+/* Menu V3 — skin layer.
+   Visual balance and data-state colors only, no final sprites and no geometry rewrite. */
 
 .menu-v3-components-ready .menu-v3-resource-track{
   gap:clamp(5px,1.25vw,7px)!important;
@@ -83,6 +83,42 @@
 
 .menu-v3-components-ready .menu-v3-dock-icon[data-icon="shop"]{
   font-size:clamp(21px,5.8vw,28px);
+}
+
+/* Lot 3.1 — real build readiness states. */
+.menu-v3-components-ready .menu-v3-stage-badge[data-readiness="strong"],
+.menu-v3-components-ready .menu-v3-stage-badge[data-readiness="ready"]{
+  border-color:#80c335;
+  color:#efffd2;
+  background:linear-gradient(180deg,#559623,#285412);
+}
+
+.menu-v3-components-ready .menu-v3-stage-badge[data-readiness="low"]{
+  border-color:#d7a943;
+  color:#fff0c5;
+  background:linear-gradient(180deg,#95661e,#563512);
+}
+
+.menu-v3-components-ready .menu-v3-stage-badge[data-readiness="danger"]{
+  border-color:#db5b45;
+  color:#ffe1d8;
+  background:linear-gradient(180deg,#8d3025,#4b1713);
+}
+
+.menu-v3-components-ready .menu-v3-stat-slot[data-stat="power"][data-readiness="low"]{
+  background:linear-gradient(135deg,#665019,#352c12);
+}
+
+.menu-v3-components-ready .menu-v3-stat-slot[data-stat="power"][data-readiness="danger"]{
+  background:linear-gradient(135deg,#68261f,#351411);
+}
+
+.menu-v3-components-ready .menu-v3-stat-slot[data-stat="power"][data-readiness="low"] .menu-v3-stat-copy > span:last-child{
+  color:#ffd66f;
+}
+
+.menu-v3-components-ready .menu-v3-stat-slot[data-stat="power"][data-readiness="danger"] .menu-v3-stat-copy > span:last-child{
+  color:#ff8874;
 }
 
 @media (max-width:374px){
