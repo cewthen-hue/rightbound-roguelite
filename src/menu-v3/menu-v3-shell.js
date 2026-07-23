@@ -7,7 +7,7 @@
     return;
   }
 
-  const VERSION = "0.30.0-lot1";
+  const VERSION = "0.30.1-lot1.1";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
   let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) !== "false";
@@ -88,11 +88,19 @@
         <footer class="menu-v3-stage-stats">
           <article class="menu-v3-stat-slot">
             <div class="menu-v3-stat-icon" aria-hidden="true"></div>
-            <div class="menu-v3-stat-copy"><span>PUISSANCE CONSEILLÉE</span><strong>30</strong><span>Votre puissance : 44</span></div>
+            <div class="menu-v3-stat-copy">
+              <span>PUISSANCE CONSEILLÉE</span>
+              <strong>30</strong>
+              <span>Votre puissance : 44</span>
+              <span>(Supérieur)</span>
+            </div>
           </article>
           <article class="menu-v3-stat-slot">
             <div class="menu-v3-stat-icon" aria-hidden="true"></div>
-            <div class="menu-v3-stat-copy"><span>RÉCOMPENSE</span><strong>1 COFFRE BRONZE</strong></div>
+            <div class="menu-v3-stat-copy">
+              <span>RÉCOMPENSE DE VICTOIRE</span>
+              <strong>1 COFFRE BRONZE</strong>
+            </div>
           </article>
         </footer>
       </section>
@@ -113,7 +121,6 @@
 
       <nav class="menu-v3-zone menu-v3-dock" ${moduleLabel("06 · NAVIGATION")} aria-label="Navigation principale">
         ${dockSlot("expedition", "EXPÉDITION")}
-        ${dockSlot("hero", "HÉROS")}
         ${dockSlot("equipment", "ÉQUIPEMENT")}
         ${dockSlot("chests", "COFFRES")}
         ${dockSlot("shop", "BOUTIQUE")}
@@ -154,7 +161,8 @@
 
   function ensureShell(source) {
     let shell = modalContent.querySelector(".menu-v3-shell");
-    if (!shell) {
+    if (!shell || shell.dataset.menuV3 !== VERSION) {
+      shell?.remove();
       shell = buildShell();
       source.before(shell);
     }
