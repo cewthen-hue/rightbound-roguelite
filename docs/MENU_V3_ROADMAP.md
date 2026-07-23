@@ -1,10 +1,12 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.8.0`
+Version du plan : `1.9.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
+Plateformes cibles : iPhone et Android, avec publication Android prévue sur Google Play.
+Orientation cible : portrait uniquement.
 
-Ce document est la source de vérité du chantier Menu V3. Les lots doivent être réalisés dans l’ordre ci-dessous. Un lot n’est considéré terminé qu’après validation sur une capture réelle d’iPhone.
+Ce document est la source de vérité du chantier Menu V3. Les lots doivent être réalisés dans l’ordre ci-dessous. Un lot n’est considéré terminé qu’après validation sur une capture réelle de téléphone.
 
 ## Règles non négociables
 
@@ -17,7 +19,9 @@ Ce document est la source de vérité du chantier Menu V3. Les lots doivent êtr
 7. Les grands modules utilisent Grid/Flex. Le positionnement absolu est réservé aux couches internes de la scène.
 8. Les sprites définitifs ne sont créés qu’après validation du Lot 4.
 9. Un sprite mal cadré est corrigé dans le fichier source ; le layout ne doit pas être déplacé pour le compenser.
-10. Chaque étape doit rester stable sur Safari iPhone et respecter les safe areas iOS.
+10. Chaque étape doit rester stable sur Safari iPhone et sur Android moderne, avec respect des safe areas.
+11. Rightbound reste en portrait : aucun écran demandant de tourner le téléphone ne doit être affiché.
+12. La future application Android publiée sur Google Play devra également verrouiller le portrait dans sa configuration native.
 
 ## Lot 1 — Squelette mobile intégral
 
@@ -171,9 +175,20 @@ Objectif : finaliser le vrai menu mobile.
 - notifications ;
 - préchargement ;
 - accessibilité ;
-- optimisation Safari ;
+- optimisation Safari et Android WebView ;
 - tests de régression visuelle ;
 - suppression des anciens menus et CSS devenus inutiles.
+
+## Sortie mobile
+
+La base HTML reste commune aux deux plateformes.
+
+- iPhone : Safari et application web installée pendant le développement ; emballage App Store étudié après stabilisation du jeu.
+- Android : navigateur, application web installée puis emballage natif pour Google Play.
+- PWA : `manifest.webmanifest` demande `portrait-primary`.
+- Runtime : `src/app-shell.js` tente le verrouillage portrait via Screen Orientation API lorsque la plateforme l’autorise.
+- Android Google Play : le futur projet natif devra déclarer explicitement l’orientation portrait dans son manifeste Android.
+- L’ancien écran « Tourne ton téléphone » est supprimé.
 
 ## Structure technique cible
 
@@ -198,7 +213,7 @@ assets/menu-v3/
 
 ## Implémentation active
 
-Version applicative : `0.32.0`
+Version applicative : `0.32.1`
 
 Fichiers actifs :
 
@@ -213,7 +228,8 @@ Fichiers actifs :
 - `styles/menu-v3/menu-v3.debug.css` ;
 - `tests/menu-v3-contract.mjs` ;
 - `tests/menu-v3-components-contract.mjs` ;
-- `tests/menu-v3-data-contract.mjs`.
+- `tests/menu-v3-data-contract.mjs` ;
+- `tests/mobile-platform-contract.mjs`.
 
 Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
 
@@ -226,7 +242,7 @@ Le squelette mobile a été validé après quatre passes :
 - sélection des niveaux compacte ;
 - bouton Jouer renforcé ;
 - dock à quatre onglets ;
-- safe areas iOS absorbées ;
+- safe areas absorbées ;
 - ligne redondante `(Supérieur)` retirée du panneau de puissance ;
 - géométrie protégée par un test structurel.
 
@@ -245,13 +261,12 @@ Implémentation réalisée :
 - badge de difficulté ;
 - panneaux puissance et récompense différenciés ;
 - bouclier et coffre temporaires construits en CSS ;
-- dix nodes avec états normal, terminé, disponible, verrouillé, élite, boss et sélectionné ;
+- dix nodes structurés ;
 - légende structurée ;
 - bouton Jouer visuellement complet ;
 - dock de quatre onglets avec onglet actif et notification Coffres ;
 - mode debug désactivé par défaut, mais toujours accessible avec `RightboundMenuV3.setDebug(true)` ;
-- aucune image chargée depuis `assets/menu-v3/` ;
-- contrat CI dédié au Lot 2.
+- aucune image chargée depuis `assets/menu-v3/`.
 
 ### Révisions Lot 2.1 et 2.2
 
@@ -262,7 +277,7 @@ Les captures réelles ont conduit aux ajustements suivants :
 - respiration augmentée sous le ruban `MONDE 1` ;
 - personnage CSS temporaire ramené à environ 58 % de la scène ;
 - icônes temporaires du dock uniformisées ;
-- sélection des niveaux réduite à 74 px sur iPhone standard ;
+- sélection des niveaux réduite à 74 px sur téléphone standard ;
 - nodes ramenés à 32 × 40 px sur ce profil ;
 - légende réduite et séparée des nodes ;
 - bouton Jouer porté à 74 px sur ce même profil.
@@ -271,31 +286,47 @@ Les captures réelles ont conduit aux ajustements suivants :
 
 Implémentation réalisée :
 
-- ajout de `src/menu-v3/menu-v3-data.js`, source unique des valeurs affichées dans le Menu V3 ;
-- ajout d’une progression permanente du héros sauvegardée sous `rightbound-hero-progression-v1` ;
-- niveau initial `1`, XP initiale `0 / 150` et courbe de seuils prête pour les futurs gains ;
-- API `RightboundHeroProgression` avec lecture, écriture et ajout d’XP ;
-- golds lus directement depuis `RightboundEconomy` ;
-- gemmes et énergie maintenues explicitement à `0` jusqu’à la création de leurs systèmes ;
-- coût d’expédition temporaire conservé à `10` sans bloquer le lancement ;
-- niveau sélectionné, nom, puissance recommandée et coffre lus depuis `RightboundProgression` ;
-- puissance réelle et état de préparation lus depuis `RightboundBuild` ;
-- badge dynamique `SUPÉRIEUR`, `ADAPTÉ`, `UN PEU FAIBLE` ou `TRÈS FAIBLE` ;
-- couleurs du badge et du panneau de puissance synchronisées avec l’état réel du build ;
-- rafraîchissement automatique après changement d’économie, de progression, d’équipement, de build ou de sélection ;
-- bindings HTML explicites protégés par les contrats automatiques ;
-- écritures DOM conditionnelles afin d’éviter une boucle de mutations et des ralentissements Safari ;
-- cache PWA aligné sur `0.32.0`.
+- source unique `src/menu-v3/menu-v3-data.js` ;
+- progression permanente du héros sous `rightbound-hero-progression-v1` ;
+- niveau initial `1`, XP initiale `0 / 150` et courbe de seuils ;
+- golds lus depuis `RightboundEconomy` ;
+- gemmes et énergie maintenues à `0` ;
+- coût d’expédition temporaire à `10` sans blocage ;
+- niveau, puissance recommandée et coffre lus depuis `RightboundProgression` ;
+- puissance réelle et préparation lues depuis `RightboundBuild` ;
+- rafraîchissement automatique et écritures DOM conditionnelles.
 
-Les états visuels des dix nodes restent provisoires jusqu’au Lot 3.2. Le bouton Jouer et les quatre onglets seront finalisés au Lot 3.3.
+### Lot 3.2 — États réels des niveaux
+
+Implémentation réalisée :
+
+- suppression définitive des états de démonstration codés en dur ;
+- lecture des dix niveaux depuis `RightboundProgression.levels` ;
+- calcul réel de chaque état : `completed`, `available` ou `locked` ;
+- sélection réelle synchronisée avec le niveau consulté ;
+- types `normal`, `elite` et `boss` issus des données du niveau ;
+- textes d’accessibilité dynamiques pour chaque node ;
+- consultation maintenue pour les niveaux verrouillés sans les rendre jouables ;
+- niveau verrouillé sélectionné conservant une apparence verrouillée au lieu de devenir vert ;
+- variantes violette Élite et rouge Boss préservées lorsqu’elles sont sélectionnées ;
+- mise à jour instantanée après victoire et déblocage ;
+- tests automatiques empêchant le retour des faux états du Lot 2.
+
+### Orientation portrait
+
+- orientation PWA passée à `portrait-primary` ;
+- tentative de verrouillage runtime au chargement, après geste utilisateur, en plein écran et au retour dans l’application ;
+- suppression de l’écran demandant de tourner le téléphone ;
+- contrat automatique commun iPhone/Android ajouté ;
+- verrouillage natif Android réservé à la phase d’emballage Google Play.
 
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
 - [x] Lot 1 — Squelette mobile intégral verrouillé.
 - [x] Lot 2 — Composants HTML/CSS temporaires et révisions 2.1/2.2 validés.
-- [x] Lot 3.1 — Valeurs réelles et synchronisation des données implémentées ; validation iPhone en attente.
-- [ ] Lot 3.2 — États réels des niveaux.
+- [x] Lot 3.1 — Valeurs réelles et synchronisation des données implémentées.
+- [x] Lot 3.2 — États réels des niveaux implémentés ; validation sur téléphone en attente.
 - [ ] Lot 3.3 — Bouton Jouer et navigation.
 - [ ] Lot 3.4 — Synchronisation complète après tous les changements de jeu.
 - [ ] Lot 4 — Validation géométrique.
