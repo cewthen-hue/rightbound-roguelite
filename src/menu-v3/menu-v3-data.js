@@ -4,7 +4,7 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.32.0-lot3.1";
+  const VERSION = "0.32.1-lot3.2";
   const HERO_STORAGE_KEY = "rightbound-hero-progression-v1";
   const HERO_SCHEMA_VERSION = 1;
   const HERO_NAME = "JACK";
@@ -14,6 +14,14 @@
     titleLines:["LES FAUBOURGS", "OUBLIÉS"]
   });
   const TEMPORARY_RESOURCES = Object.freeze({ gems:0, energy:0, energyCost:10 });
+  const FALLBACK_LEVEL = Object.freeze({
+    id:1,
+    name:"Entrée des ruines",
+    power:30,
+    chest:"Bronze",
+    chestType:"bronze",
+    type:"normal"
+  });
   let scheduled = false;
 
   function normalizeInteger(value, fallback = 0, minimum = 0) {
@@ -108,12 +116,40 @@
     }
   }
 
-  function getLevelSnapshot() {
+  function levelStateLabel(level) {
+    if (level.completed) return "terminé";
+    if (!level.unlocked) return "verrouillé";
+    return "disponible";
+  }
+
+  function getLevelsSnapshot() {
     const progressionApi = window.RightboundProgression;
-    const fallback = Object.freeze({ id:1, name:"Entrée des ruines", power:30, chest:"Bronze", chestType:"bronze", type:"normal" });
-    const level = progressionApi?.getSelectedLevel?.() || fallback;
-    const levels = progressionApi?.levels || [fallback];
+    const levels = progressionApi?.levels?.length ? progressionApi.levels : [FALLBACK_LEVEL];
+    const selected = progressionApi?.getSelectedLevel?.() || levels[0] || FALLBACK_LEVEL;
     const progression = progressionApi?.getState?.() || { unlockedLevel:1, completedLevels:[] };
+
+    return Object.freeze(levels.map((level) => {
+      const unlocked = Boolean(
+        progressionApi?.isLevelUnlocked?.(level.id) ?? level.id <= normalizeInteger(progression.unlockedLevel, 1, 1)
+      );
+      const completed = Boolean(
+        progressionApi?.isLevelCompleted?.(level.id) ?? progression.completedLevels?.includes(level.id)
+      );
+      const state = completed ? "completed" : unlocked ? "available" : "locked";
+
+      return Object.freeze({
+        ...level,
+        selected:level.id === selected.id,
+        unlocked,
+        completed,
+        state
+      });
+    }));
+  }
+
+  function getLevelSnapshot(levelsSnapshot) {
+    const levels = levelsSnapshot?.length ? levelsSnapshot : getLevelsSnapshot();
+    const level = levels.find((entry) => entry.selected) || levels[0] || { ...FALLBACK_LEVEL, selected:true, unlocked:true, completed:false, state:"available" };
     const build = window.RightboundBuild;
     const heroPower = build?.getPowerScore?.() ?? window.RightboundPlayerProfile?.getPowerScore?.() ?? 0;
     const readiness = build?.getReadiness?.(level.power) || {
@@ -127,8 +163,6 @@
     return Object.freeze({
       ...level,
       total:levels.length,
-      unlocked:Boolean(progressionApi?.isLevelUnlocked?.(level.id) ?? level.id <= progression.unlockedLevel),
-      completed:Boolean(progressionApi?.isLevelCompleted?.(level.id) ?? progression.completedLevels?.includes(level.id)),
       heroPower,
       readiness:Object.freeze({ ...readiness, display:readinessDisplay(readiness) })
     });
@@ -136,7 +170,8 @@
 
   function getSnapshot() {
     const hero = getHeroProgression();
-    const level = getLevelSnapshot();
+    const levels = getLevelsSnapshot();
+    const level = getLevelSnapshot(levels);
     const gold = window.RightboundEconomy?.getGold?.() ?? 0;
 
     return Object.freeze({
@@ -150,7 +185,8 @@
         temporaryPremiumResources:true
       }),
       world:WORLD,
-      level
+      level,
+      levels
     });
   }
 
@@ -160,8 +196,37 @@
     if (node && node.textContent !== next) node.textContent = next;
   }
 
+  function setAttribute(node, name, value) {
+    if (!node) return;
+    const next = String(value);
+    if (node.getAttribute(name) !== next) node.setAttribute(name, next);
+  }
+
+  function bindLevelStates(shell, levels) {
+    levels.forEach((level) => {
+      const node = shell.querySelector(`[data-v3-level="${level.id}"]`);
+      if (!node) return;
+
+      if (node.dataset.levelType !== level.type) node.dataset.levelType = level.type;
+      if (node.dataset.levelState !== level.state) node.dataset.levelState = level.state;
+      if (node.dataset.levelUnlocked !== String(level.unlocked)) node.dataset.levelUnlocked = String(level.unlocked);
+      if (node.dataset.levelCompleted !== String(level.completed)) node.dataset.levelCompleted = String(level.completed);
+      node.classList.toggle("selected", level.selected);
+
+      if (level.selected) setAttribute(node, "aria-current", "true");
+      else if (node.hasAttribute("aria-current")) node.removeAttribute("aria-current");
+
+      const selectedLabel = level.selected ? ", sélectionné" : "";
+      setAttribute(
+        node,
+        "aria-label",
+        `Niveau ${level.id}, ${level.name}, ${levelStateLabel(level)}${level.type === "elite" ? ", élite" : level.type === "boss" ? ", boss" : ""}${selectedLabel}`
+      );
+    });
+  }
+
   function bindSnapshot(shell, snapshot) {
-    const { hero, resources, world, level } = snapshot;
+    const { hero, resources, world, level, levels } = snapshot;
 
     setText(shell, '[data-v3-bind="hero-name"]', hero.name);
     setText(shell, '[data-v3-bind="hero-level"]', `NIV. ${hero.level}`);
@@ -196,7 +261,10 @@
     const powerPanel = shell.querySelector('.menu-v3-stat-slot[data-stat="power"]');
     if (powerPanel && powerPanel.dataset.readiness !== level.readiness.key) powerPanel.dataset.readiness = level.readiness.key;
 
+    bindLevelStates(shell, levels);
+
     if (shell.dataset.selectedLevel !== String(level.id)) shell.dataset.selectedLevel = String(level.id);
+    if (shell.dataset.selectedLevelState !== level.state) shell.dataset.selectedLevelState = level.state;
     if (shell.dataset.heroLevel !== String(hero.level)) shell.dataset.heroLevel = String(hero.level);
     if (shell.dataset.menuV3Data !== VERSION) shell.dataset.menuV3Data = VERSION;
     if (shell.style.getPropertyValue("--menu-v3-xp-progress") !== xpProgress) {
@@ -232,7 +300,7 @@
 
   window.addEventListener("storage", (event) => {
     if (event.key === HERO_STORAGE_KEY) heroProgression = loadHeroProgression();
-    if ([HERO_STORAGE_KEY, "rightbound-economy-v1", "rightbound-progression-v2", "rightbound-player-profile-v1"].includes(event.key)) {
+    if ([HERO_STORAGE_KEY, "rightbound-economy-v1", "rightbound-progression-v2", "rightbound-player-profile-v1", "rightbound-selected-level-v1"].includes(event.key)) {
       scheduleSync();
     }
   });
