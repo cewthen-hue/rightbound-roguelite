@@ -7,7 +7,7 @@
     return;
   }
 
-  const VERSION = "0.30.2-lot1.2";
+  const VERSION = "0.30.4-lot1-final";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
   let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) !== "false";
@@ -92,7 +92,6 @@
               <span>PUISSANCE CONSEILLÉE</span>
               <strong>30</strong>
               <span>Votre puissance : 44</span>
-              <span>(Supérieur)</span>
             </div>
           </article>
           <article class="menu-v3-stat-slot">
