@@ -1,5 +1,5 @@
 /* Menu V3 — responsive geometry.
-   Final Lot 1 balance: compact selector, slightly larger CTA, dominant stage. */
+   Lot 2.1 keeps the locked layout while improving spacing and readability. */
 
 html:has(body.menu-v3-active),
 body.menu-v3-active{
@@ -101,7 +101,7 @@ body.menu-v3-active #modalContent{
 }
 
 .menu-v3-selector-legend span{
-  font-size:clamp(8px,2.15vw,10px)!important;
+  font-size:clamp(8.8px,2.3vw,10.8px)!important;
   font-weight:700!important;
   line-height:1!important;
   overflow:visible!important;
@@ -173,7 +173,7 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-selector-legend span{
-    font-size:7.5px!important;
+    font-size:8px!important;
   }
 
   .menu-v3-dock-label{
@@ -207,7 +207,7 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-world-title-slot{
-    gap:3px!important;
+    gap:5px!important;
   }
 
   .menu-v3-world-ribbon{
@@ -247,6 +247,10 @@ body.menu-v3-active #modalContent{
     grid-template-rows:42px minmax(111px,1fr) 76px!important;
   }
 
+  .menu-v3-world-title-slot{
+    gap:4px!important;
+  }
+
   .menu-v3-stat-copy > span:first-child{
     font-size:8.3px!important;
   }
@@ -265,6 +269,10 @@ body.menu-v3-active #modalContent{
 
   .menu-v3-selector{
     grid-template-rows:15px minmax(41px,1fr) 22px!important;
+  }
+
+  .menu-v3-selector-legend span{
+    font-size:7.8px!important;
   }
 
   .menu-v3-dock-icon{
