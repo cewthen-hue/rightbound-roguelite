@@ -7,7 +7,7 @@
     return;
   }
 
-  const VERSION = "0.30.1-lot1.1";
+  const VERSION = "0.30.2-lot1.2";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
   let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) !== "false";
