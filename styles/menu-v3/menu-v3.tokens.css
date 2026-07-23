@@ -1,10 +1,14 @@
-/* Menu V3 — single source of geometry values.
-   No final sprite dimensions belong in this file before Lot 5. */
+/* Menu V3 — single source of locked geometry values.
+   Lot 4 freezes the layout contract; final sprite files still belong to Lot 5. */
 
 :root{
+  --menu-v3-geometry-lock:0.35;
   --menu-v3-max-width:430px;
   --menu-v3-inline:clamp(8px,2.35vw,12px);
   --menu-v3-gap:clamp(3px,.45dvh,5px);
+  --menu-v3-safe-top:max(6px,env(safe-area-inset-top));
+  --menu-v3-safe-bottom:max(7px,env(safe-area-inset-bottom));
+  --menu-v3-overflow-tolerance:1px;
 
   --menu-v3-topbar-min:66px;
   --menu-v3-topbar-fluid:8.5dvh;
@@ -21,6 +25,10 @@
   --menu-v3-stage-stats-min:80px;
   --menu-v3-stage-stats-fluid:9.9dvh;
   --menu-v3-stage-stats-max:94px;
+
+  --menu-v3-stage-hero-slot-width:28%;
+  --menu-v3-stage-hero-slot-height:70%;
+  --menu-v3-stage-hero-slot-bottom:3%;
 
   --menu-v3-selector-min:72px;
   --menu-v3-selector-fluid:9dvh;
@@ -55,4 +63,7 @@
   --menu-v3-touch-min:44px;
   --menu-v3-debug-line:rgba(255,255,255,.42);
   --menu-v3-debug-fill:rgba(255,255,255,.045);
+  --menu-v3-debug-error:#ff4f45;
+  --menu-v3-debug-warning:#ffbf3f;
+  --menu-v3-debug-pass:#79d83e;
 }
