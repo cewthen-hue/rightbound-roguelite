@@ -39,7 +39,7 @@ for (const binding of requiredBindings) {
   }
 }
 
-if (!data.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 Lot 3.2 version mismatch.");
+if (!data.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 data version mismatch.");
 if (!data.includes('HERO_STORAGE_KEY = "rightbound-hero-progression-v1"')) throw new Error("Persistent hero progression key is missing.");
 if (!data.includes("function xpRequiredForLevel")) throw new Error("Permanent hero XP curve is missing.");
 if (!data.includes("function addHeroXp")) throw new Error("Future permanent XP grant API is missing.");
@@ -69,15 +69,17 @@ if (!skin.includes('data-level-type="elite"') || !skin.includes('data-level-type
 if (!skin.includes('data-readiness="low"') || !skin.includes('data-readiness="danger"')) {
   throw new Error("Real readiness colors are missing from the skin.");
 }
-if (/assets\/menu-v3\//.test(data + shell + skin)) throw new Error("Lot 3.2 must not load final sprites.");
+if (/assets\/menu-v3\//.test(data + shell + skin)) throw new Error("Menu V3 data must not load final sprites.");
 
-const shellIndex = index.indexOf("menu-v3-shell.js?v=0.32.1");
+const shellIndex = index.indexOf("menu-v3-shell.js?v=0.33.0");
 const componentsIndex = index.indexOf("menu-v3-components.js?v=0.32.1");
 const dataIndex = index.indexOf("menu-v3-data.js?v=0.32.1");
-if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex)) {
-  throw new Error("Menu V3 data layer must load after shell and components.");
+const interactionsIndex = index.indexOf("menu-v3-interactions.js?v=0.33.0");
+if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || interactionsIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex && dataIndex < interactionsIndex)) {
+  throw new Error("Menu V3 scripts must load in shell, components, data, interactions order.");
 }
-if (!serviceWorker.includes('rightbound-shell-v0.32.1')) throw new Error("PWA cache version is not aligned with Lot 3.2.");
+if (!serviceWorker.includes('rightbound-shell-v0.33.0')) throw new Error("PWA cache version is not aligned with Lot 3.3.");
 if (!serviceWorker.includes("menu-v3-data.js?v=0.32.1")) throw new Error("Menu V3 data layer is missing from the PWA shell.");
+if (!serviceWorker.includes("menu-v3-interactions.js?v=0.33.0")) throw new Error("Menu V3 interaction layer is missing from the PWA shell.");
 
-console.log("Menu V3 Lot 3.2 data contract passed.");
+console.log("Menu V3 data contract passed during Lot 3.3.");
