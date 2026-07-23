@@ -7,10 +7,10 @@
     return;
   }
 
-  const VERSION = "0.30.4-lot1-final";
+  const VERSION = "0.31.0-lot2";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
-  let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) !== "false";
+  let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) === "true";
 
   function legacyMenu() {
     return modalContent.querySelector(".menu-v2-shell");
@@ -43,7 +43,7 @@
     const shell = document.createElement("section");
     shell.className = `game-menu menu-v3-shell${debugEnabled ? " menu-v3-debug" : ""}`;
     shell.dataset.menuV3 = VERSION;
-    shell.setAttribute("aria-label", "Prototype structurel du Menu V3");
+    shell.setAttribute("aria-label", "Menu principal Rightbound");
     shell.innerHTML = `
       <header class="menu-v3-zone menu-v3-topbar" ${moduleLabel("01 · TOP BAR")}>
         <section class="menu-v3-profile-slot" aria-label="Profil du héros">
@@ -141,7 +141,7 @@
     });
 
     shell.querySelectorAll("[data-v3-utility]").forEach((button) => {
-      button.addEventListener("click", () => toast(`Le module ${button.dataset.v3Utility} sera construit au Lot 2.`));
+      button.addEventListener("click", () => toast(`Le module ${button.dataset.v3Utility} sera connecté au Lot 3.`));
     });
 
     shell.querySelectorAll("[data-v3-dock]").forEach((button) => {
