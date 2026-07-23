@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `2.0.0`
+Version du plan : `2.1.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 Plateformes cibles : iPhone et Android, avec publication Android prévue sur Google Play.
@@ -22,6 +22,7 @@ Ce document est la source de vérité du chantier Menu V3. Les lots doivent êtr
 10. Chaque étape doit rester stable sur Safari iPhone et sur Android moderne, avec respect des safe areas.
 11. Rightbound reste en portrait : aucun écran demandant de tourner le téléphone ne doit être affiché.
 12. La future application Android publiée sur Google Play devra également verrouiller le portrait dans sa configuration native.
+13. Une donnée modifiée hors du menu doit être réconciliée automatiquement lors du retour au menu, sans rechargement manuel.
 
 ## Lot 1 — Squelette mobile intégral
 
@@ -198,6 +199,7 @@ src/menu-v3/
   menu-v3-components.js
   menu-v3-data.js
   menu-v3-interactions.js
+  menu-v3-sync.js
 
 styles/menu-v3/
   menu-v3.tokens.css
@@ -213,7 +215,7 @@ assets/menu-v3/
 
 ## Implémentation active
 
-Version applicative : `0.33.0`
+Version applicative : `0.34.0`
 
 Fichiers actifs :
 
@@ -221,6 +223,7 @@ Fichiers actifs :
 - `src/menu-v3/menu-v3-components.js` ;
 - `src/menu-v3/menu-v3-data.js` ;
 - `src/menu-v3/menu-v3-interactions.js` ;
+- `src/menu-v3/menu-v3-sync.js` ;
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
 - `styles/menu-v3/menu-v3.components.css` ;
@@ -231,9 +234,10 @@ Fichiers actifs :
 - `tests/menu-v3-components-contract.mjs` ;
 - `tests/menu-v3-data-contract.mjs` ;
 - `tests/menu-v3-interactions-contract.mjs` ;
+- `tests/menu-v3-sync-contract.mjs` ;
 - `tests/mobile-platform-contract.mjs`.
 
-Le shell V3 masque temporairement l’affichage V2. Le pont invisible V2 reste utilisé uniquement pour déclencher la sélection et le lancement déjà éprouvés, tandis que toutes les interactions visibles appartiennent maintenant à `menu-v3-interactions.js`. Aucun sprite Menu V3 définitif n’est utilisé.
+Le shell V3 masque temporairement l’affichage V2. Le pont invisible V2 reste utilisé uniquement pour déclencher la sélection et le lancement déjà éprouvés. Les données visibles, les interactions et la réconciliation après changement appartiennent désormais aux modules V3 dédiés. Aucun sprite Menu V3 définitif n’est utilisé.
 
 ### Lot 1 verrouillé
 
@@ -335,6 +339,26 @@ Implémentation réalisée :
 - styles distincts pour les états disponible, rejouable et verrouillé ;
 - contrat automatique dédié au Lot 3.3.
 
+### Lot 3.4 — Réconciliation complète
+
+Implémentation réalisée :
+
+- création de `src/menu-v3/menu-v3-sync.js`, coordinateur unique de synchronisation ;
+- détection des vues Expédition, Combat, Résultat, Équipement, Coffres, Amélioration et Dialogue ;
+- mémorisation des changements effectués lorsque le menu n’est pas visible ;
+- réconciliation automatique dès le retour à l’écran Expédition ;
+- reprise des récompenses de run interrompues avant de rafraîchir l’interface ;
+- synchronisation en deux frames afin de laisser le shell, les composants, les données et les interactions se stabiliser dans le bon ordre ;
+- actualisation après victoire, défaite, golds, progression, changement d’équipement, changement de puissance, gain ou ouverture de coffre et progression permanente ;
+- stock réel des coffres intégré au snapshot central ;
+- partage du même snapshot entre les textes du menu, le bouton Jouer et la notification Coffres ;
+- rafraîchissement après retour depuis l’inventaire ou les coffres ;
+- rafraîchissement au retour dans l’application, au changement de visibilité, au focus et après une modification de sauvegarde ;
+- marqueur de révision et événement `rightbound:menu-v3-sync-complete` pour diagnostiquer les synchronisations ;
+- protection contre les boucles de MutationObserver et contre l’écoute du propre événement de reconstruction du shell ;
+- mise à jour du cache PWA en version `0.34.0` ;
+- contrat automatique dédié au Lot 3.4.
+
 ### Orientation portrait
 
 - orientation PWA passée à `portrait-primary` ;
@@ -350,8 +374,8 @@ Implémentation réalisée :
 - [x] Lot 2 — Composants HTML/CSS temporaires et révisions 2.1/2.2 validés.
 - [x] Lot 3.1 — Valeurs réelles et synchronisation des données implémentées.
 - [x] Lot 3.2 — États réels des niveaux implémentés.
-- [x] Lot 3.3 — Bouton Jouer et navigation implémentés ; validation sur téléphone en attente.
-- [ ] Lot 3.4 — Synchronisation complète après tous les changements de jeu.
+- [x] Lot 3.3 — Bouton Jouer et navigation implémentés.
+- [x] Lot 3.4 — Synchronisation complète implémentée ; validation sur téléphone en attente.
 - [ ] Lot 4 — Validation géométrique.
 - [ ] Lot 5 — Production des sprites.
 - [ ] Lot 6 — Validation automatique.
