@@ -31,7 +31,7 @@ if (!appShell.includes('window.addEventListener("orientationchange"')) {
 }
 if (!index.includes('manifest.webmanifest?v=0.32.1')) throw new Error("Versioned portrait manifest is not loaded.");
 if (!index.includes('app-shell.js?v=0.32.1')) throw new Error("Versioned platform shell is not loaded.");
-if (!serviceWorker.includes('rightbound-shell-v0.32.1')) throw new Error("Mobile platform cache version mismatch.");
+if (!serviceWorker.includes('rightbound-shell-v0.33.0')) throw new Error("Mobile platform cache version mismatch.");
 if (!roadmap.includes("iPhone et Android")) throw new Error("The dual-platform mobile target is missing from the roadmap.");
 if (!roadmap.includes("Google Play")) throw new Error("The Google Play release target is missing from the roadmap.");
 
