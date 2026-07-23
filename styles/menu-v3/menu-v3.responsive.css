@@ -1,5 +1,5 @@
 /* Menu V3 — responsive geometry.
-   Lot 2.1 keeps the locked layout while improving spacing and readability. */
+   Lot 2.2 compacts level selection and gives the main action more presence. */
 
 html:has(body.menu-v3-active),
 body.menu-v3-active{
@@ -81,41 +81,92 @@ body.menu-v3-active #modalContent{
 
 .menu-v3-selector{
   grid-template-rows:
-    clamp(17px,2.2dvh,21px)
-    minmax(42px,1fr)
-    clamp(23px,2.9dvh,27px)!important;
-  gap:1px!important;
-  padding:1px 0!important;
+    clamp(16px,2dvh,18px)
+    minmax(36px,1fr)
+    clamp(18px,2.3dvh,20px)!important;
+  gap:2px!important;
+  padding:0!important;
+}
+
+.menu-v3-selector-title{
+  align-self:end!important;
+  margin:0!important;
+  font-size:clamp(10px,2.75vw,13px)!important;
+  line-height:1!important;
 }
 
 .menu-v3-level-track{
-  align-items:start!important;
-  padding-top:0!important;
+  align-items:center!important;
+  gap:clamp(2px,.55vw,4px)!important;
+  padding:3px 2px 0!important;
+}
+
+.menu-v3-level-slot{
+  width:clamp(28px,8vw,34px)!important;
+  max-width:34px!important;
+  height:clamp(38px,10.2vw,42px)!important;
+  aspect-ratio:auto!important;
+}
+
+.menu-v3-level-slot.selected{
+  transform:scale(1.03)!important;
+}
+
+.menu-v3-node-number{
+  font-size:clamp(12px,3.2vw,16px)!important;
+}
+
+.menu-v3-node-status{
+  width:10px!important;
+  height:10px!important;
+  top:-2px!important;
+  right:-1px!important;
+  font-size:7px!important;
 }
 
 .menu-v3-selector-legend{
   align-self:stretch!important;
-  min-height:23px!important;
-  padding:1px 4px!important;
+  min-height:18px!important;
+  gap:clamp(8px,2vw,13px)!important;
+  padding:4px 4px 0!important;
   overflow:visible!important;
 }
 
 .menu-v3-selector-legend span{
-  font-size:clamp(8.8px,2.3vw,10.8px)!important;
+  font-size:clamp(7.4px,1.95vw,9px)!important;
   font-weight:700!important;
   line-height:1!important;
   overflow:visible!important;
   text-overflow:clip!important;
 }
 
+.menu-v3-selector-legend i{
+  width:9px!important;
+  height:9px!important;
+  font-size:8px!important;
+}
+
 .menu-v3-action{
-  padding-top:1px!important;
-  padding-bottom:1px!important;
+  padding-top:2px!important;
+  padding-bottom:2px!important;
 }
 
 .menu-v3-play-slot{
-  padding-top:6px!important;
-  padding-bottom:6px!important;
+  min-height:70px!important;
+  padding-top:9px!important;
+  padding-bottom:9px!important;
+}
+
+.menu-v3-play-copy strong{
+  font-size:clamp(26px,7.2vw,35px)!important;
+}
+
+.menu-v3-play-copy span{
+  font-size:clamp(9.5px,2.65vw,12.5px)!important;
+}
+
+.menu-v3-play-cost{
+  font-size:clamp(16px,4.4vw,21px)!important;
 }
 
 .menu-v3-dock{
@@ -168,12 +219,26 @@ body.menu-v3-active #modalContent{
     font-size:13px!important;
   }
 
+  .menu-v3-level-track{
+    gap:1px!important;
+    padding-inline:1px!important;
+  }
+
+  .menu-v3-level-slot{
+    width:clamp(26px,8vw,30px)!important;
+    height:clamp(36px,10.5vw,39px)!important;
+  }
+
+  .menu-v3-node-number{
+    font-size:12px!important;
+  }
+
   .menu-v3-selector-legend{
     gap:6px!important;
   }
 
   .menu-v3-selector-legend span{
-    font-size:8px!important;
+    font-size:7px!important;
   }
 
   .menu-v3-dock-label{
@@ -188,8 +253,8 @@ body.menu-v3-active #modalContent{
       60px
       72px
       minmax(306px,1fr)
-      86px
-      62px
+      74px
+      74px
       80px!important;
   }
 
@@ -219,12 +284,32 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-selector{
-    grid-template-rows:16px minmax(43px,1fr) 23px!important;
+    grid-template-rows:15px minmax(36px,1fr) 17px!important;
+    gap:2px!important;
+  }
+
+  .menu-v3-selector-title{
+    font-size:11px!important;
+  }
+
+  .menu-v3-level-slot{
+    width:32px!important;
+    height:40px!important;
+  }
+
+  .menu-v3-selector-legend{
+    min-height:17px!important;
+    padding-top:4px!important;
+  }
+
+  .menu-v3-selector-legend span{
+    font-size:7.8px!important;
   }
 
   .menu-v3-play-slot{
-    padding-top:5px!important;
-    padding-bottom:5px!important;
+    min-height:70px!important;
+    padding-top:8px!important;
+    padding-bottom:8px!important;
   }
 
   .menu-v3-dock-icon{
@@ -238,8 +323,8 @@ body.menu-v3-active #modalContent{
       56px
       64px
       minmax(206px,1fr)
-      80px
-      58px
+      70px
+      68px
       72px!important;
   }
 
@@ -268,11 +353,28 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-selector{
-    grid-template-rows:15px minmax(41px,1fr) 22px!important;
+    grid-template-rows:14px minmax(34px,1fr) 16px!important;
+    gap:2px!important;
+  }
+
+  .menu-v3-level-slot{
+    width:29px!important;
+    height:37px!important;
+  }
+
+  .menu-v3-selector-legend{
+    min-height:16px!important;
+    padding-top:3px!important;
   }
 
   .menu-v3-selector-legend span{
-    font-size:7.8px!important;
+    font-size:6.8px!important;
+  }
+
+  .menu-v3-play-slot{
+    min-height:64px!important;
+    padding-top:7px!important;
+    padding-bottom:7px!important;
   }
 
   .menu-v3-dock-icon{
@@ -283,6 +385,11 @@ body.menu-v3-active #modalContent{
 @media (min-width:410px) and (min-height:900px){
   .menu-v3-stage-card{
     grid-template-rows:54px minmax(256px,1fr) 90px!important;
+  }
+
+  .menu-v3-level-slot{
+    width:34px!important;
+    height:42px!important;
   }
 
   .menu-v3-dock-icon{
