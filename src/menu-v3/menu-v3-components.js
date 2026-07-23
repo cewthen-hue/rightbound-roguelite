@@ -4,7 +4,7 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.31.1-lot2.1";
+  const VERSION = "0.32.1-lot3.2";
   let scheduled = false;
 
   const resourceTypes = ["gold", "gems", "energy"];
@@ -43,7 +43,7 @@
       const label = xp.textContent.trim();
       xp.innerHTML = `
         <span class="menu-v3-xp-label">${label}</span>
-        <span class="menu-v3-xp-meter" aria-hidden="true"><i style="--menu-v3-xp-progress:8%"></i></span>`;
+        <span class="menu-v3-xp-meter" aria-hidden="true"><i style="--menu-v3-xp-progress:0%"></i></span>`;
     }
   }
 
@@ -116,8 +116,8 @@
   function decorateLevels(shell) {
     shell.querySelectorAll(".menu-v3-level-slot").forEach((node) => {
       const level = Number(node.dataset.v3Level || 1);
-      node.dataset.levelType = level === 5 ? "elite" : level === 10 ? "boss" : "normal";
-      node.dataset.levelState = level <= 2 ? "completed" : level === 3 ? "available" : "locked";
+      node.dataset.levelType = node.dataset.levelType || "normal";
+      node.dataset.levelState = node.dataset.levelState || "loading";
 
       if (!node.querySelector(".menu-v3-node-number")) {
         node.innerHTML = `
