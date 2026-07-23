@@ -31,8 +31,12 @@ jobs:
           node --check src/menu-v2.js
           node --check src/menu-v2-topbar.js
           node --check src/menu-v2-world-header.js
+          node --check src/menu-v3/menu-v3-shell.js
           node --check src/chests.js
           node --check src/inventory.js
 
       - name: Run combat runtime smoke test
         run: node tests/game-runtime-smoke.mjs
+
+      - name: Validate Menu V3 structural contract
+        run: node tests/menu-v3-contract.mjs
