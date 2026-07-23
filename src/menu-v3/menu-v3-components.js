@@ -4,7 +4,7 @@
   const modalContent = document.getElementById("modalContent");
   if (!modalContent) return;
 
-  const VERSION = "0.31.0-lot2";
+  const VERSION = "0.31.1-lot2.1";
   let scheduled = false;
 
   const resourceTypes = ["gold", "gems", "energy"];
@@ -17,7 +17,7 @@
   const dockGlyphs = {
     expedition:"⌖",
     equipment:"⚔",
-    chests:"▰",
+    chests:"▣",
     shop:"▦"
   };
 
