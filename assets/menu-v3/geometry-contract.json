@@ -1,0 +1,46 @@
+{
+  "version": "0.35.0-lot4",
+  "status": "geometry-locked-phone-validation-pending",
+  "maxShellWidth": 430,
+  "overflowTolerancePx": 1.25,
+  "targetViewports": [
+    { "width": 360, "height": 780 },
+    { "width": 375, "height": 812 },
+    { "width": 390, "height": 844 },
+    { "width": 393, "height": 852 },
+    { "width": 430, "height": 932 }
+  ],
+  "safeAreas": {
+    "top": "max(6px, env(safe-area-inset-top))",
+    "bottom": "max(7px, env(safe-area-inset-bottom))",
+    "dockTrack": "max(base dock height, 58px + env(safe-area-inset-bottom))"
+  },
+  "stageHeroSlot": {
+    "width": "28%",
+    "height": "70%",
+    "bottom": "3%",
+    "anchor": "50% 100%",
+    "mode": "contain"
+  },
+  "assetSlots": [
+    { "id": "hero-portrait", "selector": "[data-v3-asset-slot=hero-portrait]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "resource-gold", "selector": "[data-v3-asset-slot=resource-gold]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "resource-gems", "selector": "[data-v3-asset-slot=resource-gems]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "resource-energy", "selector": "[data-v3-asset-slot=resource-energy]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "utility-options", "selector": "[data-v3-asset-slot=utility-options]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "utility-journal", "selector": "[data-v3-asset-slot=utility-journal]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "world-ribbon", "selector": "[data-v3-asset-slot=world-ribbon]", "mode": "nine-slice", "anchor": "50% 50%", "ratioPolicy": "runtime-slot" },
+    { "id": "stage-background", "selector": "[data-v3-asset-slot=stage-background]", "mode": "cover", "anchor": "50% 50%", "ratioPolicy": "runtime-slot" },
+    { "id": "stage-hero", "selector": "[data-v3-asset-slot=stage-hero]", "mode": "contain", "anchor": "50% 100%", "ratioPolicy": "1:2.5 canvas" },
+    { "id": "stage-frame", "selector": "[data-v3-asset-slot=stage-frame]", "mode": "nine-slice", "anchor": "50% 50%", "ratioPolicy": "runtime-slot" },
+    { "id": "stat-power", "selector": "[data-v3-asset-slot=stat-power]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "stat-reward", "selector": "[data-v3-asset-slot=stat-reward]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "level-node-*", "selector": "[data-v3-asset-slot^=level-node-]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "4:5" },
+    { "id": "play-frame", "selector": "[data-v3-asset-slot=play-frame]", "mode": "nine-slice", "anchor": "50% 50%", "ratioPolicy": "runtime-slot" },
+    { "id": "play-icon", "selector": "[data-v3-asset-slot=play-icon]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "dock-expedition", "selector": "[data-v3-asset-slot=dock-expedition]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "dock-equipment", "selector": "[data-v3-asset-slot=dock-equipment]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "dock-chests", "selector": "[data-v3-asset-slot=dock-chests]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" },
+    { "id": "dock-shop", "selector": "[data-v3-asset-slot=dock-shop]", "mode": "contain", "anchor": "50% 50%", "ratioPolicy": "1:1" }
+  ]
+}
