@@ -1,0 +1,49 @@
+/* Menu V3 — single source of geometry values.
+   No final sprite dimensions belong in this file before Lot 5. */
+
+:root{
+  --menu-v3-max-width:430px;
+  --menu-v3-inline:clamp(8px,2.35vw,12px);
+  --menu-v3-gap:clamp(4px,.55dvh,6px);
+
+  --menu-v3-topbar-min:68px;
+  --menu-v3-topbar-fluid:8.7dvh;
+  --menu-v3-topbar-max:82px;
+
+  --menu-v3-world-min:88px;
+  --menu-v3-world-fluid:11.5dvh;
+  --menu-v3-world-max:116px;
+
+  --menu-v3-selector-min:86px;
+  --menu-v3-selector-fluid:11.3dvh;
+  --menu-v3-selector-max:108px;
+
+  --menu-v3-action-min:72px;
+  --menu-v3-action-fluid:9.5dvh;
+  --menu-v3-action-max:94px;
+
+  --menu-v3-dock-min:66px;
+  --menu-v3-dock-fluid:8.7dvh;
+  --menu-v3-dock-max:84px;
+
+  --menu-v3-radius-small:10px;
+  --menu-v3-radius-medium:14px;
+  --menu-v3-radius-large:18px;
+
+  --menu-v3-bg:#061720;
+  --menu-v3-panel:#0b2631;
+  --menu-v3-panel-strong:#103442;
+  --menu-v3-panel-soft:#153d48;
+  --menu-v3-line:rgba(224,183,92,.52);
+  --menu-v3-line-soft:rgba(224,183,92,.24);
+  --menu-v3-gold:#d9ad4d;
+  --menu-v3-green:#73bf24;
+  --menu-v3-blue:#1278aa;
+  --menu-v3-text:#f4f0e7;
+  --menu-v3-muted:#c6bba8;
+  --menu-v3-danger:#df4d35;
+
+  --menu-v3-touch-min:44px;
+  --menu-v3-debug-line:rgba(255,255,255,.42);
+  --menu-v3-debug-fill:rgba(255,255,255,.045);
+}
