@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.4.0`
+Version du plan : `1.5.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -191,7 +191,7 @@ assets/menu-v3/
 
 ## Implémentation du Lot 1
 
-Version applicative : `0.30.3`
+Version applicative : `0.30.4`
 
 Fichiers actifs :
 
@@ -227,7 +227,6 @@ Corrections appliquées :
 - `box-sizing:border-box` imposé au shell afin que la safe area supérieure soit incluse dans `100dvh` ;
 - hauteurs du panneau puissance/récompense, du sélecteur et du dock recalibrées dans les tokens ;
 - typographie interne des deux panneaux contrainte pour garantir toutes les lignes ;
-- ligne `(Supérieur)` conservée sans sortie du panneau ;
 - légende dotée d’une rangée réservée ;
 - nodes légèrement remontés ;
 - dock étendu avec un fond continu ;
@@ -246,10 +245,19 @@ Corrections appliquées :
 - panneau puissance/récompense compacté tout en conservant toutes ses lignes ;
 - sélecteur et CTA réduits uniquement sur leur espace superflu ;
 - dock ramené à une hauteur mobile plus réaliste ;
-- icônes et libellés du dock conservés lisibles ;
-- couleur du dock centralisée dans `--menu-v3-dock-bg` ;
-- surface inférieure, `theme-color`, HTML, body et overlay harmonisés afin que la zone système iPhone prolonge visuellement le dock ;
+- surface inférieure et zone système iPhone harmonisées ;
 - aucun sprite V3 ajouté et aucune géométrie dépendante d’une image.
+
+### Ajustement final du Lot 1
+
+Après validation visuelle de la structure, trois micro-ajustements ont été demandés :
+
+- bouton Jouer agrandi de 6 px sur le profil iPhone standard ;
+- sélecteur de niveaux réduit de 6 px, sans réduire la lisibilité de ses dix nodes ni de la légende ;
+- ligne redondante `(Supérieur)` retirée du panneau de puissance ;
+- hauteur du bloc puissance/récompense réduite de 6 px ;
+- espace récupéré attribué à la scène centrale ;
+- test structurel verrouillé pour empêcher le retour de la ligne redondante ou de l’ancien équilibre vertical.
 
 Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
 
@@ -260,7 +268,7 @@ RightboundMenuV3.setDebug(false);
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [x] Lot 1 — Squelette mobile intégral et révisions 1.1/1.2/1.3 implémentés ; validation iPhone finale en attente.
+- [x] Lot 1 — Squelette mobile intégral, révisions et ajustement final implémentés ; capture de contrôle finale recommandée.
 - [ ] Lot 2 — Composants HTML complets.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
