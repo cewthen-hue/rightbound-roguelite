@@ -51,6 +51,7 @@
   let lastReport = null;
   let resizeObserver = null;
   let observedShell = null;
+  let debugObserver = null;
 
   function round(value, precision = 1) {
     const factor = 10 ** precision;
@@ -125,7 +126,7 @@
   }
 
   function clearGeometryMarks(shell, overlay) {
-    shell.querySelectorAll("[data-v3-geometry-id]").forEach((node) => {
+    shell.querySelectorAll("[data-v3-geometry-id],[data-v3-geometry-overflow],[data-v3-geometry-outside]").forEach((node) => {
       delete node.dataset.v3GeometryId;
       delete node.dataset.v3GeometryOverflow;
       delete node.dataset.v3GeometryOutside;
@@ -134,6 +135,7 @@
   }
 
   function addTag(tags, record, kind, anchor = null) {
+    if (!tags) return;
     const tag = document.createElement("span");
     tag.className = `menu-v3-geometry-tag is-${kind}`;
     tag.style.left = `${record.rect.x}px`;
@@ -318,7 +320,9 @@
   function observeShell(shell) {
     if (observedShell === shell) return;
     resizeObserver?.disconnect();
+    debugObserver?.disconnect();
     observedShell = shell;
+
     if ("ResizeObserver" in window) {
       resizeObserver = new ResizeObserver(schedule);
       resizeObserver.observe(shell);
@@ -328,9 +332,10 @@
       });
     }
 
-    new MutationObserver((records) => {
+    debugObserver = new MutationObserver((records) => {
       if (records.some((record) => record.attributeName === "class")) schedule();
-    }).observe(shell, { attributes:true, attributeFilter:["class"] });
+    });
+    debugObserver.observe(shell, { attributes:true, attributeFilter:["class"] });
   }
 
   new MutationObserver(schedule).observe(modalContent, { childList:true, subtree:false });
@@ -339,7 +344,7 @@
   window.addEventListener("resize", schedule, { passive:true });
   window.addEventListener("orientationchange", schedule, { passive:true });
   window.visualViewport?.addEventListener("resize", schedule, { passive:true });
-  document.fonts?.ready?.then(schedule).catch(() => {});
+  if (document.fonts?.ready) document.fonts.ready.then(schedule).catch(() => {});
 
   window.RightboundMenuV3Geometry = Object.freeze({
     version:VERSION,
