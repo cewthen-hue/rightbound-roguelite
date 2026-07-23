@@ -22,13 +22,13 @@
   --menu-v3-stage-stats-fluid:9.9dvh;
   --menu-v3-stage-stats-max:94px;
 
-  --menu-v3-selector-min:84px;
-  --menu-v3-selector-fluid:10.4dvh;
-  --menu-v3-selector-max:100px;
+  --menu-v3-selector-min:72px;
+  --menu-v3-selector-fluid:9dvh;
+  --menu-v3-selector-max:86px;
 
-  --menu-v3-action-min:66px;
-  --menu-v3-action-fluid:8.5dvh;
-  --menu-v3-action-max:88px;
+  --menu-v3-action-min:76px;
+  --menu-v3-action-fluid:9.8dvh;
+  --menu-v3-action-max:100px;
 
   --menu-v3-dock-min:78px;
   --menu-v3-dock-fluid:9.6dvh;
