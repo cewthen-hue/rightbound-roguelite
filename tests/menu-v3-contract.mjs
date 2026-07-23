@@ -20,7 +20,14 @@ for (const className of requiredModules) {
 }
 
 const dockSlots = (shell.match(/dockSlot\("/g) || []).length;
-if (dockSlots !== 5) throw new Error(`Menu V3 must expose exactly five dock slots, found ${dockSlots}.`);
+if (dockSlots !== 4) throw new Error(`Menu V3 must expose exactly four dock slots, found ${dockSlots}.`);
+if (shell.includes('dockSlot("hero"')) throw new Error("The separate Hero tab must not exist in Menu V3.");
+
+for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
+  if (!shell.includes(`dockSlot("${requiredDock}"`)) {
+    throw new Error(`Required Menu V3 dock slot missing: ${requiredDock}.`);
+  }
+}
 
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
@@ -28,6 +35,7 @@ if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes."
 const requiredTokens = [
   "--menu-v3-topbar-min",
   "--menu-v3-world-min",
+  "--menu-v3-stage-stats-min",
   "--menu-v3-selector-min",
   "--menu-v3-action-min",
   "--menu-v3-dock-min",
@@ -42,9 +50,10 @@ if (!layout.includes("height:100dvh")) throw new Error("Menu V3 shell must use t
 if (!layout.includes("overflow:hidden")) throw new Error("Menu V3 shell must explicitly control overflow.");
 if (!layout.includes("env(safe-area-inset-top)")) throw new Error("Menu V3 top safe area is missing.");
 if (!layout.includes("env(safe-area-inset-bottom)")) throw new Error("Menu V3 bottom safe area is missing.");
+if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3 dock must use four equal columns.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
 if (/assets\/menu-v3\/.test(shell + layout + tokens + debug)) {
   throw new Error("Lot 1 must not depend on final Menu V3 sprites.");
 }
 
-console.log("Menu V3 Lot 1 structural contract passed.");
+console.log("Menu V3 Lot 1.1 structural contract passed.");
