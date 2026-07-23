@@ -34,7 +34,8 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 shell version must match the active Lot 3.2 build.");
+if (!shell.includes('VERSION = "0.33.0-lot3.3"')) throw new Error("Menu V3 shell version must match the active Lot 3.3 build.");
+if (shell.includes("addEventListener(\"click\"")) throw new Error("Menu V3 shell must remain structural; interactions belong in menu-v3-interactions.js.");
 
 const requiredBindings = [
   "hero-name",
@@ -79,6 +80,8 @@ if (!layout.includes("env(safe-area-inset-bottom)")) throw new Error("Menu V3 bo
 if (!layout.includes("grid-template-columns:repeat(4")) throw new Error("Menu V3 dock must use four equal columns.");
 if (!skin.includes("menu-v3-resource-track")) throw new Error("Menu V3 skin layer is missing its top-bar refinement.");
 if (!skin.includes('selected[data-level-state="locked"]')) throw new Error("Lot 3.2 selected locked-node protection is missing.");
+if (!skin.includes('data-play-state="locked"')) throw new Error("Lot 3.3 locked play-button state is missing.");
+if (!skin.includes('data-play-state="completed"')) throw new Error("Lot 3.3 replay state is missing.");
 if (!responsive.includes("box-sizing:border-box")) throw new Error("Menu V3 shell must include its safe-area padding inside 100dvh.");
 if (!responsive.includes("menu-v3-selector-legend")) throw new Error("Menu V3 legend overflow protection is missing.");
 if (!responsive.includes("menu-v3-stage-stats")) throw new Error("Menu V3 stats readability rules are missing.");
@@ -94,4 +97,4 @@ if (/assets\/menu-v3\//.test(shell + layout + skin + responsive + tokens + debug
   throw new Error("Menu V3 must remain independent from final sprites before Lot 5.");
 }
 
-console.log("Menu V3 structural contract passed during Lot 3.2.");
+console.log("Menu V3 structural contract passed during Lot 3.3.");
