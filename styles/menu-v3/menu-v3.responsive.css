@@ -130,9 +130,15 @@ body.menu-v3-active #modalContent{
   background:var(--menu-v3-dock-bg)!important;
 }
 
-.menu-v3-dock-slot span:last-child{
+.menu-v3-dock-label{
+  max-width:100%;
+  overflow:hidden;
   padding-bottom:0!important;
   font-size:clamp(9px,2.45vw,11px)!important;
+  line-height:1!important;
+  text-align:center;
+  text-overflow:ellipsis;
+  white-space:nowrap;
 }
 
 .menu-v3-dock-icon{
@@ -170,7 +176,7 @@ body.menu-v3-active #modalContent{
     font-size:7.5px!important;
   }
 
-  .menu-v3-dock-slot span:last-child{
+  .menu-v3-dock-label{
     font-size:8.5px!important;
   }
 }
