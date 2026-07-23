@@ -2,6 +2,7 @@ import fs from "node:fs";
 
 const data = fs.readFileSync("src/menu-v3/menu-v3-data.js", "utf8");
 const shell = fs.readFileSync("src/menu-v3/menu-v3-shell.js", "utf8");
+const components = fs.readFileSync("src/menu-v3/menu-v3-components.js", "utf8");
 const skin = fs.readFileSync("styles/menu-v3/menu-v3.skin.css", "utf8");
 const index = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("service-worker.js", "utf8");
@@ -14,7 +15,7 @@ const requiredSources = [
 ];
 
 for (const source of requiredSources) {
-  if (!data.includes(`window.${source}`)) throw new Error(`Menu V3 Lot 3.1 data source missing: ${source}.`);
+  if (!data.includes(`window.${source}`)) throw new Error(`Menu V3 data source missing: ${source}.`);
 }
 
 const requiredBindings = [
@@ -38,32 +39,45 @@ for (const binding of requiredBindings) {
   }
 }
 
-if (!data.includes('VERSION = "0.32.0-lot3.1"')) throw new Error("Menu V3 Lot 3.1 version mismatch.");
+if (!data.includes('VERSION = "0.32.1-lot3.2"')) throw new Error("Menu V3 Lot 3.2 version mismatch.");
 if (!data.includes('HERO_STORAGE_KEY = "rightbound-hero-progression-v1"')) throw new Error("Persistent hero progression key is missing.");
 if (!data.includes("function xpRequiredForLevel")) throw new Error("Permanent hero XP curve is missing.");
 if (!data.includes("function addHeroXp")) throw new Error("Future permanent XP grant API is missing.");
-if (!data.includes("gems:0, energy:0, energyCost:10")) throw new Error("Temporary gems and energy values must remain zero during Lot 3.1.");
+if (!data.includes("gems:0, energy:0, energyCost:10")) throw new Error("Temporary gems and energy values must remain zero.");
 if (!data.includes("getReadiness")) throw new Error("Build readiness must come from the real build API.");
 if (!data.includes("getSelectedLevel")) throw new Error("Selected-level data must come from the real progression API.");
 if (!data.includes("getGold")) throw new Error("Gold must come from the real economy API.");
 if (!data.includes("getPowerScore")) throw new Error("Hero power must come from the real build or profile API.");
+if (!data.includes("function getLevelsSnapshot")) throw new Error("Real ten-level snapshot is missing.");
+if (!data.includes('state = completed ? "completed" : unlocked ? "available" : "locked"')) {
+  throw new Error("Real completed/available/locked state resolution is missing.");
+}
+if (!data.includes("function bindLevelStates")) throw new Error("Real node-state binder is missing.");
+if (!data.includes('node.dataset.levelType = level.type')) throw new Error("Elite and boss types are not connected to nodes.");
+if (!data.includes('node.dataset.levelState = level.state')) throw new Error("Progression states are not connected to nodes.");
+if (!data.includes('node.classList.toggle("selected", level.selected)')) throw new Error("Selected node is not driven by real data.");
 if (!data.includes("rightbound:economy-changed")) throw new Error("Economy refresh event is missing.");
 if (!data.includes("rightbound:progression-changed")) throw new Error("Progression refresh event is missing.");
 if (!data.includes("rightbound:build-changed")) throw new Error("Build refresh event is missing.");
 if (!data.includes("rightbound:menu-v3-synced")) throw new Error("Menu selection refresh event is missing.");
-if (!data.includes("node.textContent !== next")) throw new Error("Lot 3.1 binder must avoid redundant text mutations.");
+if (!data.includes("node.textContent !== next")) throw new Error("Binder must avoid redundant text mutations.");
+if (!components.includes('levelState || "loading"')) throw new Error("Components must not restore demo progression.");
+if (!skin.includes('selected[data-level-state="locked"]')) throw new Error("Selected locked nodes must preserve their locked identity.");
+if (!skin.includes('data-level-type="elite"') || !skin.includes('data-level-type="boss"')) {
+  throw new Error("Elite and boss node-state skins are missing.");
+}
 if (!skin.includes('data-readiness="low"') || !skin.includes('data-readiness="danger"')) {
   throw new Error("Real readiness colors are missing from the skin.");
 }
-if (/assets\/menu-v3\//.test(data + shell + skin)) throw new Error("Lot 3.1 must not load final sprites.");
+if (/assets\/menu-v3\//.test(data + shell + skin)) throw new Error("Lot 3.2 must not load final sprites.");
 
-const shellIndex = index.indexOf("menu-v3-shell.js?v=0.32.0");
-const componentsIndex = index.indexOf("menu-v3-components.js?v=0.31.1");
-const dataIndex = index.indexOf("menu-v3-data.js?v=0.32.0");
+const shellIndex = index.indexOf("menu-v3-shell.js?v=0.32.1");
+const componentsIndex = index.indexOf("menu-v3-components.js?v=0.32.1");
+const dataIndex = index.indexOf("menu-v3-data.js?v=0.32.1");
 if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex)) {
   throw new Error("Menu V3 data layer must load after shell and components.");
 }
-if (!serviceWorker.includes('rightbound-shell-v0.32.0')) throw new Error("PWA cache version is not aligned with Lot 3.1.");
-if (!serviceWorker.includes("menu-v3-data.js?v=0.32.0")) throw new Error("Menu V3 data layer is missing from the PWA shell.");
+if (!serviceWorker.includes('rightbound-shell-v0.32.1')) throw new Error("PWA cache version is not aligned with Lot 3.2.");
+if (!serviceWorker.includes("menu-v3-data.js?v=0.32.1")) throw new Error("Menu V3 data layer is missing from the PWA shell.");
 
-console.log("Menu V3 Lot 3.1 data contract passed.");
+console.log("Menu V3 Lot 3.2 data contract passed.");
