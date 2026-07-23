@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "rightbound-shell-v0.31.1";
+const CACHE_NAME = "rightbound-shell-v0.31.2";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -26,11 +26,11 @@ const APP_SHELL = [
   "./styles/menu-v2.css?v=0.26.0",
   "./styles/menu-v2-topbar.css?v=0.27.0",
   "./styles/menu-v2-world-header.css?v=0.28.0",
-  "./styles/menu-v3/menu-v3.tokens.css?v=0.30.4",
+  "./styles/menu-v3/menu-v3.tokens.css?v=0.31.2",
   "./styles/menu-v3/menu-v3.layout.css?v=0.30.1",
   "./styles/menu-v3/menu-v3.components.css?v=0.31.0",
   "./styles/menu-v3/menu-v3.skin.css?v=0.31.1",
-  "./styles/menu-v3/menu-v3.responsive.css?v=0.31.1",
+  "./styles/menu-v3/menu-v3.responsive.css?v=0.31.2",
   "./styles/menu-v3/menu-v3.debug.css?v=0.30.0",
   "./src/items.js?v=0.14.0",
   "./src/player-profile.js?v=0.15.0",
