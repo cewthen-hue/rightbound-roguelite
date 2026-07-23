@@ -34,7 +34,26 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.31.1-lot2.1"')) throw new Error("Menu V3 shell version must match the active Lot 2 component build.");
+if (!shell.includes('VERSION = "0.32.0-lot3.1"')) throw new Error("Menu V3 shell version must match the active Lot 3.1 build.");
+
+const requiredBindings = [
+  "hero-name",
+  "hero-level",
+  "hero-xp",
+  "world-label",
+  "world-title",
+  "level-number",
+  "level-name",
+  "readiness",
+  "recommended-power",
+  "hero-power",
+  "reward",
+  "energy-cost"
+];
+
+for (const binding of requiredBindings) {
+  if (!shell.includes(`data-v3-bind="${binding}"`)) throw new Error(`Menu V3 data binding missing: ${binding}.`);
+}
 
 const requiredTokens = [
   "--menu-v3-topbar-min",
@@ -71,7 +90,7 @@ if (!responsive.includes("min-height:70px!important")) throw new Error("Lot 2.2 
 if (!responsive.includes("body.menu-v3-active #overlay::after")) throw new Error("Menu V3 bottom surface continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
 if (/assets\/menu-v3\//.test(shell + layout + skin + responsive + tokens + debug)) {
-  throw new Error("Lots 1 and 2 must remain independent from final Menu V3 sprites.");
+  throw new Error("Menu V3 must remain independent from final sprites before Lot 5.");
 }
 
-console.log("Menu V3 structural contract passed during Lot 2.2.");
+console.log("Menu V3 structural contract passed during Lot 3.1.");
