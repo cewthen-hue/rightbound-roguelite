@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "rightbound-shell-v0.30.4";
+const CACHE_NAME = "rightbound-shell-v0.31.0";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -28,6 +28,7 @@ const APP_SHELL = [
   "./styles/menu-v2-world-header.css?v=0.28.0",
   "./styles/menu-v3/menu-v3.tokens.css?v=0.30.4",
   "./styles/menu-v3/menu-v3.layout.css?v=0.30.1",
+  "./styles/menu-v3/menu-v3.components.css?v=0.31.0",
   "./styles/menu-v3/menu-v3.responsive.css?v=0.30.4",
   "./styles/menu-v3/menu-v3.debug.css?v=0.30.0",
   "./src/items.js?v=0.14.0",
@@ -42,7 +43,8 @@ const APP_SHELL = [
   "./src/menu-v2.js?v=0.26.0",
   "./src/menu-v2-topbar.js?v=0.27.0",
   "./src/menu-v2-world-header.js?v=0.28.0",
-  "./src/menu-v3/menu-v3-shell.js?v=0.30.4",
+  "./src/menu-v3/menu-v3-shell.js?v=0.31.0",
+  "./src/menu-v3/menu-v3-components.js?v=0.31.0",
   "./src/build-ui.js?v=0.18.0",
   "./src/loot.js?v=0.17.0",
   "./src/chests.js?v=0.17.0",
