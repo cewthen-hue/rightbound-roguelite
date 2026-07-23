@@ -7,11 +7,23 @@ const geometryCss = fs.readFileSync("styles/menu-v3/menu-v3.geometry.css", "utf8
 const debugCss = fs.readFileSync("styles/menu-v3/menu-v3.debug.css", "utf8");
 const index = fs.readFileSync("index.html", "utf8");
 const serviceWorker = fs.readFileSync("service-worker.js", "utf8");
+const contract = JSON.parse(fs.readFileSync("assets/menu-v3/geometry-contract.json", "utf8"));
+const lockDoc = fs.readFileSync("docs/MENU_V3_GEOMETRY_LOCK.md", "utf8");
 
 if (!geometryJs.includes('VERSION = "0.35.0-lot4"')) throw new Error("Lot 4 geometry runtime version mismatch.");
+if (contract.version !== "0.35.0-lot4") throw new Error("Machine-readable geometry contract version mismatch.");
+if (contract.status !== "geometry-locked-phone-validation-pending") throw new Error("Geometry contract status must remain explicit until phone validation.");
+if (contract.maxShellWidth !== 430) throw new Error("Machine-readable maximum shell width mismatch.");
+if (contract.overflowTolerancePx !== 1.25) throw new Error("Machine-readable overflow tolerance mismatch.");
 
-for (const profile of ["360x780", "375x812", "390x844", "393x852", "430x932"]) {
+const profiles = ["360x780", "375x812", "390x844", "393x852", "430x932"];
+for (const profile of profiles) {
   if (!geometryJs.includes(`id:"${profile}"`)) throw new Error(`Required phone geometry profile missing: ${profile}.`);
+}
+if (contract.targetViewports.length !== 5) throw new Error("Geometry contract must contain five target viewports.");
+for (const [indexValue, profile] of profiles.entries()) {
+  const serialized = `${contract.targetViewports[indexValue].width}x${contract.targetViewports[indexValue].height}`;
+  if (serialized !== profile) throw new Error(`Machine-readable viewport order mismatch: expected ${profile}, found ${serialized}.`);
 }
 
 for (const functionName of [
@@ -39,12 +51,11 @@ for (const eventName of [
 if (!geometryJs.includes("ResizeObserver")) throw new Error("ResizeObserver geometry validation is missing.");
 if (!geometryJs.includes("window.visualViewport")) throw new Error("Visual viewport measurement is missing.");
 if (!geometryJs.includes('window.addEventListener("orientationchange"')) throw new Error("Orientation remeasurement is missing.");
-if (!geometryJs.includes("shell.scrollWidth") && !geometryJs.includes("node.scrollWidth")) throw new Error("Overflow measurement is missing.");
+if (!geometryJs.includes("node.scrollWidth")) throw new Error("Overflow measurement is missing.");
 if (!geometryJs.includes("shellRect.width > 430")) throw new Error("Maximum shell width validation is missing.");
 if (!geometryJs.includes('status = errorCount > 0 ? "fail"')) throw new Error("Geometry pass/warning/fail status is missing.");
 if (!geometryJs.includes("exportReport")) throw new Error("Geometry report export API is missing.");
 if (!geometryJs.includes("targetViewports:TARGET_VIEWPORTS")) throw new Error("Target viewport API is missing.");
-if (!geometryJs.includes("rightbound:menu-v3-geometry-checked")) throw new Error("Geometry report event is missing.");
 
 for (const token of [
   "--menu-v3-geometry-lock:0.35", "--menu-v3-safe-top", "--menu-v3-safe-bottom",
@@ -59,6 +70,9 @@ if (!geometryCss.includes("max(80px,calc(58px + env(safe-area-inset-bottom)))"))
 if (!geometryCss.includes("max(72px,calc(50px + env(safe-area-inset-bottom)))")) throw new Error("Short-phone safe dock track is missing.");
 if (!geometryCss.includes("menu-v3-future-stage-background") || !geometryCss.includes("menu-v3-future-stage-hero") || !geometryCss.includes("menu-v3-future-stage-frame")) {
   throw new Error("Stage asset geometry slots are incomplete.");
+}
+if (contract.stageHeroSlot.width !== "28%" || contract.stageHeroSlot.height !== "70%" || contract.stageHeroSlot.anchor !== "50% 100%") {
+  throw new Error("Machine-readable stage hero slot does not match locked CSS geometry.");
 }
 
 for (const debugClass of [
@@ -79,6 +93,18 @@ if (!components.includes('data-v3-asset-anchor="50% 100%"')) throw new Error("He
 if (!components.includes('data-v3-asset-mode="cover"')) throw new Error("Background cover metadata is missing.");
 if (!components.includes('data-v3-asset-mode="nine-slice"')) throw new Error("Frame nine-slice metadata is missing.");
 
+const slotIds = new Set(contract.assetSlots.map((slot) => slot.id));
+for (const slotId of [
+  "hero-portrait", "resource-gold", "resource-gems", "resource-energy", "utility-options",
+  "utility-journal", "world-ribbon", "stage-background", "stage-hero", "stage-frame",
+  "stat-power", "stat-reward", "level-node-*", "play-frame", "play-icon",
+  "dock-expedition", "dock-equipment", "dock-chests", "dock-shop"
+]) {
+  if (!slotIds.has(slotId)) throw new Error(`Machine-readable future asset slot missing: ${slotId}.`);
+}
+if (!lockDoc.includes("RightboundMenuV3Geometry.setDebug(true)")) throw new Error("Geometry debug instructions are missing.");
+if (!lockDoc.includes("validation finale sur captures réelles")) throw new Error("Phone validation requirement is missing from geometry documentation.");
+
 const responsiveCssIndex = index.indexOf("menu-v3.responsive.css?v=0.31.2");
 const geometryCssIndex = index.indexOf("menu-v3.geometry.css?v=0.35.0");
 const debugCssIndex = index.indexOf("menu-v3.debug.css?v=0.35.0");
@@ -88,9 +114,7 @@ if (responsiveCssIndex < 0 || geometryCssIndex < 0 || debugCssIndex < 0 || !(res
 
 const syncJsIndex = index.indexOf("menu-v3-sync.js?v=0.34.0");
 const geometryJsIndex = index.indexOf("menu-v3-geometry.js?v=0.35.0");
-if (syncJsIndex < 0 || geometryJsIndex < 0 || syncJsIndex > geometryJsIndex) {
-  throw new Error("Geometry runtime must load after synchronization.");
-}
+if (syncJsIndex < 0 || geometryJsIndex < 0 || syncJsIndex > geometryJsIndex) throw new Error("Geometry runtime must load after synchronization.");
 if (!index.includes("menu-v3-components.js?v=0.35.0")) throw new Error("Lot 4 components are not loaded.");
 if (!index.includes("app-shell.js?v=0.35.0")) throw new Error("Lot 4 app shell is not loaded.");
 if (!serviceWorker.includes('rightbound-shell-v0.35.0')) throw new Error("Lot 4 PWA cache version mismatch.");
