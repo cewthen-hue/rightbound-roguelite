@@ -1,5 +1,5 @@
 /* Menu V3 — responsive geometry.
-   Lot 1.3 gives priority to the stage while keeping every control readable. */
+   Final Lot 1 balance: compact selector, slightly larger CTA, dominant stage. */
 
 html:has(body.menu-v3-active),
 body.menu-v3-active{
@@ -42,13 +42,13 @@ body.menu-v3-active #modalContent{
 }
 
 .menu-v3-stage-stats{
-  padding:clamp(5px,.62dvh,7px)!important;
+  padding:clamp(4px,.55dvh,6px)!important;
 }
 
 .menu-v3-stat-slot{
   grid-template-columns:clamp(36px,9.5vw,46px) minmax(0,1fr)!important;
   gap:clamp(4px,1.15vw,7px)!important;
-  padding:clamp(5px,.65dvh,7px) clamp(5px,1.35vw,8px)!important;
+  padding:clamp(4px,.55dvh,6px) clamp(5px,1.35vw,8px)!important;
 }
 
 .menu-v3-stat-copy{
@@ -81,22 +81,22 @@ body.menu-v3-active #modalContent{
 
 .menu-v3-selector{
   grid-template-rows:
-    clamp(18px,2.35dvh,22px)
-    minmax(45px,1fr)
-    clamp(25px,3.15dvh,29px)!important;
-  gap:2px!important;
-  padding:1px 0 2px!important;
+    clamp(17px,2.2dvh,21px)
+    minmax(42px,1fr)
+    clamp(23px,2.9dvh,27px)!important;
+  gap:1px!important;
+  padding:1px 0!important;
 }
 
 .menu-v3-level-track{
   align-items:start!important;
-  padding-top:1px!important;
+  padding-top:0!important;
 }
 
 .menu-v3-selector-legend{
   align-self:stretch!important;
-  min-height:25px!important;
-  padding:1px 4px 2px!important;
+  min-height:23px!important;
+  padding:1px 4px!important;
   overflow:visible!important;
 }
 
@@ -110,11 +110,12 @@ body.menu-v3-active #modalContent{
 
 .menu-v3-action{
   padding-top:1px!important;
+  padding-bottom:1px!important;
 }
 
 .menu-v3-play-slot{
-  padding-top:5px!important;
-  padding-bottom:5px!important;
+  padding-top:6px!important;
+  padding-bottom:6px!important;
 }
 
 .menu-v3-dock{
@@ -180,14 +181,14 @@ body.menu-v3-active #modalContent{
     grid-template-rows:
       60px
       72px
-      minmax(300px,1fr)
-      92px
-      56px
+      minmax(306px,1fr)
+      86px
+      62px
       80px!important;
   }
 
   .menu-v3-stage-card{
-    grid-template-rows:44px minmax(160px,1fr) 86px!important;
+    grid-template-rows:44px minmax(166px,1fr) 80px!important;
   }
 
   .menu-v3-world-header{
@@ -212,12 +213,12 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-selector{
-    grid-template-rows:17px minmax(46px,1fr) 25px!important;
+    grid-template-rows:16px minmax(43px,1fr) 23px!important;
   }
 
   .menu-v3-play-slot{
-    padding-top:4px!important;
-    padding-bottom:4px!important;
+    padding-top:5px!important;
+    padding-bottom:5px!important;
   }
 
   .menu-v3-dock-icon{
@@ -230,14 +231,14 @@ body.menu-v3-active #modalContent{
     grid-template-rows:
       56px
       64px
-      minmax(200px,1fr)
-      86px
-      52px
+      minmax(206px,1fr)
+      80px
+      58px
       72px!important;
   }
 
   .menu-v3-stage-card{
-    grid-template-rows:42px minmax(105px,1fr) 82px!important;
+    grid-template-rows:42px minmax(111px,1fr) 76px!important;
   }
 
   .menu-v3-stat-copy > span:first-child{
@@ -257,7 +258,7 @@ body.menu-v3-active #modalContent{
   }
 
   .menu-v3-selector{
-    grid-template-rows:16px minmax(43px,1fr) 24px!important;
+    grid-template-rows:15px minmax(41px,1fr) 22px!important;
   }
 
   .menu-v3-dock-icon{
@@ -267,7 +268,7 @@ body.menu-v3-active #modalContent{
 
 @media (min-width:410px) and (min-height:900px){
   .menu-v3-stage-card{
-    grid-template-rows:54px minmax(250px,1fr) 96px!important;
+    grid-template-rows:54px minmax(256px,1fr) 90px!important;
   }
 
   .menu-v3-dock-icon{
