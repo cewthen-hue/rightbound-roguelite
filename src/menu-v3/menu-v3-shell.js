@@ -7,7 +7,7 @@
     return;
   }
 
-  const VERSION = "0.31.1-lot2.1";
+  const VERSION = "0.32.0-lot3.1";
   const DEBUG_STORAGE_KEY = "rightbound-menu-v3-debug";
   let scheduled = false;
   let debugEnabled = localStorage.getItem(DEBUG_STORAGE_KEY) === "true";
@@ -49,9 +49,9 @@
         <section class="menu-v3-profile-slot" aria-label="Profil du héros">
           <div class="menu-v3-profile-avatar" aria-hidden="true"></div>
           <div class="menu-v3-profile-copy">
-            <strong>JACK</strong>
-            <span>NIV. 1</span>
-            <div class="menu-v3-profile-xp" aria-label="Expérience">0 / 150 XP</div>
+            <strong data-v3-bind="hero-name">JACK</strong>
+            <span data-v3-bind="hero-level">NIV. 1</span>
+            <div class="menu-v3-profile-xp" data-v3-bind="hero-xp" aria-label="Expérience">0 / 150 XP</div>
           </div>
         </section>
         <section class="menu-v3-resource-track" aria-label="Ressources">
@@ -67,8 +67,8 @@
           <span>OPTIONS</span>
         </button>
         <div class="menu-v3-world-title-slot">
-          <div class="menu-v3-world-ribbon">MONDE 1</div>
-          <h1><span>LES FAUBOURGS</span><span>OUBLIÉS</span></h1>
+          <div class="menu-v3-world-ribbon" data-v3-bind="world-label">MONDE 1</div>
+          <h1 data-v3-bind="world-title"><span>LES FAUBOURGS</span><span>OUBLIÉS</span></h1>
         </div>
         <button type="button" class="menu-v3-utility-slot" data-v3-utility="journal">
           <span aria-hidden="true">▣</span>
@@ -79,10 +79,10 @@
       <section class="menu-v3-zone menu-v3-stage-card" ${moduleLabel("03 · CARTE PRINCIPALE")}>
         <header class="menu-v3-stage-heading">
           <div class="menu-v3-stage-heading-copy">
-            <span>NIVEAU 1 / 10</span>
-            <strong>ENTRÉE DES RUINES</strong>
+            <span data-v3-bind="level-number">NIVEAU 1 / 10</span>
+            <strong data-v3-bind="level-name">ENTRÉE DES RUINES</strong>
           </div>
-          <div class="menu-v3-stage-badge">SUPÉRIEUR</div>
+          <div class="menu-v3-stage-badge" data-v3-bind="readiness">SUPÉRIEUR</div>
         </header>
         <div class="menu-v3-stage-scene" aria-label="Zone réservée au décor et à Jack"></div>
         <footer class="menu-v3-stage-stats">
@@ -90,15 +90,15 @@
             <div class="menu-v3-stat-icon" aria-hidden="true"></div>
             <div class="menu-v3-stat-copy">
               <span>PUISSANCE CONSEILLÉE</span>
-              <strong>30</strong>
-              <span>Votre puissance : 44</span>
+              <strong data-v3-bind="recommended-power">30</strong>
+              <span data-v3-bind="hero-power">Votre puissance : 44</span>
             </div>
           </article>
           <article class="menu-v3-stat-slot">
             <div class="menu-v3-stat-icon" aria-hidden="true"></div>
             <div class="menu-v3-stat-copy">
               <span>RÉCOMPENSE DE VICTOIRE</span>
-              <strong>1 COFFRE BRONZE</strong>
+              <strong data-v3-bind="reward">1 COFFRE BRONZE</strong>
             </div>
           </article>
         </footer>
@@ -114,7 +114,7 @@
         <button type="button" class="menu-v3-play-slot" data-v3-action="play">
           <span aria-hidden="true">⚔</span>
           <span class="menu-v3-play-copy"><strong>JOUER</strong><span>LANCER L’EXPÉDITION</span></span>
-          <span>ϟ 10</span>
+          <span data-v3-bind="energy-cost">ϟ 10</span>
         </button>
       </section>
 
@@ -141,18 +141,18 @@
     });
 
     shell.querySelectorAll("[data-v3-utility]").forEach((button) => {
-      button.addEventListener("click", () => toast(`Le module ${button.dataset.v3Utility} sera connecté au Lot 3.`));
+      button.addEventListener("click", () => toast(`Le module ${button.dataset.v3Utility} sera connecté dans les prochains sous-lots du Lot 3.`));
     });
 
     shell.querySelectorAll("[data-v3-dock]").forEach((button) => {
       button.addEventListener("click", () => {
         if (button.dataset.v3Dock === "expedition") return;
-        toast(`L’onglet ${button.textContent.trim()} sera connecté au Lot 3.`);
+        toast(`L’onglet ${button.textContent.trim()} sera connecté dans les prochains sous-lots du Lot 3.`);
       });
     });
 
     shell.querySelectorAll(".menu-v3-resource-slot button").forEach((button) => {
-      button.addEventListener("click", () => toast("Les ressources seront connectées au Lot 3."));
+      button.addEventListener("click", () => toast("Les achats de ressources seront ajoutés ultérieurement."));
     });
 
     return shell;
@@ -184,6 +184,10 @@
       play.disabled = Boolean(sourcePlay?.disabled);
       play.setAttribute("aria-disabled", play.disabled ? "true" : "false");
     }
+
+    document.dispatchEvent(new CustomEvent("rightbound:menu-v3-synced", {
+      detail:{ selectedLevelId:selectedId, playDisabled:Boolean(play?.disabled) }
+    }));
   }
 
   function removeShell() {
