@@ -33,7 +33,7 @@ for (const requiredDock of ["expedition", "equipment", "chests", "shop"]) {
 const levelCount = shell.includes("Array.from({ length: 10 }") || shell.includes("Array.from({length:10}");
 if (!levelCount) throw new Error("Menu V3 must reserve exactly ten level nodes.");
 if (shell.includes("(Supérieur)")) throw new Error("The redundant power readiness line must not return to the compact stats panel.");
-if (!shell.includes('VERSION = "0.30.4-lot1-final"')) throw new Error("Menu V3 shell version must match the final Lot 1 geometry.");
+if (!shell.includes('VERSION = "0.31.0-lot2"')) throw new Error("Menu V3 shell version must match the active Lot 2 component build.");
 
 const requiredTokens = [
   "--menu-v3-topbar-min",
@@ -65,7 +65,7 @@ if (!responsive.includes("86px\n      62px")) throw new Error("The compact selec
 if (!responsive.includes("body.menu-v3-active #overlay::after")) throw new Error("Menu V3 bottom surface continuation is missing.");
 if (!debug.includes("menu-v3-debug")) throw new Error("Menu V3 debug visualization layer is missing.");
 if (/assets\/menu-v3\/.test(shell + layout + responsive + tokens + debug)) {
-  throw new Error("Lot 1 must not depend on final Menu V3 sprites.");
+  throw new Error("Lots 1 and 2 must remain independent from final Menu V3 sprites.");
 }
 
-console.log("Menu V3 final Lot 1 structural contract passed.");
+console.log("Menu V3 structural contract passed during Lot 2.");
