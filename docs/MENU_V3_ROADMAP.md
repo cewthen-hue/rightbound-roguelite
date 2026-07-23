@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.1.0`
+Version du plan : `1.2.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -72,7 +72,7 @@ Composants :
 - dix nodes ;
 - légende ;
 - bouton Jouer ;
-- cinq onglets inférieurs.
+- quatre onglets inférieurs : Expédition, Équipement, Coffres et Boutique.
 
 ## Lot 3 — Données et interactions
 
@@ -191,7 +191,7 @@ assets/menu-v3/
 
 ## Implémentation du Lot 1
 
-Version applicative : `0.30.0`
+Version applicative : `0.30.1`
 
 Fichiers actifs :
 
@@ -203,6 +203,20 @@ Fichiers actifs :
 
 Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
 
+### Révision Lot 1.1
+
+La première capture iPhone a conduit aux décisions suivantes :
+
+- suppression de l’onglet Héros ;
+- dock réduit à quatre onglets égaux : Expédition, Équipement, Coffres, Boutique ;
+- hauteur du dock augmentée ;
+- fond des cases prolongé jusque dans la safe area inférieure ;
+- suppression de la bande vide sous les boutons ;
+- panneau puissance/récompense agrandi ;
+- récompense affichée sur plusieurs lignes sans troncature ;
+- légère respiration ajoutée au sélecteur ;
+- hauteur de scène recalculée automatiquement pour conserver un écran sans scroll.
+
 Le mode debug est actif par défaut pour la validation du Lot 1. Il peut être désactivé dans la console avec :
 
 ```js
@@ -212,7 +226,7 @@ RightboundMenuV3.setDebug(false);
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
-- [x] Lot 1 — Squelette mobile intégral implémenté ; validation iPhone en attente.
+- [x] Lot 1 — Squelette mobile intégral et révision 1.1 implémentés ; validation iPhone finale en attente.
 - [ ] Lot 2 — Composants HTML complets.
 - [ ] Lot 3 — Données et interactions.
 - [ ] Lot 4 — Validation géométrique.
