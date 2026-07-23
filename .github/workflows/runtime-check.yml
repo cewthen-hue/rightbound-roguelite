@@ -30,3 +30,6 @@ jobs:
           node --check src/menu-layout.js
           node --check src/chests.js
           node --check src/inventory.js
+
+      - name: Run combat runtime smoke test
+        run: node tests/game-runtime-smoke.mjs
