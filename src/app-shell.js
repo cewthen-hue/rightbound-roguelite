@@ -3,8 +3,10 @@
 
   const bootScreen = document.getElementById("bootScreen");
   const overlay = document.getElementById("overlay");
+  const PORTRAIT_ORIENTATION = "portrait-primary";
   let deferredInstallPrompt = null;
   let wakeLock = null;
+  let portraitLockPending = false;
 
   const isStandalone = () => (
     window.matchMedia?.("(display-mode: standalone)").matches ||
@@ -17,6 +19,28 @@
 
   function showToast(message) {
     window.RightboundUI?.showToast?.(message);
+  }
+
+  async function requestPortraitLock() {
+    const orientation = window.screen?.orientation;
+    if (!orientation?.lock || portraitLockPending) return false;
+
+    portraitLockPending = true;
+    try {
+      await orientation.lock(PORTRAIT_ORIENTATION);
+      document.documentElement.dataset.orientationLock = "active";
+      return true;
+    } catch {
+      document.documentElement.dataset.orientationLock = "deferred";
+      return false;
+    } finally {
+      portraitLockPending = false;
+    }
+  }
+
+  async function requestPortraitLockFromGesture() {
+    const locked = await requestPortraitLock();
+    if (locked) document.removeEventListener("pointerdown", requestPortraitLockFromGesture, true);
   }
 
   async function requestFullscreen() {
@@ -36,6 +60,7 @@
     if (request) {
       try {
         await request.call(root);
+        await requestPortraitLock();
         showToast("Mode plein écran activé.");
         return;
       } catch {
@@ -44,6 +69,7 @@
     }
 
     if (isStandalone()) {
+      await requestPortraitLock();
       showToast("Rightbound est déjà lancé comme une application.");
     } else {
       window.RightboundUI?.showInstallHelp?.();
@@ -52,6 +78,7 @@
 
   async function requestInstall() {
     if (isStandalone()) {
+      await requestPortraitLock();
       showToast("Rightbound est déjà installé.");
       return;
     }
@@ -92,20 +119,27 @@
     document.dispatchEvent(new CustomEvent("rightbound:install-available"));
   });
 
-  window.addEventListener("appinstalled", () => {
+  window.addEventListener("appinstalled", async () => {
     deferredInstallPrompt = null;
     document.body.classList.add("is-standalone");
+    await requestPortraitLock();
     showToast("Rightbound a été installé.");
   });
 
   document.addEventListener("rightbound:install-request", requestInstall);
   document.addEventListener("rightbound:fullscreen-request", requestFullscreen);
+  document.addEventListener("pointerdown", requestPortraitLockFromGesture, { capture:true, passive:true });
+  document.addEventListener("fullscreenchange", requestPortraitLock);
 
   document.addEventListener("visibilitychange", () => {
-    if (document.visibilityState === "visible" && document.body.classList.contains("is-playing")) {
-      acquireWakeLock();
-    }
+    if (document.visibilityState !== "visible") return;
+    requestPortraitLock();
+    if (document.body.classList.contains("is-playing")) acquireWakeLock();
   });
+
+  window.addEventListener("orientationchange", () => {
+    window.setTimeout(requestPortraitLock, 120);
+  }, { passive:true });
 
   document.addEventListener("contextmenu", (event) => event.preventDefault());
   document.addEventListener("dragstart", (event) => event.preventDefault());
@@ -118,18 +152,28 @@
 
   if (isStandalone()) {
     document.body.classList.add("is-standalone");
+    requestPortraitLock();
   }
 
   if ("serviceWorker" in navigator) {
     window.addEventListener("load", async () => {
       try {
-        const registration = await navigator.serviceWorker.register("service-worker.js?v=0.4.0", { scope: "./" });
+        const registration = await navigator.serviceWorker.register("service-worker.js?v=0.32.1", { scope: "./" });
         registration.update();
       } catch (error) {
         console.warn("Service worker non disponible :", error);
       }
     });
   }
+
+  window.RightboundPlatform = Object.freeze({
+    version:"1.0.0",
+    orientation:PORTRAIT_ORIENTATION,
+    isStandalone,
+    requestPortraitLock
+  });
+
+  window.addEventListener("load", requestPortraitLock, { once:true });
 
   if (document.readyState === "complete") hideBootScreen();
   else window.addEventListener("load", hideBootScreen, { once: true });
