@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `1.7.0`
+Version du plan : `1.8.0`
 Direction visuelle : interface mobile fantasy RPG médiévale lumineuse, lisible et premium.
 Référence : nouvelle maquette validée par le projet le 23 juillet 2026.
 
@@ -92,6 +92,13 @@ Données et actions :
 - niveaux terminés, verrouillés, élite et boss ;
 - lancement du niveau ;
 - navigation inférieure.
+
+Sous-lots :
+
+- Lot 3.1 : valeurs réelles et synchronisation des données ;
+- Lot 3.2 : états réels des dix niveaux ;
+- Lot 3.3 : bouton Jouer et navigation ;
+- Lot 3.4 : synchronisation après tous les changements de jeu.
 
 ## Lot 4 — Validation et verrouillage géométrique
 
@@ -191,12 +198,13 @@ assets/menu-v3/
 
 ## Implémentation active
 
-Version applicative : `0.31.1`
+Version applicative : `0.32.0`
 
 Fichiers actifs :
 
 - `src/menu-v3/menu-v3-shell.js` ;
 - `src/menu-v3/menu-v3-components.js` ;
+- `src/menu-v3/menu-v3-data.js` ;
 - `styles/menu-v3/menu-v3.tokens.css` ;
 - `styles/menu-v3/menu-v3.layout.css` ;
 - `styles/menu-v3/menu-v3.components.css` ;
@@ -204,7 +212,8 @@ Fichiers actifs :
 - `styles/menu-v3/menu-v3.responsive.css` ;
 - `styles/menu-v3/menu-v3.debug.css` ;
 - `tests/menu-v3-contract.mjs` ;
-- `tests/menu-v3-components-contract.mjs`.
+- `tests/menu-v3-components-contract.mjs` ;
+- `tests/menu-v3-data-contract.mjs`.
 
 Le shell V3 masque temporairement l’affichage V2, mais conserve celui-ci comme pont invisible pour le lancement d’un niveau et la sélection des dix niveaux. Aucun sprite Menu V3 définitif n’est utilisé.
 
@@ -244,30 +253,51 @@ Implémentation réalisée :
 - aucune image chargée depuis `assets/menu-v3/` ;
 - contrat CI dédié au Lot 2.
 
-### Révision Lot 2.1
+### Révisions Lot 2.1 et 2.2
 
-La première capture réelle du Lot 2 a confirmé la structure et conduit à une passe complète de finition temporaire :
+Les captures réelles ont conduit aux ajustements suivants :
 
 - espacement renforcé entre les trois capsules de ressources ;
-- connecteurs décoratifs des capsules réduits pour supprimer l’impression de chevauchement ;
-- boutons `+` légèrement réduits et valeurs mieux aérées ;
-- respiration verticale augmentée entre le ruban `MONDE 1` et le titre du monde ;
-- personnage CSS temporaire réduit à environ 58 % de la hauteur de scène afin de mieux représenter le futur contrat de sprite ;
-- légende des niveaux légèrement agrandie sur les tailles d’iPhone standards ;
-- tailles minimales spécifiques conservées sur les écrans étroits et courts ;
-- icônes temporaires du dock placées dans des conteneurs uniformes ;
-- symbole temporaire Coffres remplacé par une forme carrée plus lisible ;
-- nouveau fichier prévu par l’architecture activé : `styles/menu-v3/menu-v3.skin.css` ;
-- cache, versions et contrats CI alignés sur `0.31.1`.
+- connecteurs décoratifs et boutons `+` réduits ;
+- respiration augmentée sous le ruban `MONDE 1` ;
+- personnage CSS temporaire ramené à environ 58 % de la scène ;
+- icônes temporaires du dock uniformisées ;
+- sélection des niveaux réduite à 74 px sur iPhone standard ;
+- nodes ramenés à 32 × 40 px sur ce profil ;
+- légende réduite et séparée des nodes ;
+- bouton Jouer porté à 74 px sur ce même profil.
 
-Les valeurs affichées restent provisoires jusqu’au Lot 3. Les états de nodes sont des états de démonstration destinés à valider le rendu avant le branchement aux sauvegardes réelles.
+### Lot 3.1 — Données réelles
+
+Implémentation réalisée :
+
+- ajout de `src/menu-v3/menu-v3-data.js`, source unique des valeurs affichées dans le Menu V3 ;
+- ajout d’une progression permanente du héros sauvegardée sous `rightbound-hero-progression-v1` ;
+- niveau initial `1`, XP initiale `0 / 150` et courbe de seuils prête pour les futurs gains ;
+- API `RightboundHeroProgression` avec lecture, écriture et ajout d’XP ;
+- golds lus directement depuis `RightboundEconomy` ;
+- gemmes et énergie maintenues explicitement à `0` jusqu’à la création de leurs systèmes ;
+- coût d’expédition temporaire conservé à `10` sans bloquer le lancement ;
+- niveau sélectionné, nom, puissance recommandée et coffre lus depuis `RightboundProgression` ;
+- puissance réelle et état de préparation lus depuis `RightboundBuild` ;
+- badge dynamique `SUPÉRIEUR`, `ADAPTÉ`, `UN PEU FAIBLE` ou `TRÈS FAIBLE` ;
+- couleurs du badge et du panneau de puissance synchronisées avec l’état réel du build ;
+- rafraîchissement automatique après changement d’économie, de progression, d’équipement, de build ou de sélection ;
+- bindings HTML explicites protégés par les contrats automatiques ;
+- écritures DOM conditionnelles afin d’éviter une boucle de mutations et des ralentissements Safari ;
+- cache PWA aligné sur `0.32.0`.
+
+Les états visuels des dix nodes restent provisoires jusqu’au Lot 3.2. Le bouton Jouer et les quatre onglets seront finalisés au Lot 3.3.
 
 ## Statut actuel
 
 - [x] Feuille de route enregistrée.
 - [x] Lot 1 — Squelette mobile intégral verrouillé.
-- [x] Lot 2 — Composants HTML/CSS temporaires et révision 2.1 implémentés ; validation iPhone finale en attente.
-- [ ] Lot 3 — Données et interactions.
+- [x] Lot 2 — Composants HTML/CSS temporaires et révisions 2.1/2.2 validés.
+- [x] Lot 3.1 — Valeurs réelles et synchronisation des données implémentées ; validation iPhone en attente.
+- [ ] Lot 3.2 — États réels des niveaux.
+- [ ] Lot 3.3 — Bouton Jouer et navigation.
+- [ ] Lot 3.4 — Synchronisation complète après tous les changements de jeu.
 - [ ] Lot 4 — Validation géométrique.
 - [ ] Lot 5 — Production des sprites.
 - [ ] Lot 6 — Validation automatique.
