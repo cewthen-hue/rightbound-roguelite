@@ -14,17 +14,25 @@
   --menu-v3-world-fluid:11.5dvh;
   --menu-v3-world-max:116px;
 
-  --menu-v3-selector-min:86px;
-  --menu-v3-selector-fluid:11.3dvh;
-  --menu-v3-selector-max:108px;
+  --menu-v3-stage-heading-min:48px;
+  --menu-v3-stage-heading-fluid:6.1dvh;
+  --menu-v3-stage-heading-max:58px;
 
-  --menu-v3-action-min:72px;
-  --menu-v3-action-fluid:9.5dvh;
-  --menu-v3-action-max:94px;
+  --menu-v3-stage-stats-min:88px;
+  --menu-v3-stage-stats-fluid:11.1dvh;
+  --menu-v3-stage-stats-max:104px;
 
-  --menu-v3-dock-min:66px;
-  --menu-v3-dock-fluid:8.7dvh;
-  --menu-v3-dock-max:84px;
+  --menu-v3-selector-min:88px;
+  --menu-v3-selector-fluid:11.4dvh;
+  --menu-v3-selector-max:110px;
+
+  --menu-v3-action-min:70px;
+  --menu-v3-action-fluid:9.2dvh;
+  --menu-v3-action-max:92px;
+
+  --menu-v3-dock-min:94px;
+  --menu-v3-dock-fluid:11.7dvh;
+  --menu-v3-dock-max:110px;
 
   --menu-v3-radius-small:10px;
   --menu-v3-radius-medium:14px;
