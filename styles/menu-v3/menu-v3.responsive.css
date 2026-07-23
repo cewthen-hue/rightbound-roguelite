@@ -1,10 +1,10 @@
-/* Menu V3 — Lot 1.2 responsive locking.
-   This is part of the planned V3 architecture, not a corrective overlay file. */
+/* Menu V3 — responsive geometry.
+   Lot 1.3 gives priority to the stage while keeping every control readable. */
 
 html:has(body.menu-v3-active),
 body.menu-v3-active{
   min-height:100%;
-  background:var(--menu-v3-bg)!important;
+  background:var(--menu-v3-dock-bg)!important;
 }
 
 body.menu-v3-active #overlay,
@@ -14,72 +14,94 @@ body.menu-v3-active #modalContent,
   height:100dvh!important;
 }
 
+body.menu-v3-active #overlay{
+  position:fixed!important;
+  overflow:hidden!important;
+  background:var(--menu-v3-dock-bg)!important;
+}
+
+body.menu-v3-active #overlay::after{
+  content:"";
+  position:fixed;
+  z-index:0;
+  left:0;
+  right:0;
+  bottom:0;
+  height:max(64px,env(safe-area-inset-bottom));
+  pointer-events:none;
+  background:var(--menu-v3-dock-bg);
+}
+
+body.menu-v3-active #modalContent{
+  position:relative!important;
+  z-index:1;
+}
+
 .menu-v3-shell{
   box-sizing:border-box!important;
 }
 
 .menu-v3-stage-stats{
-  padding:clamp(5px,.65dvh,7px)!important;
+  padding:clamp(5px,.62dvh,7px)!important;
 }
 
 .menu-v3-stat-slot{
-  grid-template-columns:clamp(38px,10vw,48px) minmax(0,1fr)!important;
-  gap:clamp(5px,1.25vw,7px)!important;
-  padding:clamp(6px,.72dvh,8px) clamp(6px,1.5vw,8px)!important;
+  grid-template-columns:clamp(36px,9.5vw,46px) minmax(0,1fr)!important;
+  gap:clamp(4px,1.15vw,7px)!important;
+  padding:clamp(5px,.65dvh,7px) clamp(5px,1.35vw,8px)!important;
 }
 
 .menu-v3-stat-copy{
-  gap:2px!important;
+  gap:1px!important;
   overflow:visible!important;
 }
 
 .menu-v3-stat-copy > span:first-child{
-  font-size:clamp(10px,2.55vw,12px)!important;
+  font-size:clamp(9.5px,2.45vw,11.5px)!important;
   font-weight:800!important;
   line-height:1.02!important;
 }
 
 .menu-v3-stat-copy > strong{
-  font-size:clamp(21px,5.55vw,27px)!important;
+  font-size:clamp(20px,5.3vw,26px)!important;
   font-weight:900!important;
   line-height:.94!important;
 }
 
 .menu-v3-stat-copy > span:not(:first-child){
-  font-size:clamp(9.5px,2.45vw,11.5px)!important;
+  font-size:clamp(9px,2.3vw,11px)!important;
   font-weight:600!important;
-  line-height:1.04!important;
+  line-height:1.03!important;
 }
 
 .menu-v3-stat-slot:last-child .menu-v3-stat-copy > strong{
-  font-size:clamp(15px,4vw,19px)!important;
-  line-height:1.04!important;
+  font-size:clamp(14px,3.75vw,18px)!important;
+  line-height:1.03!important;
 }
 
 .menu-v3-selector{
   grid-template-rows:
-    clamp(19px,2.5dvh,23px)
-    minmax(49px,1fr)
-    clamp(27px,3.45dvh,32px)!important;
+    clamp(18px,2.35dvh,22px)
+    minmax(45px,1fr)
+    clamp(25px,3.15dvh,29px)!important;
   gap:2px!important;
-  padding-top:2px!important;
-  padding-bottom:2px!important;
+  padding:1px 0 2px!important;
 }
 
 .menu-v3-level-track{
   align-items:start!important;
-  padding-top:2px!important;
+  padding-top:1px!important;
 }
 
 .menu-v3-selector-legend{
   align-self:stretch!important;
-  min-height:27px!important;
-  padding:2px 4px 3px!important;
+  min-height:25px!important;
+  padding:1px 4px 2px!important;
   overflow:visible!important;
 }
 
 .menu-v3-selector-legend span{
-  font-size:clamp(8.5px,2.25vw,10.5px)!important;
+  font-size:clamp(8px,2.15vw,10px)!important;
   font-weight:700!important;
   line-height:1!important;
   overflow:visible!important;
@@ -87,95 +109,40 @@ body.menu-v3-active #modalContent,
 }
 
 .menu-v3-action{
-  padding-top:2px!important;
+  padding-top:1px!important;
+}
+
+.menu-v3-play-slot{
+  padding-top:5px!important;
+  padding-bottom:5px!important;
 }
 
 .menu-v3-dock{
   align-self:stretch!important;
-  background:var(--menu-v3-bg)!important;
+  background:var(--menu-v3-dock-bg)!important;
   box-shadow:0 -1px 0 var(--menu-v3-line-soft);
 }
 
 .menu-v3-dock-slot{
   align-self:stretch!important;
-  background:rgba(6,23,32,.96);
+  padding:5px 4px 7px!important;
+  background:var(--menu-v3-dock-bg)!important;
 }
 
 .menu-v3-dock-slot span:last-child{
-  padding-bottom:1px!important;
+  padding-bottom:0!important;
+  font-size:clamp(9px,2.45vw,11px)!important;
+}
+
+.menu-v3-dock-icon{
+  width:clamp(32px,8.6vw,40px)!important;
 }
 
 @media (max-width:374px){
   .menu-v3-stat-slot{
-    grid-template-columns:34px minmax(0,1fr)!important;
+    grid-template-columns:32px minmax(0,1fr)!important;
     gap:4px!important;
-    padding-inline:5px!important;
-  }
-
-  .menu-v3-stat-copy > span:first-child{
-    font-size:9px!important;
-  }
-
-  .menu-v3-stat-copy > strong{
-    font-size:20px!important;
-  }
-
-  .menu-v3-stat-copy > span:not(:first-child){
-    font-size:8.8px!important;
-  }
-
-  .menu-v3-stat-slot:last-child .menu-v3-stat-copy > strong{
-    font-size:14px!important;
-  }
-
-  .menu-v3-selector-legend{
-    gap:6px!important;
-  }
-
-  .menu-v3-selector-legend span{
-    font-size:7.8px!important;
-  }
-}
-
-@media (max-height:811px) and (orientation:portrait){
-  .menu-v3-shell{
-    --menu-v3-gap:3px;
-    grid-template-rows:
-      64px
-      78px
-      minmax(236px,1fr)
-      98px
-      62px
-      104px!important;
-  }
-
-  .menu-v3-stage-card{
-    grid-template-rows:45px minmax(96px,1fr) 94px!important;
-  }
-
-  .menu-v3-selector{
-    grid-template-rows:18px minmax(48px,1fr) 28px!important;
-  }
-
-  .menu-v3-play-slot{
-    padding-top:6px!important;
-    padding-bottom:6px!important;
-  }
-}
-
-@media (max-height:700px) and (orientation:portrait){
-  .menu-v3-shell{
-    grid-template-rows:
-      58px
-      70px
-      minmax(210px,1fr)
-      91px
-      58px
-      96px!important;
-  }
-
-  .menu-v3-stage-card{
-    grid-template-rows:42px minmax(82px,1fr) 86px!important;
+    padding-inline:4px!important;
   }
 
   .menu-v3-stat-copy > span:first-child{
@@ -194,7 +161,116 @@ body.menu-v3-active #modalContent,
     font-size:13px!important;
   }
 
+  .menu-v3-selector-legend{
+    gap:6px!important;
+  }
+
+  .menu-v3-selector-legend span{
+    font-size:7.5px!important;
+  }
+
+  .menu-v3-dock-slot span:last-child{
+    font-size:8.5px!important;
+  }
+}
+
+@media (max-height:860px) and (orientation:portrait){
+  .menu-v3-shell{
+    --menu-v3-gap:3px;
+    grid-template-rows:
+      60px
+      72px
+      minmax(300px,1fr)
+      92px
+      56px
+      80px!important;
+  }
+
+  .menu-v3-stage-card{
+    grid-template-rows:44px minmax(160px,1fr) 86px!important;
+  }
+
+  .menu-v3-world-header{
+    grid-template-columns:52px minmax(0,1fr) 52px!important;
+  }
+
+  .menu-v3-utility-slot{
+    height:60px!important;
+    padding:5px 3px!important;
+  }
+
+  .menu-v3-world-title-slot{
+    gap:3px!important;
+  }
+
+  .menu-v3-world-ribbon{
+    min-height:21px!important;
+  }
+
+  .menu-v3-world-title-slot h1{
+    font-size:22px!important;
+  }
+
   .menu-v3-selector{
-    grid-template-rows:16px minmax(44px,1fr) 27px!important;
+    grid-template-rows:17px minmax(46px,1fr) 25px!important;
+  }
+
+  .menu-v3-play-slot{
+    padding-top:4px!important;
+    padding-bottom:4px!important;
+  }
+
+  .menu-v3-dock-icon{
+    width:34px!important;
+  }
+}
+
+@media (max-height:700px) and (orientation:portrait){
+  .menu-v3-shell{
+    grid-template-rows:
+      56px
+      64px
+      minmax(200px,1fr)
+      86px
+      52px
+      72px!important;
+  }
+
+  .menu-v3-stage-card{
+    grid-template-rows:42px minmax(105px,1fr) 82px!important;
+  }
+
+  .menu-v3-stat-copy > span:first-child{
+    font-size:8.3px!important;
+  }
+
+  .menu-v3-stat-copy > strong{
+    font-size:18px!important;
+  }
+
+  .menu-v3-stat-copy > span:not(:first-child){
+    font-size:7.8px!important;
+  }
+
+  .menu-v3-stat-slot:last-child .menu-v3-stat-copy > strong{
+    font-size:12.5px!important;
+  }
+
+  .menu-v3-selector{
+    grid-template-rows:16px minmax(43px,1fr) 24px!important;
+  }
+
+  .menu-v3-dock-icon{
+    width:30px!important;
+  }
+}
+
+@media (min-width:410px) and (min-height:900px){
+  .menu-v3-stage-card{
+    grid-template-rows:54px minmax(250px,1fr) 96px!important;
+  }
+
+  .menu-v3-dock-icon{
+    width:40px!important;
   }
 }
