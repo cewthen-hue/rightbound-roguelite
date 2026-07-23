@@ -1,5 +1,176 @@
-/* Menu V3 — Lot 1 debug visualization.
-   This layer is temporary and can be disabled through RightboundMenuV3.setDebug(false). */
+/* Menu V3 — Lot 4 geometry diagnostics.
+   Disabled by default. Enable with RightboundMenuV3Geometry.setDebug(true). */
+
+.menu-v3-future-assets{
+  position:absolute;
+  z-index:40;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  opacity:0;
+}
+
+.menu-v3-future-asset{
+  position:absolute;
+  display:block;
+  pointer-events:none;
+}
+
+.menu-v3-future-stage-background,
+.menu-v3-future-stage-frame{
+  inset:0;
+}
+
+.menu-v3-future-stage-hero{
+  left:50%;
+  bottom:var(--menu-v3-stage-hero-slot-bottom);
+  width:var(--menu-v3-stage-hero-slot-width);
+  height:var(--menu-v3-stage-hero-slot-height);
+  transform:translateX(-50%);
+  transform-origin:50% 100%;
+}
+
+.menu-v3-geometry-overlay{
+  position:absolute;
+  z-index:1000;
+  inset:0;
+  overflow:hidden;
+  visibility:hidden;
+  pointer-events:none;
+  opacity:0;
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-geometry-overlay{
+  visibility:visible;
+  opacity:1;
+}
+
+.menu-v3-safe-area{
+  position:absolute;
+  z-index:1;
+  left:0;
+  width:100%;
+  background:repeating-linear-gradient(135deg,rgba(255,191,63,.2) 0 5px,rgba(255,191,63,.06) 5px 10px);
+  border-color:rgba(255,191,63,.7);
+  border-style:dashed;
+}
+
+.menu-v3-safe-area-top{
+  top:0;
+  height:env(safe-area-inset-top);
+  border-width:0 0 1px;
+}
+
+.menu-v3-safe-area-bottom{
+  bottom:0;
+  height:env(safe-area-inset-bottom);
+  border-width:1px 0 0;
+}
+
+.menu-v3-geometry-axis{
+  position:absolute;
+  z-index:2;
+  background:rgba(81,207,255,.38);
+}
+
+.menu-v3-geometry-axis-x{
+  top:50%;
+  left:0;
+  width:100%;
+  height:1px;
+}
+
+.menu-v3-geometry-axis-y{
+  top:0;
+  left:50%;
+  width:1px;
+  height:100%;
+}
+
+.menu-v3-geometry-status{
+  position:absolute;
+  z-index:30;
+  top:max(2px,env(safe-area-inset-top));
+  right:3px;
+  max-width:74%;
+  padding:3px 6px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.28);
+  border-radius:5px;
+  color:#fff;
+  background:rgba(0,0,0,.78);
+  font-size:8px;
+  font-weight:900;
+  line-height:1.1;
+  letter-spacing:.035em;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.menu-v3-geometry-status[data-status="pass"]{border-color:var(--menu-v3-debug-pass);color:#dfffcf}
+.menu-v3-geometry-status[data-status="warning"]{border-color:var(--menu-v3-debug-warning);color:#fff0bd}
+.menu-v3-geometry-status[data-status="fail"]{border-color:var(--menu-v3-debug-error);color:#ffd5d1}
+
+.menu-v3-geometry-tags{
+  position:absolute;
+  z-index:20;
+  inset:0;
+}
+
+.menu-v3-geometry-tag{
+  position:absolute;
+  z-index:4;
+  min-width:26px;
+  padding:2px 4px;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,.22);
+  border-radius:3px;
+  color:#fff;
+  background:rgba(0,0,0,.72);
+  font-size:6px;
+  font-weight:800;
+  line-height:1;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.menu-v3-geometry-tag.is-module{
+  color:#c8f3ff;
+  border-color:rgba(81,207,255,.64);
+}
+
+.menu-v3-geometry-tag.is-asset{
+  color:#e2ffcb;
+  border-color:rgba(121,216,62,.66);
+  transform:translateY(12px);
+}
+
+.menu-v3-geometry-marker{
+  position:absolute;
+  z-index:5;
+  width:7px;
+  height:7px;
+  margin:-3.5px 0 0 -3.5px;
+  border:1px solid #fff;
+  border-radius:50%;
+  background:#101820;
+  box-shadow:0 0 0 1px rgba(0,0,0,.7);
+}
+
+.menu-v3-geometry-marker::before,
+.menu-v3-geometry-marker::after{
+  content:"";
+  position:absolute;
+  top:50%;
+  left:50%;
+  background:currentColor;
+  transform:translate(-50%,-50%);
+}
+
+.menu-v3-geometry-marker::before{width:13px;height:1px}
+.menu-v3-geometry-marker::after{width:1px;height:13px}
+.menu-v3-geometry-marker.is-module{color:#51cfff}
+.menu-v3-geometry-marker.is-asset{color:#79d83e}
 
 .menu-v3-shell.menu-v3-debug .menu-v3-zone,
 .menu-v3-shell.menu-v3-debug .menu-v3-profile-slot,
@@ -17,33 +188,27 @@
   outline-offset:-1px;
 }
 
+.menu-v3-shell.menu-v3-debug [data-v3-asset-slot]{
+  outline:1px dashed rgba(121,216,62,.88)!important;
+  outline-offset:-1px;
+}
+
+.menu-v3-shell.menu-v3-debug [data-v3-geometry-overflow="true"],
+.menu-v3-shell.menu-v3-debug [data-v3-geometry-outside="true"]{
+  outline:2px solid var(--menu-v3-debug-error)!important;
+  outline-offset:-2px;
+}
+
 .menu-v3-shell.menu-v3-debug .menu-v3-zone{
   background:var(--menu-v3-debug-fill);
 }
 
-.menu-v3-shell.menu-v3-debug .menu-v3-topbar{
-  background:rgba(13,107,129,.16);
-}
-
-.menu-v3-shell.menu-v3-debug .menu-v3-world-header{
-  background:rgba(116,168,41,.12);
-}
-
-.menu-v3-shell.menu-v3-debug .menu-v3-stage-card{
-  background:rgba(21,112,156,.12);
-}
-
-.menu-v3-shell.menu-v3-debug .menu-v3-selector{
-  background:rgba(199,142,35,.1);
-}
-
-.menu-v3-shell.menu-v3-debug .menu-v3-action{
-  background:rgba(96,178,31,.12);
-}
-
-.menu-v3-shell.menu-v3-debug .menu-v3-dock{
-  background:rgba(17,76,99,.32);
-}
+.menu-v3-shell.menu-v3-debug .menu-v3-topbar{background:rgba(13,107,129,.16)}
+.menu-v3-shell.menu-v3-debug .menu-v3-world-header{background:rgba(116,168,41,.12)}
+.menu-v3-shell.menu-v3-debug .menu-v3-stage-card{background:rgba(21,112,156,.12)}
+.menu-v3-shell.menu-v3-debug .menu-v3-selector{background:rgba(199,142,35,.1)}
+.menu-v3-shell.menu-v3-debug .menu-v3-action{background:rgba(96,178,31,.12)}
+.menu-v3-shell.menu-v3-debug .menu-v3-dock{background:rgba(17,76,99,.32)}
 
 .menu-v3-shell.menu-v3-debug [data-v3-module]::after{
   content:attr(data-v3-module);
@@ -87,6 +252,24 @@
     linear-gradient(135deg,rgba(255,255,255,.035) 25%,transparent 25%) 0 0/18px 18px,
     linear-gradient(315deg,rgba(255,255,255,.035) 25%,transparent 25%) 0 0/18px 18px,
     #0b2730;
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-future-assets{
+  opacity:1;
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-future-stage-background{
+  border:1px dashed rgba(81,207,255,.72);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-future-stage-frame{
+  inset:4px;
+  border:1px dotted rgba(255,191,63,.9);
+}
+
+.menu-v3-shell.menu-v3-debug .menu-v3-future-stage-hero{
+  border:1px dashed rgba(121,216,62,.92);
+  background:rgba(121,216,62,.06);
 }
 
 .menu-v3-shell:not(.menu-v3-debug) [data-v3-module]::after{
