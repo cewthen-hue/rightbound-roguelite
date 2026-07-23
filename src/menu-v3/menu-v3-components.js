@@ -151,10 +151,13 @@
     shell.querySelectorAll(".menu-v3-dock-slot").forEach((button) => {
       const key = button.dataset.v3Dock || "expedition";
       const icon = button.querySelector(".menu-v3-dock-icon");
+      const label = button.querySelector(":scope > span:nth-child(2)");
+
       if (icon) {
         icon.textContent = dockGlyphs[key] || "•";
         icon.dataset.icon = key;
       }
+      label?.classList.add("menu-v3-dock-label");
 
       button.classList.toggle("is-active", key === "expedition");
       if (key === "expedition") button.setAttribute("aria-current", "page");
