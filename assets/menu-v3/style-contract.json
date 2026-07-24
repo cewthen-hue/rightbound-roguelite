@@ -1,0 +1,218 @@
+{
+  "version": "RIGHTBOUND_STYLE_V1",
+  "status": "locked-preproduction",
+  "scope": "menu-v3",
+  "project": "Rightbound",
+  "visualDirection": {
+    "genre": "medieval-fantasy-rpg",
+    "medium": "premium-2d-cartoon-game-illustration",
+    "realism": "stylized-cartoon",
+    "tone": [
+      "adventurous",
+      "mysterious",
+      "heroic",
+      "weathered-but-readable"
+    ],
+    "mandatoryQualities": [
+      "clear-mobile-silhouette",
+      "controlled-detail",
+      "clean-colored-outlines",
+      "strong-value-separation",
+      "coherent-material-language"
+    ],
+    "forbiddenDirections": [
+      "semi-realistic",
+      "photorealistic",
+      "3d-render",
+      "flat-vector",
+      "chibi",
+      "children-cartoon",
+      "anime",
+      "grimdark-horror",
+      "overpainted-concept-art"
+    ]
+  },
+  "shapeLanguage": {
+    "silhouette": "simple-clear-and-recognizable-at-small-size",
+    "proportions": "heroic-adult-with-moderate-exaggeration",
+    "characterHeadToBodyRange": "1:6.5 to 1:7",
+    "corners": "softly-beveled-not-rounded-toy-like",
+    "detailHierarchy": {
+      "largeShapesPercent": 70,
+      "mediumShapesPercent": 20,
+      "smallDetailsPercent": 10
+    }
+  },
+  "rendering": {
+    "outline": "dark-colored-clean-and-moderately-thick",
+    "shading": "two-to-three-large-value-groups-with-soft-selective-blending",
+    "highlights": "broad-controlled-and-material-specific",
+    "texture": "light-hand-painted-texture-without-photorealistic-noise",
+    "lighting": {
+      "keyDirection": "upper-left",
+      "keyTemperature": "warm-neutral",
+      "ambientTemperature": "cool-teal",
+      "shadowRule": "readable-not-crushed"
+    }
+  },
+  "palette": {
+    "deepTeal": "#071B24",
+    "panelTeal": "#123745",
+    "oliveGreen": "#617F37",
+    "forestGreen": "#355A2C",
+    "agedGold": "#D6AA4E",
+    "bronze": "#9B6B35",
+    "parchment": "#F2E7C9",
+    "coldStone": "#718086",
+    "skyCyan": "#77BFC7",
+    "elitePurple": "#8E4BA7",
+    "bossRed": "#B93A3A",
+    "warningRed": "#C94E3D"
+  },
+  "paletteRules": [
+    "deep-teal-dominates-interface-backgrounds",
+    "aged-gold-is-reserved-for-frames-focus-and-reward-value",
+    "green-signals-playable-or-active-states",
+    "purple-is-reserved-for-elite-content",
+    "red-is-reserved-for-boss-danger-and-errors",
+    "avoid-pure-black-except-small-occlusion-areas",
+    "avoid-neon-saturation"
+  ],
+  "materialRules": {
+    "metal": "large-readable-highlights-few-scratches-no-photorealistic-pitting",
+    "wood": "broad-grain-bands-and-simple-edge-wear",
+    "stone": "clear-block-shapes-soft-moss-and-limited-cracks",
+    "leather": "broad-folds-warm-brown-edges-and-few-stitches",
+    "cloth": "large-folds-clean-color-blocks-and-limited-fraying",
+    "magic": "controlled-glow-with-solid-core-and-no-neon-bloom"
+  },
+  "mobileReadability": {
+    "mandatoryPreviewSizesPx": [32, 40, 64],
+    "iconInteriorPlanesMaximum": 3,
+    "minimumPrimaryShapeCoveragePercent": 62,
+    "maximumTransparentMarginPercentPerSide": 10,
+    "textInsideSpritesForbidden": true,
+    "microDetailsThatDisappearAt40PxForbidden": true
+  },
+  "assetFamilyRules": {
+    "characters": {
+      "camera": "front-three-quarter",
+      "pose": "clear-stable-and-readable",
+      "expression": "graphic-and-controlled-not-photorealistic",
+      "outline": "strongest-outline-family"
+    },
+    "environments": {
+      "camera": "locked-to-slot-composition",
+      "depth": "three-clear-planes",
+      "centerReadability": "protect-hero-and-ui-readability",
+      "texture": "broad-painted-shapes"
+    },
+    "framesAndPanels": {
+      "view": "perfectly-front-facing",
+      "symmetry": "required-unless-ticket-says-otherwise",
+      "center": "quiet-enough-for-html-text",
+      "stretchMode": "nine-slice-when-declared"
+    },
+    "iconsAndNodes": {
+      "view": "front-or-light-three-quarter",
+      "silhouette": "single-dominant-shape",
+      "details": "two-or-three-interior-planes-maximum",
+      "smallSizePriority": "recognition-before-decoration"
+    },
+    "effects": {
+      "opacity": "controlled",
+      "coverage": "must-not-obscure-html-or-primary-silhouettes",
+      "animationCompatibility": "separable-layers-preferred"
+    }
+  },
+  "production": {
+    "oneAssetPerTicket": true,
+    "spriteSheetsForbiddenDuringGeneration": true,
+    "maxCandidatesPerRound": 3,
+    "batchGenerationBeforePilotApprovalForbidden": true,
+    "pilotAssets": [
+      "stage-background",
+      "stage-hero",
+      "stage-frame"
+    ],
+    "pilotApprovalOrderLocked": true,
+    "approvedPilotsBecomeMandatoryReferences": true,
+    "styleIdMustAppearInEveryTicket": true,
+    "geometryContractMustBeReferencedInEveryTicket": true
+  },
+  "files": {
+    "sourceFolder": "assets/menu-v3/source/",
+    "runtimeFolder": "assets/menu-v3/runtime/",
+    "referenceFolder": "assets/menu-v3/references/",
+    "transparentRuntimeFormat": "png",
+    "opaqueRuntimeFormat": "webp",
+    "transparentFallbackChroma": "#FF00FF",
+    "magentaAllowedInFinalRuntimeAssets": false,
+    "rejectedVariantsMustNotEnterRuntime": true
+  },
+  "acceptance": {
+    "minimumScore": 9,
+    "maximumScore": 10,
+    "criteria": [
+      {
+        "id": "framing-and-proportions",
+        "maximumPoints": 2
+      },
+      {
+        "id": "style-reference-coherence",
+        "maximumPoints": 2
+      },
+      {
+        "id": "mobile-readability",
+        "maximumPoints": 2
+      },
+      {
+        "id": "technical-file-quality",
+        "maximumPoints": 2
+      },
+      {
+        "id": "ticket-compliance",
+        "maximumPoints": 2
+      }
+    ],
+    "automaticRejectionReasons": [
+      "cropped-primary-subject",
+      "wrong-camera-or-perspective",
+      "excessive-transparent-margins",
+      "unreadable-at-target-size",
+      "wrong-background-or-alpha",
+      "magenta-fringing",
+      "embedded-text-number-or-watermark",
+      "style-drift",
+      "lighting-direction-drift",
+      "geometry-slot-incompatibility"
+    ]
+  },
+  "promptContract": {
+    "mandatoryStyleId": "RIGHTBOUND_STYLE_V1",
+    "canonicalStyleBlock": "Illustration 2D cartoon premium pour jeu mobile RPG fantasy médiéval. Formes nettes et immédiatement lisibles sur petit écran, silhouette forte, proportions héroïques adultes avec légère exagération, contours colorés sombres propres, ombrage simplifié en deux ou trois grandes valeurs, textures peintes légères sans bruit photoréaliste, lumière principale venant du haut gauche, ambiance aventureuse et mystérieuse mais claire, palette cohérente de bleu sarcelle profond, vert olive, bronze vieilli, or patiné et parchemin.",
+    "canonicalNegativeBlock": [
+      "semi-realistic",
+      "photorealistic",
+      "3d-render",
+      "flat-vector",
+      "chibi",
+      "anime",
+      "children-cartoon",
+      "grimdark-horror",
+      "overly-detailed-textures",
+      "muddy-values",
+      "neon-colors",
+      "embedded-text",
+      "watermark",
+      "cropped-subject",
+      "unrequested-extra-objects"
+    ]
+  },
+  "changeControl": {
+    "silentStyleChangesForbidden": true,
+    "versionBumpRequiredForDirectionChange": true,
+    "approvedReferenceReplacementRequiresExplicitValidation": true,
+    "geometryMayNotBeChangedToFitArtwork": true
+  }
+}
