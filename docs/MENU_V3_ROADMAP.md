@@ -1,7 +1,7 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `2.3.0`
-Version applicative active : `0.35.0`
+Version du plan : `2.3.1`
+Version applicative active : `0.35.1`
 Direction visuelle : RPG fantasy médiéval **2D cartoon premium**, lisible et conçu pour mobile.
 Style ID officiel : `RIGHTBOUND_STYLE_V1`.
 Plateformes : iPhone et Android, avec publication Android prévue sur Google Play.
@@ -153,7 +153,12 @@ RightboundMenuV3Geometry.exportReport()
 RightboundMenuV3Geometry.setDebug(false)
 ```
 
-Statut : implémenté sur GitHub ; validation finale sur une capture réelle iPhone et une capture Android en attente.
+Validation réelle :
+
+- iPhone : **validé le 24 juillet 2026** avec valeur Gold à quatre chiffres, titre long, puissance à trois chiffres, récompense Diamant, dix nodes et safe area système ;
+- Android : en attente d’une capture réelle.
+
+Statut : implémenté sur GitHub et validé sur iPhone ; fermeture définitive suspendue uniquement à la validation Android.
 
 ## Préproduction artistique du Lot 5
 
@@ -181,7 +186,7 @@ Ordre verrouillé des pilotes :
 
 Ces trois pilotes deviennent ensuite les références obligatoires de toute la bibliothèque.
 
-Statut : charte et contrat implémentés ; production bloquée jusqu’à la validation finale du Lot 4.
+Statut : charte et contrat implémentés ; production bloquée jusqu’à la validation Android finale du Lot 4.
 
 ## Lot 5 — Production des sprites définitifs
 
@@ -313,7 +318,8 @@ Le pont V2 invisible reste utilisé uniquement pour la sélection et le lancemen
 - [x] Lot 3.3 — Bouton Jouer et navigation.
 - [x] Lot 3.4 — Synchronisation complète.
 - [x] Lot 4 — Outils, contrat et verrou géométrique implémentés.
-- [ ] Lot 4 — Validation finale sur captures réelles iPhone et Android.
+- [x] Lot 4 — Validation iPhone.
+- [ ] Lot 4 — Validation Android et fermeture définitive.
 - [x] Lot 5 — Charte artistique et contrat machine préparés.
 - [ ] Lot 5 — Production des trois pilotes.
 - [ ] Lot 5 — Production de la bibliothèque complète.
