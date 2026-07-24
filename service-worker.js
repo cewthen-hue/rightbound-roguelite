@@ -1,6 +1,6 @@
 "use strict";
 
-const CACHE_NAME = "rightbound-shell-v0.35.0";
+const CACHE_NAME = "rightbound-shell-v0.35.1";
 const APP_SHELL = [
   "./",
   "./index.html",
@@ -26,12 +26,12 @@ const APP_SHELL = [
   "./styles/menu-v2.css?v=0.26.0",
   "./styles/menu-v2-topbar.css?v=0.27.0",
   "./styles/menu-v2-world-header.css?v=0.28.0",
-  "./styles/menu-v3/menu-v3.tokens.css?v=0.35.0",
+  "./styles/menu-v3/menu-v3.tokens.css?v=0.35.1",
   "./styles/menu-v3/menu-v3.layout.css?v=0.30.1",
   "./styles/menu-v3/menu-v3.components.css?v=0.31.0",
   "./styles/menu-v3/menu-v3.skin.css?v=0.33.0",
   "./styles/menu-v3/menu-v3.responsive.css?v=0.31.2",
-  "./styles/menu-v3/menu-v3.geometry.css?v=0.35.0",
+  "./styles/menu-v3/menu-v3.geometry.css?v=0.35.1",
   "./styles/menu-v3/menu-v3.debug.css?v=0.35.0",
   "./src/items.js?v=0.14.0",
   "./src/player-profile.js?v=0.15.0",
@@ -56,7 +56,7 @@ const APP_SHELL = [
   "./src/chests.js?v=0.17.0",
   "./src/inventory.js?v=0.15.0",
   "./src/health-sync.js?v=0.4.3",
-  "./src/app-shell.js?v=0.35.0",
+  "./src/app-shell.js?v=0.35.1",
   "./assets/icons/icon.svg",
   "./assets/icons/maskable.svg"
 ];
