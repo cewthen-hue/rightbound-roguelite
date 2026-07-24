@@ -6,6 +6,8 @@ Révision géométrique active : `0.35.1`
 
 Statut : **validation iPhone réussie** ; validation Android encore requise avant la fermeture définitive du Lot 4 et le lancement du Lot 5.
 
+La validation finale sur captures réelles exige maintenant uniquement une capture Android conforme.
+
 ## Validation iPhone du 24 juillet 2026
 
 La seconde capture réelle en plein écran valide la géométrie sur iPhone.
