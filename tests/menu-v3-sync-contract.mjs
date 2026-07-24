@@ -42,15 +42,9 @@ if (!sync.includes('window.addEventListener("pageshow"')) throw new Error("App r
 if (!sync.includes('window.addEventListener("focus"')) throw new Error("Focus synchronization is missing.");
 if (!sync.includes('document.addEventListener("visibilitychange"')) throw new Error("Visibility synchronization is missing.");
 if (!sync.includes('window.addEventListener("storage"')) throw new Error("Storage synchronization is missing.");
-if (!sync.includes('modalObserver.observe(modalContent, { childList:true, subtree:false })')) {
-  throw new Error("View observer must avoid text-mutation loops.");
-}
-if (!data.includes("rightbound:menu-v3-data-bound") || !data.includes("getLastSnapshot")) {
-  throw new Error("Data layer synchronization handoff is incomplete.");
-}
-if (!interactions.includes("latestSnapshot") || !interactions.includes("rightbound:menu-v3-data-bound")) {
-  throw new Error("Interaction layer does not consume synchronized data.");
-}
+if (!sync.includes('modalObserver.observe(modalContent, { childList:true, subtree:false })')) throw new Error("View observer must avoid text-mutation loops.");
+if (!data.includes("rightbound:menu-v3-data-bound") || !data.includes("getLastSnapshot")) throw new Error("Data synchronization handoff is incomplete.");
+if (!interactions.includes("latestSnapshot") || !interactions.includes("rightbound:menu-v3-data-bound")) throw new Error("Interaction layer does not consume synchronized data.");
 if (/url\([^)]*assets\/menu-v3\//.test(sync + data + interactions)) throw new Error("Synchronization must remain independent from final sprites.");
 
 const dataIndex = index.indexOf("menu-v3-data.js?v=0.34.0");
@@ -60,8 +54,8 @@ const geometryIndex = index.indexOf("menu-v3-geometry.js?v=0.35.0");
 if (dataIndex < 0 || interactionsIndex < 0 || syncIndex < 0 || geometryIndex < 0 || !(dataIndex < interactionsIndex && interactionsIndex < syncIndex && syncIndex < geometryIndex)) {
   throw new Error("Menu V3 files must load in data, interactions, synchronization, geometry order.");
 }
-if (!serviceWorker.includes('rightbound-shell-v0.35.0')) throw new Error("PWA cache is not aligned with Lot 4.");
+if (!serviceWorker.includes('rightbound-shell-v0.35.1')) throw new Error("PWA cache is not aligned with the Lot 4 iPhone review.");
 if (!serviceWorker.includes("menu-v3-sync.js?v=0.34.0")) throw new Error("Synchronization coordinator is missing from PWA shell.");
 if (!serviceWorker.includes("menu-v3-geometry.js?v=0.35.0")) throw new Error("Geometry validator is missing from PWA shell.");
 
-console.log("Menu V3 synchronization contract passed during Lot 4.");
+console.log("Menu V3 synchronization contract passed after the Lot 4 iPhone review.");
