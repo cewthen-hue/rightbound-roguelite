@@ -58,7 +58,7 @@ if (!geometryJs.includes("exportReport")) throw new Error("Geometry report expor
 if (!geometryJs.includes("targetViewports:TARGET_VIEWPORTS")) throw new Error("Target viewport API is missing.");
 
 for (const token of [
-  "--menu-v3-geometry-lock:0.35", "--menu-v3-safe-top", "--menu-v3-safe-bottom",
+  "--menu-v3-geometry-lock:0.35.1", "--menu-v3-safe-top", "--menu-v3-safe-bottom",
   "--menu-v3-stage-hero-slot-width", "--menu-v3-stage-hero-slot-height",
   "--menu-v3-stage-hero-slot-bottom", "--menu-v3-overflow-tolerance"
 ]) {
@@ -68,6 +68,12 @@ for (const token of [
 if (!geometryCss.includes("final layout authority before sprite production")) throw new Error("Geometry lock authority comment is missing.");
 if (!geometryCss.includes("max(80px,calc(58px + env(safe-area-inset-bottom)))")) throw new Error("Standard-phone safe dock track is missing.");
 if (!geometryCss.includes("max(72px,calc(50px + env(safe-area-inset-bottom)))")) throw new Error("Short-phone safe dock track is missing.");
+if (!geometryCss.includes('body.menu-v3-active #overlay::after')) throw new Error("Duplicate iPhone bottom continuation override is missing.");
+if (!geometryCss.includes("content:none!important")) throw new Error("Duplicate iPhone bottom continuation is not disabled.");
+if (!geometryCss.includes('grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,.9fr))')) {
+  throw new Error("Gold resource width distribution is missing.");
+}
+if (!geometryCss.includes('.menu-v3-resource-slot[data-resource="gold"]')) throw new Error("Gold-specific numeric width is missing.");
 if (!geometryCss.includes("menu-v3-future-stage-background") || !geometryCss.includes("menu-v3-future-stage-hero") || !geometryCss.includes("menu-v3-future-stage-frame")) {
   throw new Error("Stage asset geometry slots are incomplete.");
 }
@@ -106,7 +112,7 @@ if (!lockDoc.includes("RightboundMenuV3Geometry.setDebug(true)")) throw new Erro
 if (!lockDoc.includes("validation finale sur captures réelles")) throw new Error("Phone validation requirement is missing from geometry documentation.");
 
 const responsiveCssIndex = index.indexOf("menu-v3.responsive.css?v=0.31.2");
-const geometryCssIndex = index.indexOf("menu-v3.geometry.css?v=0.35.0");
+const geometryCssIndex = index.indexOf("menu-v3.geometry.css?v=0.35.1");
 const debugCssIndex = index.indexOf("menu-v3.debug.css?v=0.35.0");
 if (responsiveCssIndex < 0 || geometryCssIndex < 0 || debugCssIndex < 0 || !(responsiveCssIndex < geometryCssIndex && geometryCssIndex < debugCssIndex)) {
   throw new Error("Geometry CSS must load after responsive and before debug.");
@@ -116,12 +122,12 @@ const syncJsIndex = index.indexOf("menu-v3-sync.js?v=0.34.0");
 const geometryJsIndex = index.indexOf("menu-v3-geometry.js?v=0.35.0");
 if (syncJsIndex < 0 || geometryJsIndex < 0 || syncJsIndex > geometryJsIndex) throw new Error("Geometry runtime must load after synchronization.");
 if (!index.includes("menu-v3-components.js?v=0.35.0")) throw new Error("Lot 4 components are not loaded.");
-if (!index.includes("app-shell.js?v=0.35.0")) throw new Error("Lot 4 app shell is not loaded.");
-if (!serviceWorker.includes('rightbound-shell-v0.35.0')) throw new Error("Lot 4 PWA cache version mismatch.");
+if (!index.includes("app-shell.js?v=0.35.1")) throw new Error("Lot 4 reviewed app shell is not loaded.");
+if (!serviceWorker.includes('rightbound-shell-v0.35.1')) throw new Error("Lot 4 reviewed PWA cache version mismatch.");
 for (const path of [
-  "menu-v3.tokens.css?v=0.35.0", "menu-v3.geometry.css?v=0.35.0",
+  "menu-v3.tokens.css?v=0.35.1", "menu-v3.geometry.css?v=0.35.1",
   "menu-v3.debug.css?v=0.35.0", "menu-v3-components.js?v=0.35.0",
-  "menu-v3-geometry.js?v=0.35.0", "app-shell.js?v=0.35.0"
+  "menu-v3-geometry.js?v=0.35.0", "app-shell.js?v=0.35.1"
 ]) {
   if (!serviceWorker.includes(path)) throw new Error(`Lot 4 PWA shell entry missing: ${path}.`);
 }
@@ -129,4 +135,4 @@ if (/url\([^)]*assets\/menu-v3\//.test(geometryJs + components + geometryCss + d
   throw new Error("Lot 4 must define slots without loading final sprite files.");
 }
 
-console.log("Menu V3 Lot 4 geometry lock contract passed.");
+console.log("Menu V3 Lot 4 geometry lock contract passed after the iPhone review.");
