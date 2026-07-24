@@ -1,8 +1,28 @@
 # Menu V3 — verrouillage géométrique Lot 4
 
-Version : `0.35.0-lot4`
+Contrat : `0.35.0-lot4`
 
-Statut : géométrie codée et verrouillée, validation finale sur captures réelles iPhone et Android encore requise avant le Lot 5.
+Révision géométrique active : `0.35.1`
+
+Statut : première capture iPhone contrôlée et corrigée ; seconde capture iPhone et validation Android encore requises avant le Lot 5.
+
+## Révision iPhone du 24 juillet 2026
+
+La première capture réelle a confirmé la stabilité générale du menu : scène dominante, dix niveaux visibles, bouton Rejouer lisible, panneaux de puissance et de récompense correctement contenus et dock utilisable.
+
+Deux défauts ont empêché la validation finale immédiate :
+
+1. la valeur des golds était tronquée en `3…` dans la première capsule ;
+2. une continuation inférieure fixe de 64 px doublait la réserve iPhone et créait une bande vide sous le dock.
+
+La révision `0.35.1` :
+
+- réserve davantage de largeur numérique à la capsule Gold ;
+- réduit légèrement l’icône et le bouton `+` des trois ressources ;
+- conserve des colonnes plus compactes pour Gemmes et Énergie ;
+- supprime la continuation inférieure fixe redondante ;
+- conserve la vraie safe area dans la hauteur du dock et dans le padding des boutons ;
+- ne modifie ni la scène, ni les niveaux, ni le bouton principal, ni les slots des futurs sprites.
 
 ## Autorité des fichiers
 
@@ -52,7 +72,7 @@ Pour chaque module, le rapport contient la position, la largeur, la hauteur, le 
 - Bas : `max(7px, env(safe-area-inset-bottom))`.
 - La hauteur du dock augmente avec la safe area inférieure.
 - Le contenu du dock ne doit jamais passer sous l’indicateur d’accueil iPhone.
-- Le fond du dock peut continuer jusqu’au bord physique de l’écran.
+- Le fond général couvre déjà le bord physique de l’écran ; aucune continuation fixe supplémentaire n’est autorisée.
 
 ## Emplacement de Jack
 
@@ -133,7 +153,7 @@ Le Lot 4 peut être validé définitivement lorsque, sur au moins un iPhone et u
 1. aucun scroll vertical ou horizontal n’apparaît ;
 2. aucun module ne sort du shell ;
 3. aucun texte utile n’est tronqué ;
-4. le dock reste entièrement utilisable au-dessus de la safe area ;
+4. le dock reste entièrement utilisable au-dessus de la safe area sans bande vide artificielle ;
 5. les dix niveaux restent visibles ;
 6. le bouton Jouer reste visible et suffisamment grand ;
 7. la scène conserve la plus grande surface de l’écran ;
