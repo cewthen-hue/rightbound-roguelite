@@ -4,16 +4,35 @@ Contrat : `0.35.0-lot4`
 
 Révision géométrique active : `0.35.1`
 
-Statut : première capture iPhone contrôlée et corrigée ; seconde capture iPhone et validation Android encore requises avant le Lot 5.
+Statut : **validation iPhone réussie** ; validation Android encore requise avant la fermeture définitive du Lot 4 et le lancement du Lot 5.
 
-## Révision iPhone du 24 juillet 2026
+## Validation iPhone du 24 juillet 2026
 
-La première capture réelle a confirmé la stabilité générale du menu : scène dominante, dix niveaux visibles, bouton Rejouer lisible, panneaux de puissance et de récompense correctement contenus et dock utilisable.
+La seconde capture réelle en plein écran valide la géométrie sur iPhone.
 
-Deux défauts ont empêché la validation finale immédiate :
+Cas contrôlés sur l’appareil :
+
+- valeur Gold à quatre chiffres affichée entièrement : `2010` ;
+- titre long du niveau 10 : `GARDIEN DES FAUBOURGS` ;
+- puissance conseillée à trois chiffres : `165` ;
+- récompense longue : `1 COFFRE DIAMANT` ;
+- dix cases de niveau visibles simultanément ;
+- bouton `JOUER` entièrement visible ;
+- dock utilisable au-dessus de l’indicateur d’accueil ;
+- aucune troncature utile ;
+- aucun scroll horizontal ou vertical ;
+- scène toujours dominante.
+
+Conclusion : **profil iPhone accepté**.
+
+La zone sombre sous les quatre boutons du dock correspond désormais uniquement à la safe area système contenant l’indicateur d’accueil. Elle n’est pas considérée comme un espace perdu : aucun contrôle interactif ne doit y être placé.
+
+## Révision iPhone `0.35.1`
+
+La première capture réelle avait révélé deux défauts :
 
 1. la valeur des golds était tronquée en `3…` dans la première capsule ;
-2. une continuation inférieure fixe de 64 px doublait la réserve iPhone et créait une bande vide sous le dock.
+2. une continuation inférieure fixe de 64 px doublait la réserve iPhone et créait une bande artificielle sous le dock.
 
 La révision `0.35.1` :
 
@@ -153,13 +172,18 @@ Le Lot 4 peut être validé définitivement lorsque, sur au moins un iPhone et u
 1. aucun scroll vertical ou horizontal n’apparaît ;
 2. aucun module ne sort du shell ;
 3. aucun texte utile n’est tronqué ;
-4. le dock reste entièrement utilisable au-dessus de la safe area sans bande vide artificielle ;
+4. le dock reste entièrement utilisable au-dessus de la safe area sans bande artificielle ;
 5. les dix niveaux restent visibles ;
 6. le bouton Jouer reste visible et suffisamment grand ;
 7. la scène conserve la plus grande surface de l’écran ;
 8. le rapport ne contient aucune erreur géométrique ;
 9. les avertissements éventuels sont uniquement les exceptions compactes prévues pour les nodes et les petits boutons `+` ;
 10. les captures réelles correspondent à la direction visuelle validée avant la production des sprites.
+
+État actuel :
+
+- iPhone : **validé** ;
+- Android : **en attente**.
 
 ## Règle après validation
 
