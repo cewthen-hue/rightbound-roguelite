@@ -1,6 +1,8 @@
 {
   "version": "0.35.0-lot4",
   "status": "geometry-locked-phone-validation-pending",
+  "styleContract": "style-contract.json",
+  "requiredStyleId": "RIGHTBOUND_STYLE_V1",
   "maxShellWidth": 430,
   "overflowTolerancePx": 1.25,
   "targetViewports": [
