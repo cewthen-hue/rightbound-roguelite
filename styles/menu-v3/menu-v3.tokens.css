@@ -2,7 +2,7 @@
    Lot 4 freezes the layout contract; final sprite files still belong to Lot 5. */
 
 :root{
-  --menu-v3-geometry-lock:0.35;
+  --menu-v3-geometry-lock:0.35.1;
   --menu-v3-max-width:430px;
   --menu-v3-inline:clamp(8px,2.35vw,12px);
   --menu-v3-gap:clamp(3px,.45dvh,5px);
