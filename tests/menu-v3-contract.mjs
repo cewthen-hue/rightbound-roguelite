@@ -55,7 +55,7 @@ for (const token of requiredTokens) {
   if (!tokens.includes(token)) throw new Error(`Centralized Menu V3 token missing: ${token}`);
 }
 
-if (!tokens.includes("--menu-v3-geometry-lock:0.35")) throw new Error("Lot 4 geometry lock version is missing.");
+if (!tokens.includes("--menu-v3-geometry-lock:0.35.1")) throw new Error("Lot 4 iPhone review geometry lock version is missing.");
 if (!tokens.includes("--menu-v3-selector-min:72px")) throw new Error("Compact selector token is missing.");
 if (!tokens.includes("--menu-v3-action-min:76px")) throw new Error("Enlarged action token is missing.");
 if (!layout.includes("height:100dvh")) throw new Error("Menu V3 shell must use the dynamic viewport height.");
@@ -74,6 +74,9 @@ if (!geometry.includes("menu-v3-future-stage-hero")) throw new Error("Future her
 if (!geometry.includes("max(80px,calc(58px + env(safe-area-inset-bottom)))")) {
   throw new Error("Standard-phone dock safe-area track is missing.");
 }
+if (!geometry.includes('body.menu-v3-active #overlay::after')) throw new Error("iPhone duplicate bottom continuation override is missing.");
+if (!geometry.includes('grid-template-columns:minmax(0,1.2fr)')) throw new Error("Gold resource width protection is missing.");
+if (!geometry.includes('.menu-v3-resource-slot[data-resource="gold"]')) throw new Error("Gold-specific numeric slot is missing.");
 if (!debug.includes("menu-v3-geometry-overlay")) throw new Error("Lot 4 geometry overlay is missing.");
 if (!debug.includes("menu-v3-safe-area-top") || !debug.includes("menu-v3-safe-area-bottom")) {
   throw new Error("Safe-area debug guides are missing.");
@@ -82,4 +85,4 @@ if (/url\([^)]*assets\/menu-v3\//.test(shell + layout + skin + responsive + geom
   throw new Error("Menu V3 must remain independent from final sprite files before Lot 5.");
 }
 
-console.log("Menu V3 structural and geometry contract passed during Lot 4.");
+console.log("Menu V3 structural and geometry contract passed after the Lot 4 iPhone review.");
