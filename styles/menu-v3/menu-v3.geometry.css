@@ -15,6 +15,37 @@
     )!important;
 }
 
+/* The fixed overlay already paints the physical screen edge. The former 64 px
+   continuation duplicated the iPhone bottom reserve and created an empty band. */
+body.menu-v3-active #overlay::after{
+  content:none!important;
+  display:none!important;
+}
+
+/* Gold needs more numeric width than temporary premium resources. */
+.menu-v3-components-ready .menu-v3-resource-track{
+  grid-template-columns:minmax(0,1.2fr) repeat(2,minmax(0,.9fr))!important;
+  gap:clamp(4px,1vw,6px)!important;
+}
+
+.menu-v3-components-ready .menu-v3-resource-slot{
+  grid-template-columns:14px minmax(20px,1fr) 20px!important;
+  gap:1px!important;
+  padding:3px 2px!important;
+}
+
+.menu-v3-components-ready .menu-v3-resource-slot[data-resource="gold"]{
+  grid-template-columns:14px minmax(30px,1fr) 20px!important;
+}
+
+.menu-v3-components-ready .menu-v3-resource-value{
+  min-width:0!important;
+  padding-inline:0!important;
+  font-size:clamp(11px,3vw,14px)!important;
+  letter-spacing:-.015em!important;
+  font-variant-numeric:tabular-nums;
+}
+
 .menu-v3-dock-slot{
   padding-bottom:var(--menu-v3-safe-bottom)!important;
 }
@@ -46,6 +77,25 @@
   height:var(--menu-v3-stage-hero-slot-height);
   transform:translateX(-50%);
   transform-origin:50% 100%;
+}
+
+@media (max-width:374px){
+  .menu-v3-components-ready .menu-v3-resource-track{
+    grid-template-columns:minmax(0,1.24fr) repeat(2,minmax(0,.88fr))!important;
+    gap:3px!important;
+  }
+
+  .menu-v3-components-ready .menu-v3-resource-slot{
+    grid-template-columns:13px minmax(17px,1fr) 18px!important;
+  }
+
+  .menu-v3-components-ready .menu-v3-resource-slot[data-resource="gold"]{
+    grid-template-columns:13px minmax(27px,1fr) 18px!important;
+  }
+
+  .menu-v3-components-ready .menu-v3-resource-value{
+    font-size:11px!important;
+  }
 }
 
 @media (max-height:860px) and (orientation:portrait){
