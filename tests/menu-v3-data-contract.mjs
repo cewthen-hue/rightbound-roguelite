@@ -35,9 +35,7 @@ if (!data.includes("getPowerScore")) throw new Error("Hero power must come from 
 if (!data.includes("function getLevelsSnapshot")) throw new Error("Real ten-level snapshot is missing.");
 if (!data.includes("function getChestSnapshot")) throw new Error("Real chest stock snapshot is missing.");
 if (!data.includes("chests:getChestSnapshot()")) throw new Error("Chest stock is not included in the unified snapshot.");
-if (!data.includes('state = completed ? "completed" : unlocked ? "available" : "locked"')) {
-  throw new Error("Real level-state resolution is missing.");
-}
+if (!data.includes('state = completed ? "completed" : unlocked ? "available" : "locked"')) throw new Error("Real level-state resolution is missing.");
 if (!data.includes("function bindLevelStates")) throw new Error("Real node-state binder is missing.");
 if (!data.includes('node.dataset.levelType = level.type')) throw new Error("Elite and boss types are not connected to nodes.");
 if (!data.includes('node.dataset.levelState = level.state')) throw new Error("Progression states are not connected to nodes.");
@@ -66,7 +64,7 @@ const geometryIndex = index.indexOf("menu-v3-geometry.js?v=0.35.0");
 if (shellIndex < 0 || componentsIndex < 0 || dataIndex < 0 || interactionsIndex < 0 || syncIndex < 0 || geometryIndex < 0 || !(shellIndex < componentsIndex && componentsIndex < dataIndex && dataIndex < interactionsIndex && interactionsIndex < syncIndex && syncIndex < geometryIndex)) {
   throw new Error("Menu V3 scripts must load in shell, components, data, interactions, sync, geometry order.");
 }
-if (!serviceWorker.includes('rightbound-shell-v0.35.0')) throw new Error("PWA cache is not aligned with Lot 4.");
+if (!serviceWorker.includes('rightbound-shell-v0.35.1')) throw new Error("PWA cache is not aligned with the Lot 4 iPhone review.");
 for (const path of [
   "menu-v3-data.js?v=0.34.0", "menu-v3-interactions.js?v=0.34.0",
   "menu-v3-sync.js?v=0.34.0", "menu-v3-geometry.js?v=0.35.0"
@@ -74,4 +72,4 @@ for (const path of [
   if (!serviceWorker.includes(path)) throw new Error(`PWA shell entry missing: ${path}.`);
 }
 
-console.log("Menu V3 synchronized data contract passed during Lot 4.");
+console.log("Menu V3 synchronized data contract passed after the Lot 4 iPhone review.");
