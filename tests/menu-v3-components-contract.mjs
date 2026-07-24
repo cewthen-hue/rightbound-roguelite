@@ -44,9 +44,7 @@ if (!components.includes('data-v3-asset-mode="cover"')) throw new Error("Stage b
 if (!components.includes('data-v3-asset-mode="nine-slice"')) throw new Error("Nine-slice frame mode is missing.");
 if (!components.includes('data-v3-asset-anchor="50% 100%"')) throw new Error("Stage hero bottom-center anchor is missing.");
 
-if (!components.includes('node.dataset.levelState || "loading"')) {
-  throw new Error("Menu V3 components must wait for real level states.");
-}
+if (!components.includes('node.dataset.levelState || "loading"')) throw new Error("Menu V3 components must wait for real level states.");
 if (components.includes('level <= 2 ? "completed"')) throw new Error("Hard-coded demo level states must not return.");
 if (!components.includes('VERSION = "0.35.0-lot4"')) throw new Error("Menu V3 Lot 4 component version mismatch.");
 if (!shell.includes('VERSION = "0.33.0-lot3.3"')) throw new Error("Menu V3 structural shell version mismatch.");
@@ -65,7 +63,7 @@ if (/<img\b/i.test(components) || /url\([^)]*assets\/menu-v3\//.test(components 
 const cssIndex = index.indexOf("menu-v3.components.css?v=0.31.0");
 const skinIndex = index.indexOf("menu-v3.skin.css?v=0.33.0");
 const responsiveIndex = index.indexOf("menu-v3.responsive.css?v=0.31.2");
-const geometryCssIndex = index.indexOf("menu-v3.geometry.css?v=0.35.0");
+const geometryCssIndex = index.indexOf("menu-v3.geometry.css?v=0.35.1");
 const debugIndex = index.indexOf("menu-v3.debug.css?v=0.35.0");
 if (cssIndex < 0 || skinIndex < 0 || responsiveIndex < 0 || geometryCssIndex < 0 || debugIndex < 0 || !(cssIndex < skinIndex && skinIndex < responsiveIndex && responsiveIndex < geometryCssIndex && geometryCssIndex < debugIndex)) {
   throw new Error("Menu V3 CSS must load in components, skin, responsive, geometry, debug order.");
@@ -81,4 +79,4 @@ if (shellIndex < 0 || componentJsIndex < 0 || dataJsIndex < 0 || interactionsInd
   throw new Error("Menu V3 scripts must load in shell, components, data, interactions, sync, geometry order.");
 }
 
-console.log("Menu V3 component and future asset-slot contract passed during Lot 4.");
+console.log("Menu V3 component and future asset-slot contract passed after the Lot 4 iPhone review.");
