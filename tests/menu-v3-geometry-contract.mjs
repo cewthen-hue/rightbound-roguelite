@@ -12,7 +12,23 @@ const lockDoc = fs.readFileSync("docs/MENU_V3_GEOMETRY_LOCK.md", "utf8");
 
 if (!geometryJs.includes('VERSION = "0.35.0-lot4"')) throw new Error("Lot 4 geometry runtime version mismatch.");
 if (contract.version !== "0.35.0-lot4") throw new Error("Machine-readable geometry contract version mismatch.");
-if (contract.status !== "geometry-locked-phone-validation-pending") throw new Error("Geometry contract status must remain explicit until phone validation.");
+if (contract.revision !== "0.35.1") throw new Error("Reviewed geometry revision mismatch.");
+if (contract.status !== "geometry-locked-iphone-validated-android-pending") {
+  throw new Error("Geometry status must record iPhone approval and pending Android validation.");
+}
+if (contract.validation?.iphone?.status !== "passed") throw new Error("iPhone geometry validation must be recorded as passed.");
+if (contract.validation?.iphone?.evidence !== "real-device-full-screen-capture") throw new Error("iPhone validation evidence type mismatch.");
+if (contract.validation?.android?.status !== "pending") throw new Error("Android geometry validation must remain pending.");
+for (const stressCase of [
+  "four-digit-gold-value",
+  "long-level-title",
+  "three-digit-recommended-power",
+  "diamond-reward-label",
+  "ten-visible-level-nodes",
+  "iphone-home-indicator-safe-area"
+]) {
+  if (!contract.validation.iphone.stressCases.includes(stressCase)) throw new Error(`iPhone stress case missing: ${stressCase}.`);
+}
 if (contract.maxShellWidth !== 430) throw new Error("Machine-readable maximum shell width mismatch.");
 if (contract.overflowTolerancePx !== 1.25) throw new Error("Machine-readable overflow tolerance mismatch.");
 
@@ -135,4 +151,4 @@ if (/url\([^)]*assets\/menu-v3\//.test(geometryJs + components + geometryCss + d
   throw new Error("Lot 4 must define slots without loading final sprite files.");
 }
 
-console.log("Menu V3 Lot 4 geometry lock contract passed after the iPhone review.");
+console.log("Menu V3 Lot 4 geometry contract passed with iPhone approved and Android pending.");
