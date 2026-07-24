@@ -62,5 +62,8 @@ jobs:
       - name: Validate Menu V3 Lot 4 geometry lock
         run: node tests/menu-v3-geometry-contract.mjs
 
+      - name: Validate Rightbound 2D cartoon art direction
+        run: node tests/menu-v3-style-contract.mjs
+
       - name: Validate iPhone and Android portrait target
         run: node tests/mobile-platform-contract.mjs
