@@ -1,6 +1,25 @@
 {
   "version": "0.35.0-lot4",
-  "status": "geometry-locked-phone-validation-pending",
+  "revision": "0.35.1",
+  "status": "geometry-locked-iphone-validated-android-pending",
+  "validation": {
+    "iphone": {
+      "status": "passed",
+      "date": "2026-07-24",
+      "evidence": "real-device-full-screen-capture",
+      "stressCases": [
+        "four-digit-gold-value",
+        "long-level-title",
+        "three-digit-recommended-power",
+        "diamond-reward-label",
+        "ten-visible-level-nodes",
+        "iphone-home-indicator-safe-area"
+      ]
+    },
+    "android": {
+      "status": "pending"
+    }
+  },
   "styleContract": "style-contract.json",
   "requiredStyleId": "RIGHTBOUND_STYLE_V1",
   "maxShellWidth": 430,
