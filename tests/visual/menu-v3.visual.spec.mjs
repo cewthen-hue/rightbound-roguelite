@@ -193,6 +193,9 @@ async function collectMetrics(page) {
 test.describe("Menu V3 Lot 4.5 multi-viewport geometry", () => {
   test("renders the locked stress state without geometric regression", async ({ page }, testInfo) => {
     fs.mkdirSync(artifactsRoot, { recursive:true });
+    const profile = matrix.profiles.find((entry) => entry.id === testInfo.project.name);
+    expect(profile, `Unknown visual profile: ${testInfo.project.name}`).toBeTruthy();
+
     const pageErrors = [];
     const consoleErrors = [];
     page.on("pageerror", (error) => pageErrors.push(error.message));
@@ -226,8 +229,8 @@ test.describe("Menu V3 Lot 4.5 multi-viewport geometry", () => {
     const metrics = await collectMetrics(page);
     const geometryErrors = metrics.geometryReport?.issues?.filter((issue) => issue.severity === "error") || [];
 
-    expect(metrics.viewport.width).toBe(testInfo.project.use.viewport.width);
-    expect(metrics.viewport.height).toBe(testInfo.project.use.viewport.height);
+    expect(metrics.viewport.width).toBe(profile.width);
+    expect(metrics.viewport.height).toBe(profile.height);
     expect(metrics.pageOverflow.horizontal).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
     expect(metrics.pageOverflow.vertical).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
     expect(metrics.shell.widthWithinLimit).toBe(true);
@@ -261,7 +264,7 @@ test.describe("Menu V3 Lot 4.5 multi-viewport geometry", () => {
       JSON.stringify({
         suiteVersion:matrix.version,
         project:testInfo.project.name,
-        platform:testInfo.project.metadata.platform,
+        platform:profile.platform,
         generatedAt:new Date().toISOString(),
         pageErrors,
         consoleErrors,
