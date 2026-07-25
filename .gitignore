@@ -6,6 +6,14 @@ Thumbs.db
 .vscode/
 .idea/
 
+# Dépendances locales
+node_modules/
+
+# Rapports et captures Playwright
+artifacts/menu-v3-visual/
+playwright-report/
+test-results/
+
 # Fichiers temporaires
 *.log
 *.tmp
