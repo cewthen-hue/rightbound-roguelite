@@ -1,0 +1,12 @@
+{
+  "name": "rightbound-roguelite",
+  "version": "0.35.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:visual": "playwright test --config=playwright.config.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.54.2"
+  }
+}
