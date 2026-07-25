@@ -1,0 +1,68 @@
+{
+  "version": "0.35.1-lot4.5",
+  "baseUrl": "http://127.0.0.1:4173",
+  "profiles": [
+    {
+      "id": "android-compact-360x780",
+      "platform": "android",
+      "width": 360,
+      "height": 780,
+      "deviceScaleFactor": 1,
+      "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
+    },
+    {
+      "id": "iphone-compact-375x812",
+      "platform": "ios",
+      "width": 375,
+      "height": 812,
+      "deviceScaleFactor": 1,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "id": "iphone-standard-390x844",
+      "platform": "ios",
+      "width": 390,
+      "height": 844,
+      "deviceScaleFactor": 1,
+      "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 18_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.0 Mobile/15E148 Safari/604.1"
+    },
+    {
+      "id": "android-standard-393x852",
+      "platform": "android",
+      "width": 393,
+      "height": 852,
+      "deviceScaleFactor": 1,
+      "userAgent": "Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
+    },
+    {
+      "id": "android-large-430x932",
+      "platform": "android",
+      "width": 430,
+      "height": 932,
+      "deviceScaleFactor": 1,
+      "userAgent": "Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0 Mobile Safari/537.36"
+    }
+  ],
+  "stressContent": {
+    "gold": "2010",
+    "gems": "0",
+    "energy": "0",
+    "heroLevel": "NIV. 1",
+    "heroXp": "0 / 150 XP",
+    "levelNumber": "NIVEAU 10 / 10",
+    "levelName": "GARDIEN DES FAUBOURGS",
+    "readiness": "TRÈS FAIBLE",
+    "recommendedPower": "165",
+    "heroPower": "Votre puissance : 109",
+    "reward": "1 COFFRE DIAMANT",
+    "playTitle": "JOUER",
+    "playSubtitle": "LANCER L’EXPÉDITION"
+  },
+  "expectations": {
+    "requiredLevelNodes": 10,
+    "maximumShellWidth": 430,
+    "overflowTolerancePx": 1.25,
+    "maximumModuleOverlapPx": 2,
+    "maximumPageOverflowPx": 1
+  }
+}
