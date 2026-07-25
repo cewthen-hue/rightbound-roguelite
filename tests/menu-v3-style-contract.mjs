@@ -119,9 +119,10 @@ for (const text of [
 if (!charter.includes("Cette charte remplace toute ancienne formulation orientée « semi-réaliste »")) {
   throw new Error("The semi-realistic direction replacement is not explicit.");
 }
+const normalizedRoadmap = roadmap.toLocaleLowerCase("fr-FR");
 if (!roadmap.includes("Style ID officiel : `RIGHTBOUND_STYLE_V1`")) throw new Error("Roadmap Style ID is missing.");
-if (!roadmap.includes("un seul asset est produit par ticket")) throw new Error("Roadmap one-asset-per-ticket rule is missing.");
-if (!roadmap.includes("trois candidats maximum par round")) throw new Error("Roadmap candidate limit is missing.");
+if (!normalizedRoadmap.includes("un seul asset est produit par ticket")) throw new Error("Roadmap one-asset-per-ticket rule is missing.");
+if (!normalizedRoadmap.includes("trois candidats maximum par round")) throw new Error("Roadmap candidate limit is missing.");
 if (!readme.includes("RPG fantasy médiéval 2D cartoon premium")) throw new Error("Asset README visual direction is missing.");
 if (!readme.includes("style-contract.json")) throw new Error("Asset README style contract link is missing.");
 
