@@ -1,6 +1,6 @@
 # Menu V3 — feuille de route verrouillée
 
-Version du plan : `2.3.1`
+Version du plan : `2.4.0`
 Version applicative active : `0.35.1`
 Direction visuelle : RPG fantasy médiéval **2D cartoon premium**, lisible et conçu pour mobile.
 Style ID officiel : `RIGHTBOUND_STYLE_V1`.
@@ -31,6 +31,7 @@ Ce document est la source de vérité du chantier Menu V3. Un lot n’est valid�
 18. Aucun sprite sheet de génération et aucun lot massif ne sont autorisés avant l’approbation des trois pilotes.
 19. Un asset doit obtenir au moins 9/10 avant d’entrer dans `assets/menu-v3/runtime/`.
 20. La géométrie ne doit jamais être modifiée pour faire rentrer une image mal cadrée.
+21. Les simulations Playwright renforcent la validation mobile, mais ne remplacent pas une validation Android réelle avant la publication.
 
 ## Lot 1 — Squelette mobile intégral
 
@@ -158,7 +159,52 @@ Validation réelle :
 - iPhone : **validé le 24 juillet 2026** avec valeur Gold à quatre chiffres, titre long, puissance à trois chiffres, récompense Diamant, dix nodes et safe area système ;
 - Android : en attente d’une capture réelle.
 
-Statut : implémenté sur GitHub et validé sur iPhone ; fermeture définitive suspendue uniquement à la validation Android.
+Statut : implémenté sur GitHub et validé sur iPhone ; fermeture définitive suspendue à une future validation Android réelle.
+
+## Lot 4.5 — validation automatisée multi-écrans
+
+Objectif : sécuriser la géométrie sur les principaux formats mobiles pendant que la validation Android réelle reste indisponible.
+
+Implémentation :
+
+- Playwright Chromium épinglé en version `1.54.2` ;
+- serveur statique local isolé pendant les tests ;
+- service worker bloqué pendant la validation afin de toujours tester les fichiers du commit courant ;
+- cinq profils automatisés :
+  - Android compact 360 × 780 ;
+  - iPhone compact 375 × 812 ;
+  - iPhone standard 390 × 844 ;
+  - Android standard 393 × 852 ;
+  - Android large 430 × 932 ;
+- sauvegarde déterministe injectée avant le chargement ;
+- niveau 10 sélectionné avec un état de stress réaliste ;
+- Gold `2010`, titre `GARDIEN DES FAUBOURGS`, puissance `165 / 109` et récompense `1 COFFRE DIAMANT` ;
+- contrôle du scroll de page ;
+- contrôle de la largeur du shell ;
+- contrôle du confinement et du chevauchement des modules ;
+- contrôle des textes importants ;
+- contrôle des dix nodes ;
+- contrôle du bouton Jouer et du dock ;
+- rejet des erreurs géométriques runtime et des erreurs JavaScript de page ;
+- capture normale et capture debug pour chaque profil ;
+- rapport JSON pour chaque profil ;
+- rapport HTML Playwright et traces en cas d’échec ;
+- artefacts GitHub Actions conservés 14 jours, même lorsqu’un profil échoue.
+
+Fichiers actifs :
+
+```text
+package.json
+playwright.config.mjs
+tests/menu-v3-visual-profiles.json
+tests/visual/menu-v3.visual.spec.mjs
+tests/menu-v3-visual-contract.mjs
+.github/workflows/runtime-check.yml
+```
+
+Limite explicite : la simulation Android Chromium ne remplace pas un test sur un appareil Android réel. Elle permet de continuer les développements et de détecter automatiquement la majorité des régressions de layout.
+
+Statut : implémenté sur GitHub ; première exécution GitHub Actions en attente de résultat.
 
 ## Préproduction artistique du Lot 5
 
@@ -186,7 +232,7 @@ Ordre verrouillé des pilotes :
 
 Ces trois pilotes deviennent ensuite les références obligatoires de toute la bibliothèque.
 
-Statut : charte et contrat implémentés ; production bloquée jusqu’à la validation Android finale du Lot 4.
+Statut : charte et contrat implémentés ; production définitive reportée jusqu’à la fermeture du Lot 4 et à la disponibilité des outils graphiques.
 
 ## Lot 5 — Production des sprites définitifs
 
@@ -295,6 +341,9 @@ docs/
   MENU_V3_GEOMETRY_LOCK.md
   MENU_V3_ART_DIRECTION.md
 
+playwright.config.mjs
+package.json
+
 tests/
   menu-v3-contract.mjs
   menu-v3-components-contract.mjs
@@ -302,8 +351,11 @@ tests/
   menu-v3-interactions-contract.mjs
   menu-v3-sync-contract.mjs
   menu-v3-geometry-contract.mjs
+  menu-v3-visual-contract.mjs
+  menu-v3-visual-profiles.json
   menu-v3-style-contract.mjs
   mobile-platform-contract.mjs
+  visual/menu-v3.visual.spec.mjs
 ```
 
 Le pont V2 invisible reste utilisé uniquement pour la sélection et le lancement déjà éprouvés. Aucun sprite Menu V3 définitif n’est chargé.
@@ -319,7 +371,8 @@ Le pont V2 invisible reste utilisé uniquement pour la sélection et le lancemen
 - [x] Lot 3.4 — Synchronisation complète.
 - [x] Lot 4 — Outils, contrat et verrou géométrique implémentés.
 - [x] Lot 4 — Validation iPhone.
-- [ ] Lot 4 — Validation Android et fermeture définitive.
+- [ ] Lot 4 — Validation Android réelle et fermeture définitive.
+- [x] Lot 4.5 — Suite automatisée multi-viewport implémentée.
 - [x] Lot 5 — Charte artistique et contrat machine préparés.
 - [ ] Lot 5 — Production des trois pilotes.
 - [ ] Lot 5 — Production de la bibliothèque complète.
