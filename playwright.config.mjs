@@ -39,7 +39,6 @@ export default defineConfig({
       isMobile:true,
       hasTouch:true,
       userAgent:profile.userAgent
-    },
-    metadata:{ platform:profile.platform }
+    }
   }))
 });
