@@ -4,9 +4,9 @@ Contrat : `0.35.0-lot4`
 
 Révision géométrique active : `0.35.1`
 
-Statut : **validation iPhone réussie** ; validation Android encore requise avant la fermeture définitive du Lot 4 et le lancement du Lot 5.
+Statut : **validation iPhone réussie** ; validation Android réelle encore requise avant la fermeture définitive du Lot 4 et le lancement du Lot 5.
 
-La validation finale sur captures réelles exige maintenant uniquement une capture Android conforme.
+La suite automatisée du Lot 4.5 couvre désormais les principaux formats iPhone et Android pendant que l’accès à un appareil Android réel reste indisponible.
 
 ## Validation iPhone du 24 juillet 2026
 
@@ -59,15 +59,15 @@ Les sprites du Lot 5 devront s’adapter à cette géométrie. Ils ne devront ja
 
 ## Profils de validation
 
-Le validateur runtime reconnaît les cinq profils de référence :
+Le validateur runtime et la suite Playwright reconnaissent cinq profils de référence :
 
-| Profil | Largeur | Hauteur |
-|---|---:|---:|
-| Compact Android | 360 px | 780 px |
-| iPhone compact | 375 px | 812 px |
-| iPhone standard | 390 px | 844 px |
-| iPhone standard haut | 393 px | 852 px |
-| Grand téléphone | 430 px | 932 px |
+| Profil | Largeur | Hauteur | Simulation CI |
+|---|---:|---:|---|
+| Android compact | 360 px | 780 px | Android Chrome mobile |
+| iPhone compact | 375 px | 812 px | Safari iPhone simulé dans Chromium |
+| iPhone standard | 390 px | 844 px | Safari iPhone simulé dans Chromium |
+| Android standard | 393 px | 852 px | Samsung Android simulé |
+| Android large | 430 px | 932 px | Pixel Android simulé |
 
 Les formats proches sont associés automatiquement au profil le plus proche. La largeur du shell ne doit jamais dépasser `430 px`.
 
@@ -94,6 +94,8 @@ Pour chaque module, le rapport contient la position, la largeur, la hauteur, le 
 - La hauteur du dock augmente avec la safe area inférieure.
 - Le contenu du dock ne doit jamais passer sous l’indicateur d’accueil iPhone.
 - Le fond général couvre déjà le bord physique de l’écran ; aucune continuation fixe supplémentaire n’est autorisée.
+
+Les variables `env(safe-area-inset-*)` dépendent du système et du navigateur. Leur validation définitive reste donc une vérification sur appareil réel, même lorsque les dimensions du viewport sont simulées automatiquement.
 
 ## Emplacement de Jack
 
@@ -167,6 +169,46 @@ Le mode debug affiche :
 - dimensions mesurées ;
 - éléments en dépassement signalés en rouge.
 
+## Lot 4.5 — contrôle automatisé multi-viewport
+
+La suite `tests/visual/menu-v3.visual.spec.mjs` démarre la véritable application dans Chromium mobile avec une sauvegarde reproductible.
+
+État de stress utilisé :
+
+- niveau 10 disponible et sélectionné ;
+- neuf niveaux terminés ;
+- Gold `2010` ;
+- titre `GARDIEN DES FAUBOURGS` ;
+- préparation `TRÈS FAIBLE` ;
+- puissance recommandée `165` ;
+- puissance réelle `109` ;
+- récompense `1 COFFRE DIAMANT`.
+
+Contrôles bloquants :
+
+- aucun scroll de page ;
+- shell inférieur ou égal à 430 px ;
+- modules présents, contenus et sans débordement interne ;
+- absence de chevauchement vertical anormal ;
+- aucun texte important tronqué ;
+- dix nodes visibles dans leur sélecteur ;
+- niveau 10 réellement sélectionné ;
+- bouton Jouer et dock visibles ;
+- aucune erreur géométrique de sévérité `error` ;
+- aucune exception JavaScript non gérée.
+
+Artefacts produits pour chaque profil :
+
+- capture normale ;
+- capture avec diagnostic géométrique ;
+- rapport JSON ;
+- rapport HTML Playwright ;
+- trace en cas d’échec.
+
+Les artefacts sont chargés par GitHub Actions même en cas d’échec et conservés pendant 14 jours.
+
+Cette automatisation ne valide pas les particularités matérielles d’un vrai téléphone Android : barres système du constructeur, WebView finale, clavier, densité réelle et safe areas natives devront être testés ultérieurement.
+
 ## Critères d’acceptation
 
 Le Lot 4 peut être validé définitivement lorsque, sur au moins un iPhone et un Android :
@@ -184,8 +226,9 @@ Le Lot 4 peut être validé définitivement lorsque, sur au moins un iPhone et u
 
 État actuel :
 
-- iPhone : **validé** ;
-- Android : **en attente**.
+- iPhone réel : **validé** ;
+- simulations CI iPhone/Android : **actives** ;
+- Android réel : **en attente**.
 
 ## Règle après validation
 
