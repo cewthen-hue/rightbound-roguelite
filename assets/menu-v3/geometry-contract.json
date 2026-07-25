@@ -20,6 +20,40 @@
       "status": "pending"
     }
   },
+  "automation": {
+    "version": "0.35.1-lot4.5",
+    "status": "active",
+    "engine": "playwright-chromium",
+    "profilesFile": "../../tests/menu-v3-visual-profiles.json",
+    "profiles": [
+      "android-compact-360x780",
+      "iphone-compact-375x812",
+      "iphone-standard-390x844",
+      "android-standard-393x852",
+      "android-large-430x932"
+    ],
+    "checks": [
+      "page-overflow",
+      "shell-width",
+      "module-containment",
+      "module-overlap",
+      "important-text-overflow",
+      "ten-visible-level-nodes",
+      "selected-level-state",
+      "primary-action-visibility",
+      "dock-visibility",
+      "runtime-geometry-errors",
+      "browser-page-errors"
+    ],
+    "artifacts": [
+      "normal-screenshots",
+      "debug-screenshots",
+      "json-geometry-reports",
+      "playwright-html-report",
+      "failure-traces"
+    ],
+    "realAndroidStillRequired": true
+  },
   "styleContract": "style-contract.json",
   "requiredStyleId": "RIGHTBOUND_STYLE_V1",
   "maxShellWidth": 430,
