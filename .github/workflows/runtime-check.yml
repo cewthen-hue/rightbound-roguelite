@@ -40,6 +40,8 @@ jobs:
           node --check src/app-shell.js
           node --check src/chests.js
           node --check src/inventory.js
+          node --check playwright.config.mjs
+          node --check tests/visual/menu-v3.visual.spec.mjs
 
       - name: Run combat runtime smoke test
         run: node tests/game-runtime-smoke.mjs
@@ -62,8 +64,43 @@ jobs:
       - name: Validate Menu V3 Lot 4 geometry lock
         run: node tests/menu-v3-geometry-contract.mjs
 
+      - name: Validate Menu V3 Lot 4.5 automation contract
+        run: node tests/menu-v3-visual-contract.mjs
+
       - name: Validate Rightbound 2D cartoon art direction
         run: node tests/menu-v3-style-contract.mjs
 
       - name: Validate iPhone and Android portrait target
         run: node tests/mobile-platform-contract.mjs
+
+  visual:
+    name: Menu V3 multi-viewport visual checks
+    needs: syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Playwright dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Run Menu V3 multi-viewport visual tests
+        run: npm run test:visual
+
+      - name: Upload Menu V3 visual artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: menu-v3-lot-4-5-visual-${{ github.sha }}
+          path: artifacts/menu-v3-visual
+          if-no-files-found: error
+          retention-days: 14
