@@ -219,36 +219,17 @@ test.describe("Menu V3 Lot 4.5 multi-viewport geometry", () => {
       html{scroll-behavior:auto!important}
     ` });
     await forceStressBuild(page);
-
-    await expect(page.locator('.menu-v3-resource-slot[data-resource="gold"] .menu-v3-resource-value')).toHaveText("2 010");
-    await expect(page.locator('[data-v3-bind="level-name"]')).toHaveText("GARDIEN DES FAUBOURGS");
-    await expect(page.locator('[data-v3-bind="recommended-power"]')).toHaveText("165");
-    await expect(page.locator('[data-v3-bind="hero-power"]')).toHaveText("Votre puissance : 109");
-    await expect(page.locator('[data-v3-bind="reward"]')).toHaveText("1 COFFRE DIAMANT");
+    await page.waitForFunction(() => {
+      const text = (selector) => document.querySelector(selector)?.textContent?.trim();
+      return text('.menu-v3-resource-slot[data-resource="gold"] .menu-v3-resource-value') === "2 010" &&
+        text('[data-v3-bind="level-name"]') === "GARDIEN DES FAUBOURGS" &&
+        text('[data-v3-bind="recommended-power"]') === "165" &&
+        text('[data-v3-bind="hero-power"]') === "Votre puissance : 109" &&
+        text('[data-v3-bind="reward"]') === "1 COFFRE DIAMANT";
+    });
 
     const metrics = await collectMetrics(page);
     const geometryErrors = metrics.geometryReport?.issues?.filter((issue) => issue.severity === "error") || [];
-
-    expect(metrics.viewport.width).toBe(profile.width);
-    expect(metrics.viewport.height).toBe(profile.height);
-    expect(metrics.pageOverflow.horizontal).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
-    expect(metrics.pageOverflow.vertical).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
-    expect(metrics.shell.widthWithinLimit).toBe(true);
-    expect(metrics.shell.internalOverflow).toBe(false);
-    expect(metrics.modules.every((module) => !module.missing && module.insideShell && !module.internalOverflow)).toBe(true);
-    expect(metrics.orderedGaps.every((entry) => entry.gap >= -matrix.expectations.maximumModuleOverlapPx)).toBe(true);
-    expect(metrics.importantText.every((entry) => !entry.missing && !entry.overflow)).toBe(true);
-    expect(metrics.nodes).toHaveLength(matrix.expectations.requiredLevelNodes);
-    expect(metrics.nodes.every((node) => node.visible && node.insideSelector)).toBe(true);
-    expect(metrics.nodes.filter((node) => node.selected).map((node) => node.level)).toEqual([10]);
-    expect(metrics.gold.text).toBe("2 010");
-    expect(metrics.gold.overflow).toBe(false);
-    expect(metrics.play.visible).toBe(true);
-    expect(metrics.dock.visible).toBe(true);
-    expect(metrics.play.bottom).toBeLessThanOrEqual(metrics.viewport.height + matrix.expectations.overflowTolerancePx);
-    expect(metrics.dock.bottom).toBeLessThanOrEqual(metrics.viewport.height + matrix.expectations.overflowTolerancePx);
-    expect(geometryErrors).toEqual([]);
-    expect(pageErrors).toEqual([]);
 
     const normalScreenshot = artifactPath(testInfo.project.name, "normal.png");
     await page.screenshot({ path:normalScreenshot, fullPage:false, animations:"disabled" });
@@ -271,5 +252,31 @@ test.describe("Menu V3 Lot 4.5 multi-viewport geometry", () => {
         metrics
       }, null, 2)
     );
+
+    await expect(page.locator('.menu-v3-resource-slot[data-resource="gold"] .menu-v3-resource-value')).toHaveText("2 010");
+    await expect(page.locator('[data-v3-bind="level-name"]')).toHaveText("GARDIEN DES FAUBOURGS");
+    await expect(page.locator('[data-v3-bind="recommended-power"]')).toHaveText("165");
+    await expect(page.locator('[data-v3-bind="hero-power"]')).toHaveText("Votre puissance : 109");
+    await expect(page.locator('[data-v3-bind="reward"]')).toHaveText("1 COFFRE DIAMANT");
+    expect(metrics.viewport.width).toBe(profile.width);
+    expect(metrics.viewport.height).toBe(profile.height);
+    expect(metrics.pageOverflow.horizontal).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
+    expect(metrics.pageOverflow.vertical).toBeLessThanOrEqual(matrix.expectations.maximumPageOverflowPx);
+    expect(metrics.shell.widthWithinLimit).toBe(true);
+    expect(metrics.shell.internalOverflow).toBe(false);
+    expect(metrics.modules.every((module) => !module.missing && module.insideShell && !module.internalOverflow)).toBe(true);
+    expect(metrics.orderedGaps.every((entry) => entry.gap >= -matrix.expectations.maximumModuleOverlapPx)).toBe(true);
+    expect(metrics.importantText.every((entry) => !entry.missing && !entry.overflow)).toBe(true);
+    expect(metrics.nodes).toHaveLength(matrix.expectations.requiredLevelNodes);
+    expect(metrics.nodes.every((node) => node.visible && node.insideSelector)).toBe(true);
+    expect(metrics.nodes.filter((node) => node.selected).map((node) => node.level)).toEqual([10]);
+    expect(metrics.gold.text).toBe("2 010");
+    expect(metrics.gold.overflow).toBe(false);
+    expect(metrics.play.visible).toBe(true);
+    expect(metrics.dock.visible).toBe(true);
+    expect(metrics.play.bottom).toBeLessThanOrEqual(metrics.viewport.height + matrix.expectations.overflowTolerancePx);
+    expect(metrics.dock.bottom).toBeLessThanOrEqual(metrics.viewport.height + matrix.expectations.overflowTolerancePx);
+    expect(geometryErrors).toEqual([]);
+    expect(pageErrors).toEqual([]);
   });
 });
