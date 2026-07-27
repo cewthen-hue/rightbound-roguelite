@@ -56,6 +56,8 @@
   },
   "styleContract": "style-contract.json",
   "requiredStyleId": "RIGHTBOUND_STYLE_V1",
+  "assetManifest": "asset-manifest.json",
+  "assetPipelineVersion": "0.36.0-lot5.0",
   "maxShellWidth": 430,
   "overflowTolerancePx": 1.25,
   "targetViewports": [
