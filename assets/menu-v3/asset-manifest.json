@@ -1,0 +1,300 @@
+{
+  "version": "0.36.0-lot5.0",
+  "styleId": "RIGHTBOUND_STYLE_V1",
+  "styleContract": "assets/menu-v3/style-contract.json",
+  "geometryContract": "assets/menu-v3/geometry-contract.json",
+  "status": "pipeline-active-assets-planned",
+  "folders": {
+    "source": "assets/menu-v3/source",
+    "runtime": "assets/menu-v3/runtime",
+    "references": "assets/menu-v3/references",
+    "reports": "artifacts/menu-v3-assets"
+  },
+  "lifecycle": {
+    "allowedStatuses": ["planned", "candidate", "approved", "retired"],
+    "candidateRequiresSource": true,
+    "approvedRequiresSourceAndRuntime": true,
+    "retiredMustNotExistInRuntime": true
+  },
+  "validationDefaults": {
+    "ratioTolerance": 0.005,
+    "magenta": {
+      "hex": "#FF00FF",
+      "channelTolerance": 10,
+      "minimumAlpha": 16,
+      "maximumPixels": 0
+    },
+    "duplicateRuntimeFilesForbidden": true,
+    "unmanifestedFilesForbidden": true,
+    "allowedIgnoredFiles": ["README.md", ".gitkeep"]
+  },
+  "assets": [
+    {
+      "id": "stage-background",
+      "family": "environment",
+      "status": "planned",
+      "pilotOrder": 1,
+      "slot": "stage-background",
+      "mode": "cover",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/stage-background.png", "format": "png", "width": 1536, "height": 1024, "alpha": "forbidden", "maxBytes": 6291456 },
+      "runtime": { "path": "assets/menu-v3/runtime/stage-background.webp", "format": "webp", "width": 768, "height": 512, "alpha": "forbidden", "maxBytes": 524288 },
+      "content": { "minimumWidthPercent": 100, "minimumHeightPercent": 100, "maximumTransparentMarginPercentPerSide": 0, "clearEdgeRequired": false }
+    },
+    {
+      "id": "stage-hero",
+      "family": "character",
+      "status": "planned",
+      "pilotOrder": 2,
+      "slot": "stage-hero",
+      "mode": "contain",
+      "anchor": "50% 100%",
+      "source": { "path": "assets/menu-v3/source/stage-hero.png", "format": "png", "width": 1024, "height": 2560, "alpha": "required", "maxBytes": 6291456 },
+      "runtime": { "path": "assets/menu-v3/runtime/stage-hero.png", "format": "png", "width": 512, "height": 1280, "alpha": "required", "maxBytes": 786432 },
+      "content": { "minimumWidthPercent": 45, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "stage-frame",
+      "family": "frame",
+      "status": "planned",
+      "pilotOrder": 3,
+      "slot": "stage-frame",
+      "mode": "nine-slice",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/stage-frame.png", "format": "png", "width": 1536, "height": 1024, "alpha": "required", "maxBytes": 4194304 },
+      "runtime": { "path": "assets/menu-v3/runtime/stage-frame.png", "format": "png", "width": 768, "height": 512, "alpha": "required", "maxBytes": 524288 },
+      "content": { "minimumWidthPercent": 96, "minimumHeightPercent": 96, "maximumTransparentMarginPercentPerSide": 2, "clearEdgeRequired": false }
+    },
+    {
+      "id": "hero-portrait",
+      "family": "character-portrait",
+      "status": "planned",
+      "slot": "hero-portrait",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/hero-portrait.png", "format": "png", "width": 1024, "height": 1024, "alpha": "required", "maxBytes": 3145728 },
+      "runtime": { "path": "assets/menu-v3/runtime/hero-portrait.png", "format": "png", "width": 256, "height": 256, "alpha": "required", "maxBytes": 196608 },
+      "content": { "minimumWidthPercent": 72, "minimumHeightPercent": 72, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "resource-gold",
+      "family": "resource-icon",
+      "status": "planned",
+      "slot": "resource-gold",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/resource-gold.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/resource-gold.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "resource-gems",
+      "family": "resource-icon",
+      "status": "planned",
+      "slot": "resource-gems",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/resource-gems.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/resource-gems.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "resource-energy",
+      "family": "resource-icon",
+      "status": "planned",
+      "slot": "resource-energy",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/resource-energy.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/resource-energy.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "utility-options",
+      "family": "utility-icon",
+      "status": "planned",
+      "slot": "utility-options",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/utility-options.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/utility-options.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "utility-journal",
+      "family": "utility-icon",
+      "status": "planned",
+      "slot": "utility-journal",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/utility-journal.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/utility-journal.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "world-ribbon",
+      "family": "frame",
+      "status": "planned",
+      "slot": "world-ribbon",
+      "mode": "nine-slice",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/world-ribbon.png", "format": "png", "width": 1536, "height": 384, "alpha": "required", "maxBytes": 2097152 },
+      "runtime": { "path": "assets/menu-v3/runtime/world-ribbon.png", "format": "png", "width": 768, "height": 192, "alpha": "required", "maxBytes": 262144 },
+      "content": { "minimumWidthPercent": 96, "minimumHeightPercent": 90, "maximumTransparentMarginPercentPerSide": 4, "clearEdgeRequired": false }
+    },
+    {
+      "id": "stat-power",
+      "family": "stat-icon",
+      "status": "planned",
+      "slot": "stat-power",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/stat-power.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/stat-power.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "stat-reward",
+      "family": "stat-icon",
+      "status": "planned",
+      "slot": "stat-reward",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/stat-reward.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/stat-reward.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-normal",
+      "family": "level-node",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-normal.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-normal.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 82, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 8, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-completed",
+      "family": "level-node",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-completed.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-completed.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 82, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 8, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-locked",
+      "family": "level-node",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-locked.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-locked.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 82, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 8, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-elite",
+      "family": "level-node",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-elite.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-elite.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 82, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 8, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-boss",
+      "family": "level-node",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-boss.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-boss.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 82, "minimumHeightPercent": 82, "maximumTransparentMarginPercentPerSide": 8, "clearEdgeRequired": true }
+    },
+    {
+      "id": "level-node-selected-overlay",
+      "family": "level-node-effect",
+      "status": "planned",
+      "slot": "level-node-*",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/level-node-selected-overlay.png", "format": "png", "width": 512, "height": 640, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/level-node-selected-overlay.png", "format": "png", "width": 128, "height": 160, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 86, "minimumHeightPercent": 86, "maximumTransparentMarginPercentPerSide": 6, "clearEdgeRequired": true }
+    },
+    {
+      "id": "play-frame",
+      "family": "frame",
+      "status": "planned",
+      "slot": "play-frame",
+      "mode": "nine-slice",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/play-frame.png", "format": "png", "width": 1536, "height": 384, "alpha": "required", "maxBytes": 2097152 },
+      "runtime": { "path": "assets/menu-v3/runtime/play-frame.png", "format": "png", "width": 768, "height": 192, "alpha": "required", "maxBytes": 262144 },
+      "content": { "minimumWidthPercent": 96, "minimumHeightPercent": 92, "maximumTransparentMarginPercentPerSide": 4, "clearEdgeRequired": false }
+    },
+    {
+      "id": "play-icon",
+      "family": "action-icon",
+      "status": "planned",
+      "slot": "play-icon",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/play-icon.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/play-icon.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "dock-expedition",
+      "family": "dock-icon",
+      "status": "planned",
+      "slot": "dock-expedition",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/dock-expedition.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/dock-expedition.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "dock-equipment",
+      "family": "dock-icon",
+      "status": "planned",
+      "slot": "dock-equipment",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/dock-equipment.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/dock-equipment.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "dock-chests",
+      "family": "dock-icon",
+      "status": "planned",
+      "slot": "dock-chests",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/dock-chests.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/dock-chests.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    },
+    {
+      "id": "dock-shop",
+      "family": "dock-icon",
+      "status": "planned",
+      "slot": "dock-shop",
+      "mode": "contain",
+      "anchor": "50% 50%",
+      "source": { "path": "assets/menu-v3/source/dock-shop.png", "format": "png", "width": 512, "height": 512, "alpha": "required", "maxBytes": 1048576 },
+      "runtime": { "path": "assets/menu-v3/runtime/dock-shop.png", "format": "png", "width": 128, "height": 128, "alpha": "required", "maxBytes": 98304 },
+      "content": { "minimumWidthPercent": 62, "minimumHeightPercent": 62, "maximumTransparentMarginPercentPerSide": 10, "clearEdgeRequired": true }
+    }
+  ]
+}
