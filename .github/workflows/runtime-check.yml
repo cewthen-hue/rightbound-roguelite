@@ -42,6 +42,7 @@ jobs:
           node --check src/inventory.js
           node --check playwright.config.mjs
           node --check tests/visual/menu-v3.visual.spec.mjs
+          node --check scripts/validate-menu-v3-assets.mjs
 
       - name: Run combat runtime smoke test
         run: node tests/game-runtime-smoke.mjs
@@ -66,6 +67,9 @@ jobs:
 
       - name: Validate Menu V3 Lot 4.5 automation contract
         run: node tests/menu-v3-visual-contract.mjs
+
+      - name: Validate Menu V3 Lot 5.0 asset pipeline contract
+        run: node tests/menu-v3-assets-contract.mjs
 
       - name: Validate Rightbound 2D cartoon art direction
         run: node tests/menu-v3-style-contract.mjs
@@ -102,5 +106,34 @@ jobs:
         with:
           name: menu-v3-lot-4-5-visual-${{ github.sha }}
           path: artifacts/menu-v3-visual
+          if-no-files-found: error
+          retention-days: 14
+
+  assets:
+    name: Menu V3 asset validation
+    needs: syntax
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install asset validation dependencies
+        run: npm install --no-audit --no-fund
+
+      - name: Run Menu V3 incremental asset validation
+        run: npm run test:assets
+
+      - name: Upload Menu V3 asset validation reports
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: menu-v3-lot-5-0-assets-${{ github.sha }}
+          path: artifacts/menu-v3-assets
           if-no-files-found: error
           retention-days: 14
