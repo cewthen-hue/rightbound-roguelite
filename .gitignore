@@ -9,8 +9,9 @@ Thumbs.db
 # Dépendances locales
 node_modules/
 
-# Rapports et captures Playwright
+# Rapports et captures automatisés
 artifacts/menu-v3-visual/
+artifacts/menu-v3-assets/
 playwright-report/
 test-results/
 
