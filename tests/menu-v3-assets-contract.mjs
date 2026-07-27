@@ -16,6 +16,8 @@ if (manifest.styleId !== "RIGHTBOUND_STYLE_V1" || manifest.styleId !== style.ver
 if (manifest.geometryContract !== "assets/menu-v3/geometry-contract.json") {
   throw new Error("Asset manifest geometry contract path mismatch.");
 }
+if (geometry.assetManifest !== "asset-manifest.json") throw new Error("Geometry contract does not link back to the asset manifest.");
+if (geometry.assetPipelineVersion !== "0.36.0-lot5.0") throw new Error("Geometry contract asset pipeline version mismatch.");
 if (manifest.assets.length !== 24) throw new Error(`Menu V3 manifest must contain 24 assets, found ${manifest.assets.length}.`);
 
 const requiredStatuses = ["planned", "candidate", "approved", "retired"];
